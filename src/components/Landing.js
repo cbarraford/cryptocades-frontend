@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 class Landing extends Component {
@@ -8,21 +9,18 @@ class Landing extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      btc_address: ''
-    };
+    this.state = {};
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
-    this.setState({btc_address: event.target.value});
+    this.setState({[event.target.id]: event.target.value});
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log("Going to:", this.state.btc_address)
     this.props.history.push("/play/"+this.state.btc_address)
   }
 
@@ -39,7 +37,7 @@ class Landing extends Component {
                         <span className="icon-bar"></span>
                         <span className="icon-bar"></span>
                     </button>
-                    <a className="navbar-brand" href="#play_now">Play Now!</a>
+                    <Link className="navbar-brand" to="/signup">Sign Up</Link>
                 </div>
                 <div id="navbar" className="navbar-collapse collapse">
                     <ul className="nav navbar-nav navbar-right">
@@ -62,7 +60,7 @@ class Landing extends Component {
                         </h1>
                     <p>Every week we give away $100+ of Bitcoin</p>
                     <p>
-                      <a className="btn btn-lg btn-primary" href="#play_now">Play NOW!</a>
+                      <Link className="btn btn-lg btn-primary" to="/signup">Sign Up</Link>
                     </p>
                 </div>
             </div>
