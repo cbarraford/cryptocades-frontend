@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
+import { inject, observer } from 'mobx-react';
+import toastr from 'toastr'
 
+@inject('client')
+@observer
 class Signup extends Component {
 
   constructor (props) {
@@ -20,7 +24,20 @@ class Signup extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    //this.props.history.push("/login")
+    this.props.client.signup({
+      username: this.state.username,
+      email: this.state.email,
+      password: this.state.password,
+      btc_address: this.state.btc_address,
+    })
+      .then((response) => {
+        console.log(response);
+        this.props.history.push("/login")
+      })
+      .catch((error) => {
+        toastr.error("Failed to create account: " + error)
+        console.log(error)
+      })
   }
 
   render() {

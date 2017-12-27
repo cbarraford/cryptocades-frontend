@@ -1,4 +1,4 @@
-import { autorun, computed, observable } from 'mobx'
+import { computed, observable } from 'mobx'
 import cookie from 'react-cookies'
 
 class Store {
@@ -14,13 +14,6 @@ class Store {
 
 // we set the store to window.store so we have access to the store in the
 // console
-let store = window.store = new Store
+let store = window.store = new Store()
 
 export default store
-
-// this is used to log the store attrs on change for debugging
-/*
-autorun(() => {
-  console.log("Me: ", store.me)
-})
-*/

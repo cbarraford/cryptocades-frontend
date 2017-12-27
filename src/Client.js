@@ -37,7 +37,7 @@ class Client {
   }
 
   signup(obj = {}) {
-    return this.client.post('/signup', obj);
+    return this.client.post('/users', obj);
   }
 
   editAchievement(id, obj = {}) {

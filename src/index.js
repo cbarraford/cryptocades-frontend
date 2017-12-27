@@ -10,6 +10,7 @@ import DefaultLayout from './layouts/DefaultLayout'
 import './index.css';
 import Landing from './components/Landing';
 import Signup from './components/Signup';
+import Login from './components/Login';
 import Play from './components/Play';
 import registerServiceWorker from './registerServiceWorker';
 
@@ -41,6 +42,7 @@ ReactDOM.render((
     <div>
       <Route exact path="/" component={Landing}/>
       <Route exact path="/signup" component={Signup}/>
+      <Route exact path="/login" component={Login}/>
       <MatchWithDefaultLayout path="/play/:address" component={Play}/>
     </div>
   </Router>
