@@ -25,8 +25,7 @@ class DefaultLayout extends Component {
   render() {
     // TODO: be more dry about these rendered returns 
 
-    const { me, logged_in } = this.props.store
-    console.log("Logged In:", logged_in);
+    const { logged_in } = this.props.store
 
     if (logged_in) {
       return (

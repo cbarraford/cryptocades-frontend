@@ -38,10 +38,10 @@ class Signup extends Component {
         this.props.client.token = response.data.token;
         cookie.save('token', response.data.token, { path: '/' });
         this.props.client.setToken(response.data.token);
+        this.props.store.token = response.data.token;
 
         this.props.client.me()
           .then((response) => {
-            console.log(response);
             this.props.store.me = response.data
           })
           .catch((error) => {
@@ -49,8 +49,6 @@ class Signup extends Component {
             this.props.store.me = {}
           })
 
-
-        // TODO: redirect to home page or account overview
         this.props.history.push('/play')
        })
       .catch((error) => {
