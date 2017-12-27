@@ -1,23 +1,51 @@
 import React, { Component } from 'react';
+import { inject, observer } from 'mobx-react';
+import UserNav from '../components/UserNav';
+import GuestNav from '../components/GuestNav';
 
+@inject('store')
+@inject('client')
+@observer
 class DefaultLayout extends Component {
 
+  constructor(props){
+    super(props)
+
+    this.props.client.me()
+      .then((response) => {
+        console.log(response);
+        this.props.store.me = response.data
+      })
+      .catch((error) => {
+        console.log(error)
+        this.props.store.me = {}
+      })
+  }
+
   render() {
+    // TODO: be more dry about these rendered returns 
+
+    const { me, logged_in } = this.props.store
+    console.log("Logged In:", logged_in);
+
+    if (logged_in) {
       return (
-        <div className="wrapper">
-        <div id="page-wrapper" className="gray-bg" >
-          <div className="row border-bottom white-bg">
-          <nav className="navbar navbar-static-top" role="navigation">
-            <div className="navbar-header">
-              <a href="/" className="navbar-brand">Win Coin</a>
-            </div>
-          </nav>
-          </div>
-          <div className="row">
-            { this.props.children }
-          </div>
+        <div>
+        <UserNav />
+        <div className="row">
+          { this.props.children }
         </div>
         </div>
+      )
+    }
+
+    return (
+      <div>
+      <GuestNav />
+      <div className="row">
+        { this.props.children }
+      </div>
+      </div>
     );
   }
 }

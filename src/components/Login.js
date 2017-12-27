@@ -2,10 +2,16 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react';
 import toastr from 'toastr'
+import cookie from 'react-cookies'
+import PropTypes from 'prop-types'
 
+@inject('store')
 @inject('client')
 @observer
 class Signup extends Component {
+  static propTypes = {
+    history: PropTypes.object.isRequired
+  }
 
   constructor (props) {
     super(props)
@@ -24,16 +30,29 @@ class Signup extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log(this.state);
     this.props.client.login(
       this.state.username,
       this.state.password,
     )
       .then((response) => {
-        console.log(response);
-        this.props.client.setToken(response.token);
+        this.props.client.token = response.data.token;
+        cookie.save('token', response.data.token, { path: '/' });
+        this.props.client.setToken(response.data.token);
+
+        this.props.client.me()
+          .then((response) => {
+            console.log(response);
+            this.props.store.me = response.data
+          })
+          .catch((error) => {
+            console.log(error)
+            this.props.store.me = {}
+          })
+
+
         // TODO: redirect to home page or account overview
-      })
+        this.props.history.push('/play')
+       })
       .catch((error) => {
         toastr.error("Failed to login:", error)
         console.log(error)
@@ -58,9 +77,13 @@ class Signup extends Component {
                 </div>
                 <button type="submit" className="btn btn-primary block full-width m-b">Login</button>
 
+                <p>
                 <Link to="/password/reset"><small>Forgot password?</small></Link>
-                <p className="text-muted text-center"><small>Do not have an account?</small></p>
+                </p>
+                <p className="text-muted text-center">
+                <small>Do not have an account?</small>
                 <Link className="btn btn-sm btn-white btn-block" to="/signup">Create an account</Link>
+                </p>
             </form>
         </div>
     </div>

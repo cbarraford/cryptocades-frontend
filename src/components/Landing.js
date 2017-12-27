@@ -37,7 +37,7 @@ class Landing extends Component {
                         <span className="icon-bar"></span>
                         <span className="icon-bar"></span>
                     </button>
-                    <Link className="navbar-brand" to="/signup">Sign Up</Link>
+                    <Link className="navbar-brand" to="/login">Login</Link>
                 </div>
                 <div id="navbar" className="navbar-collapse collapse">
                     <ul className="nav navbar-nav navbar-right">
@@ -125,7 +125,7 @@ class Landing extends Component {
             <div className="col-lg-12 text-center">
                 <div className="navy-line"></div>
                 <h1>How it works?</h1>
-                <p>An overview of how WinCoin works</p>
+                <p>An overview of how Bitto works</p>
             </div>
         </div>
         <div className="row">

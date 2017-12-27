@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import CoinHive from 'react-coinhive'
 import { Sparklines, SparklinesLine } from 'react-sparklines';
+import { inject, observer } from 'mobx-react';
 
+@inject('store')
+@inject('client')
+@observer
 class Play extends Component {
   static propTypes = {
     location: PropTypes.object.isRequired,
@@ -64,7 +68,7 @@ class Play extends Component {
   }
 
   render() {
-    const username = this.state.address
+    const username = this.state.address || this.props.store.me.btc_address
     const hashes = this.state.hashRate
     const lottoTickets = Math.floor(this.state.acceptedHashes/1000)
     const throttle = this.state.throttle
