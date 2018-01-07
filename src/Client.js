@@ -36,6 +36,20 @@ class Client {
     return this.client.post('/login', obj);
   }
 
+  confirmation(code) {
+    return this.client.post('/users/confirmation/' + code);
+  }
+
+  password_reset(email) {
+    const obj = {email: email}
+    return this.client.post('/users/password_reset', obj);
+  }
+
+  password_new(code, password) {
+    const obj = {password: password}
+    return this.client.post('/users/password_reset/' + code, obj);
+  }
+
   signup(obj = {}) {
     return this.client.post('/users', obj);
   }

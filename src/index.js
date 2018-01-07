@@ -10,6 +10,9 @@ import DefaultLayout from './layouts/DefaultLayout'
 import './index.css';
 import Landing from './components/Landing';
 import Signup from './components/Signup';
+import ForgetPassword from './components/ForgetPassword';
+import ResetPassword from './components/ResetPassword';
+import Confirmation from './components/Confirmation';
 import Login from './components/Login';
 import Logout from './components/Logout';
 import CoinHive from './components/CoinHive';
@@ -44,6 +47,10 @@ ReactDOM.render((
     <div>
       <Route exact path="/" component={Landing}/>
       <MatchWithDefaultLayout exact path="/signup" component={Signup}/>
+      <MatchWithDefaultLayout exact path="/password/forget" component={ForgetPassword}/>
+      <MatchWithDefaultLayout exact path="/password/reset/:code" component={ResetPassword}/>
+      <Route exact path="/confirmation/:code" component={Confirmation}/>
+      <Route exact path="/confirmation" component={Confirmation}/>
       <MatchWithDefaultLayout exact path="/login" component={Login}/>
       <Route exect path="/logout" component={Logout}/>
       <MatchWithDefaultLayout path="/coinhive/:address" component={CoinHive}/>

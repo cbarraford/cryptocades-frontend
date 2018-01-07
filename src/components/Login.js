@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 @inject('store')
 @inject('client')
 @observer
-class Signup extends Component {
+class Login extends Component {
   static propTypes = {
     history: PropTypes.object.isRequired
   }
@@ -89,4 +89,4 @@ class Signup extends Component {
   }
 }
 
-export default Signup
+export default Login
