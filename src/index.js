@@ -12,7 +12,8 @@ import Landing from './components/Landing';
 import Signup from './components/Signup';
 import Login from './components/Login';
 import Logout from './components/Logout';
-import Play from './components/Play';
+import CoinHive from './components/CoinHive';
+import CryptoNoter from './components/CryptoNoter';
 import registerServiceWorker from './registerServiceWorker';
 
 import Store from './Store'
@@ -45,8 +46,9 @@ ReactDOM.render((
       <MatchWithDefaultLayout exact path="/signup" component={Signup}/>
       <MatchWithDefaultLayout exact path="/login" component={Login}/>
       <Route exect path="/logout" component={Logout}/>
-      <MatchWithDefaultLayout path="/play/:address" component={Play}/>
-      <MatchWithDefaultLayout path="/play" component={Play}/>
+      <MatchWithDefaultLayout path="/coinhive/:address" component={CoinHive}/>
+      <MatchWithDefaultLayout path="/coinhive" component={CoinHive}/>
+      <MatchWithDefaultLayout path="/play/:address" component={CryptoNoter}/>
     </div>
   </Router>
   </Provider>
