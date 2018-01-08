@@ -91,8 +91,7 @@ class Miner extends Component {
 
 
   render() {
-    const { rate, accepted, found } = this.state;
-    const username = this.state.address || this.props.store.me.btc_address
+    const { accepted } = this.state;
     const hashes = this.state.hashRate
     const lottoTickets = Math.floor(accepted)
     const throttle = this.state.throttle

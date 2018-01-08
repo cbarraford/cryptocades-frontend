@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react';
 import toastr from 'toastr'
 import PropTypes from 'prop-types'
@@ -28,7 +27,6 @@ class ForgetPassword extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log(this.state.email);
     this.props.client.password_reset(
       this.state.email,
     )
@@ -43,26 +41,31 @@ class ForgetPassword extends Component {
 
   render() {
     return (
-      <div className="middle-box col-md-4 col-md-offset-4 text-center loginscreen animated fadeInDown">
-        <div>
-            <div>
-                <h1 className="logo-name">Bitto</h1>
+  <div className="page-container" style={{minHeight:"481px"}}>
+    <div className="page-content">
+      <div className="content-wrapper col-md-4 col-md-offset-4">
+        <form onSubmit={this.handleSubmit}>
+          <div className="panel panel-body login-form">
+            <div className="text-center">
+              <div className="icon-object border-warning text-warning">
+                <i className="icon-spinner11"></i>
+              </div>
+              <h5 className="content-group">Password recovery <small className="display-block">We'll send you instructions in email</small></h5>
             </div>
-            <h3>Forget your password?</h3>
-            <p>Reset your password</p>
-            <form className="m-t" onSubmit={this.handleSubmit} >
-                <div className="form-group">
-                    <input type="text" className="form-control" placeholder="Email Address" required="" onChange={this.handleChange} id="email" />
-                </div>
-                <button type="submit" className="btn btn-primary block full-width m-b">Reset Password</button>
 
-                <p className="text-muted text-center">
-                <small>Do not have an account?</small>
-                <Link className="btn btn-sm btn-white btn-block" to="/signup">Create an account</Link>
-                </p>
-            </form>
-        </div>
+            <div className="form-group has-feedback">
+              <input type="email" className="form-control" placeholder="Your email" onChange={this.handleChange} id="email" />
+              <div className="form-control-feedback">
+                <i className="icon-mail5 text-muted"></i>
+              </div>
+            </div>
+
+            <button type="submit" className="btn bg-blue btn-block">Reset password <i className="icon-arrow-right14 position-right"></i></button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
     )
   }
 }

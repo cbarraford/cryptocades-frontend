@@ -31,8 +31,7 @@ class Signup extends Component {
       btc_address: this.state.btc_address,
     })
       .then((response) => {
-        console.log(response);
-        this.props.history.push("/login")
+        this.props.history.push("/confirmation")
       })
       .catch((error) => {
         toastr.error("Failed to create account: " + error)
@@ -42,35 +41,56 @@ class Signup extends Component {
 
   render() {
     return (
-      <div className="col-md-4 col-md-offset-4 middle-box text-center loginscreen animated fadeInDown">
-        <div>
-            <div>
-                <h1 className="logo-name">Bitto</h1>
-            </div>
-            <h3>Sign Up for Bitto</h3>
-            <p>Create account to earn your chance to win Bitcoin.</p>
-            <form className="m-t" onSubmit={this.handleSubmit}>
-                <div className="form-group">
-                    <input type="text" className="form-control" placeholder="Username" required="" onChange={this.handleChange} id="username" />
-                </div>
-                <div className="form-group">
-                    <input type="email" className="form-control" placeholder="Email" required="" onChange={this.handleChange} id="email" />
-                </div>
-                <div className="form-group">
-                    <input type="password" className="form-control" placeholder="Password" required="" onChange={this.handleChange} id="password" />
-                </div>
-                <div className="form-group">
-                    <input type="password" className="form-control" placeholder="Password again" required="" onChange={this.handleChange} id="password2" />
-                </div>
-                <div className="form-group">
-                    <input type="text" className="form-control" placeholder="Bitcoin Address" pattern="^[13][a-km-zA-HJ-NP-Z0-9]{26,33}$" title="Must be a valid bitcoin address" required="" onChange={this.handleChange} id="btc_address" />
-                </div>
-                <button type="submit" className="btn btn-primary block full-width m-b">Register</button>
+  <div className="page-container" style={{minHeight: "262px"}}>
+		<div className="page-content">
+			<div className="content-wrapper">
+				<form onSubmit={this.handleSubmit} >
+					<div className="panel panel-body login-form col-md-4 col-md-offset-4">
+						<div className="text-center">
+							<div className="icon-object border-success text-success"><i className="icon-plus3"></i></div>
+							<h5 className="content-group">Create account <small className="display-block">All fields are required</small></h5>
+						</div>
 
-                <p className="text-muted text-center"><small>Already have an account?</small></p><Link className="btn btn-sm btn-white btn-block" to="/login">Login</Link>
-            </form>
-        </div>
-    </div>
+						<div className="content-divider text-muted form-group"><span>Your credentials</span></div>
+
+						<div className="form-group has-feedback has-feedback-left">
+							<input type="text" className="form-control" placeholder="Username" onChange={this.handleChange} id="username" />
+							<div className="form-control-feedback">
+								<i className="icon-user-check text-muted"></i>
+							</div>
+						</div>
+
+						<div className="form-group has-feedback has-feedback-left">
+							<input type="password" className="form-control" placeholder="Create password" onChange={this.handleChange} id="password" />
+							<div className="form-control-feedback">
+								<i className="icon-user-lock text-muted"></i>
+							</div>
+						</div>
+
+						<div className="form-group has-feedback has-feedback-left">
+							<input type="text" className="form-control" placeholder="Your email" onChange={this.handleChange} id="email" />
+							<div className="form-control-feedback">
+								<i className="icon-mention text-muted"></i>
+							</div>
+						</div>
+
+						<div className="content-divider text-muted form-group"><span>Additions</span></div>
+
+						<div className="form-group">
+							<div className="checkbox">
+								<label>
+									<div className="checker"><span><input type="checkbox" className="styled" /></span></div>
+									Accept <Link href="/terms_of_service">terms of service</Link>
+								</label>
+							</div>
+						</div>
+
+						<button type="submit" className="btn bg-teal btn-block btn-lg">Register <i className="icon-circle-right2 position-right"></i></button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
     )
   }
 }

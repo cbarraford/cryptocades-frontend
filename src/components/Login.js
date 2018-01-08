@@ -59,32 +59,44 @@ class Login extends Component {
 
   render() {
     return (
-      <div className="middle-box col-md-4 col-md-offset-4 text-center loginscreen animated fadeInDown">
-        <div>
-            <div>
-                <h1 className="logo-name">Bitto</h1>
-            </div>
-            <h3>Welcome to Bitto</h3>
-            <p>Login in to play</p>
-            <form className="m-t" onSubmit={this.handleSubmit} >
-                <div className="form-group">
-                    <input type="text" className="form-control" placeholder="Username" required="" onChange={this.handleChange} id="username" />
-                </div>
-                <div className="form-group">
-                    <input type="password" className="form-control" placeholder="Password" required="" onChange={this.handleChange} id="password" />
-                </div>
-                <button type="submit" className="btn btn-primary block full-width m-b">Login</button>
+  <div className="page-container" style={{minHeight:"381px"}}>
+		<div className="page-content">
+			<div className="content-wrapper">
+				<form onSubmit={this.handleSubmit} >
+					<div className="panel panel-body login-form col-md-4 col-md-offset-4">
+						<div className="text-center">
+							<div className="icon-object border-slate-300 text-slate-300"><i className="icon-reading"></i></div>
+							<h5 className="content-group">Login to your account <small className="display-block">Enter your credentials below</small></h5>
+						</div>
 
-                <p>
-                <Link to="/password/reset"><small>Forgot password?</small></Link>
-                </p>
-                <p className="text-muted text-center">
-                <small>Do not have an account?</small>
-                <Link className="btn btn-sm btn-white btn-block" to="/signup">Create an account</Link>
-                </p>
-            </form>
-        </div>
-    </div>
+						<div className="form-group has-feedback has-feedback-left">
+							<input type="text" className="form-control" placeholder="Username" onChange={this.handleChange} id="username" />
+							<div className="form-control-feedback">
+								<i className="icon-user text-muted"></i>
+							</div>
+						</div>
+
+						<div className="form-group has-feedback has-feedback-left">
+							<input type="password" className="form-control" placeholder="Password" onChange={this.handleChange} id="password" />
+							<div className="form-control-feedback">
+								<i className="icon-lock2 text-muted"></i>
+							</div>
+						</div>
+
+						<div className="form-group">
+							<button type="submit" className="btn btn-primary btn-block">Sign in <i className="icon-circle-right2 position-right"></i></button>
+						</div>
+
+						<div className="text-center">
+							<Link to="/password/forget">Forgot password?</Link>
+              <p className="text-muted text-center"><small>Do not have an account?</small><Link className="btn btn-sm btn-white btn-block" to="/signup">Create an account</Link>
+              </p>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
     )
   }
 }

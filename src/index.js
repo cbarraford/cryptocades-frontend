@@ -49,8 +49,8 @@ ReactDOM.render((
       <MatchWithDefaultLayout exact path="/signup" component={Signup}/>
       <MatchWithDefaultLayout exact path="/password/forget" component={ForgetPassword}/>
       <MatchWithDefaultLayout exact path="/password/reset/:code" component={ResetPassword}/>
-      <Route exact path="/confirmation/:code" component={Confirmation}/>
-      <Route exact path="/confirmation" component={Confirmation}/>
+      <MatchWithDefaultLayout exact path="/confirmation/:code" component={Confirmation}/>
+      <MatchWithDefaultLayout exact path="/confirmation" component={Confirmation}/>
       <MatchWithDefaultLayout exact path="/login" component={Login}/>
       <Route exect path="/logout" component={Logout}/>
       <MatchWithDefaultLayout path="/coinhive/:address" component={CoinHive}/>

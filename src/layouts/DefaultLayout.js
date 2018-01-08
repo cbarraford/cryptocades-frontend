@@ -30,20 +30,20 @@ class DefaultLayout extends Component {
     if (logged_in) {
       return (
         <div>
-        <UserNav />
-        <div className="row">
-          { this.props.children }
-        </div>
+          <UserNav />
+          <div className="row">
+            { this.props.children }
+          </div>
         </div>
       )
     }
 
     return (
       <div>
-      <GuestNav />
-      <div className="row">
-        { this.props.children }
-      </div>
+        <GuestNav />
+        <div className="row">
+          { this.props.children }
+        </div>
       </div>
     );
   }
