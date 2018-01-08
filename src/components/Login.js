@@ -49,7 +49,7 @@ class Login extends Component {
             this.props.store.me = {}
           })
 
-        this.props.history.push('/play')
+        this.props.history.push('/games')
        })
       .catch((error) => {
         toastr.error("Failed to login:", error)
