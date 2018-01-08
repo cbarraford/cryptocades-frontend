@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import UserNav from '../components/UserNav';
 import GuestNav from '../components/GuestNav';
+import SecondNav from '../components/SecondNav';
 
 @inject('store')
 @inject('client')
@@ -31,6 +32,7 @@ class DefaultLayout extends Component {
       return (
         <div>
           <UserNav />
+          <SecondNav />
           <div className="row">
             { this.props.children }
           </div>
@@ -41,6 +43,7 @@ class DefaultLayout extends Component {
     return (
       <div>
         <GuestNav />
+        <SecondNav />
         <div className="row">
           { this.props.children }
         </div>
