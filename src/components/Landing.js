@@ -28,7 +28,7 @@ class Landing extends Component {
     return (
       <div>
       <div className="navbar-wrapper">
-        <nav className="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div className="navbar navbar-default navbar-fixed-top" role="navigation">
             <div className="container">
                 <div className="navbar-header page-scroll">
                     <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -47,7 +47,7 @@ class Landing extends Component {
                     </ul>
                 </div>
             </div>
-        </nav>
+        </div>
 </div>
 <div id="inSlider" className="carousel carousel-fade" data-ride="carousel">
     <div className="carousel-inner" role="listbox">

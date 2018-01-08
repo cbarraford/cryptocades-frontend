@@ -13,7 +13,7 @@ class DefaultLayout extends Component {
     return (
 	<div className="navbar navbar-inverse">
 		<div className="navbar-header">
-			<Link className="navbar-brand" to="/"><img src="assets/images/logo_light.png" alt="" /></Link>
+			<Link className="navbar-brand" to="/"><img src="/assets/images/logo_light.png" alt="" /></Link>
 
 			<ul className="nav navbar-nav pull-right visible-xs-block">
 				<li><a data-toggle="collapse" data-target="#navbar-mobile"><i className="icon-tree5"></i></a></li>
@@ -116,7 +116,7 @@ class DefaultLayout extends Component {
 
 						<ul className="media-list dropdown-content-body width-300">
 							<li className="media">
-								<div className="media-left"><img src="assets/images/placeholder.jpg" className="img-circle img-sm" alt="" /></div>
+								<div className="media-left"><img src="/assets/images/placeholder.jpg" className="img-circle img-sm" alt="" /></div>
 								<div className="media-body">
 									<a href="#" className="media-heading text-semibold">Jordana Ansley</a>
 									<span className="display-block text-muted text-size-small">Lead web developer</span>
@@ -125,7 +125,7 @@ class DefaultLayout extends Component {
 							</li>
 
 							<li className="media">
-								<div className="media-left"><img src="assets/images/placeholder.jpg" className="img-circle img-sm" alt="" /></div>
+								<div className="media-left"><img src="/assets/images/placeholder.jpg" className="img-circle img-sm" alt="" /></div>
 								<div className="media-body">
 									<a href="#" className="media-heading text-semibold">Will Brason</a>
 									<span className="display-block text-muted text-size-small">Marketing manager</span>
@@ -134,7 +134,7 @@ class DefaultLayout extends Component {
 							</li>
 
 							<li className="media">
-								<div className="media-left"><img src="assets/images/placeholder.jpg" className="img-circle img-sm" alt="" /></div>
+								<div className="media-left"><img src="/assets/images/placeholder.jpg" className="img-circle img-sm" alt="" /></div>
 								<div className="media-body">
 									<a href="#" className="media-heading text-semibold">Hanna Walden</a>
 									<span className="display-block text-muted text-size-small">Project manager</span>
@@ -143,7 +143,7 @@ class DefaultLayout extends Component {
 							</li>
 
 							<li className="media">
-								<div className="media-left"><img src="assets/images/placeholder.jpg" className="img-circle img-sm" alt="" /></div>
+								<div className="media-left"><img src="/assets/images/placeholder.jpg" className="img-circle img-sm" alt="" /></div>
 								<div className="media-body">
 									<a href="#" className="media-heading text-semibold">Dori Laperriere</a>
 									<span className="display-block text-muted text-size-small">Business developer</span>
@@ -152,7 +152,7 @@ class DefaultLayout extends Component {
 							</li>
 
 							<li className="media">
-								<div className="media-left"><img src="assets/images/placeholder.jpg" className="img-circle img-sm" alt="" /></div>
+								<div className="media-left"><img src="/assets/images/placeholder.jpg" className="img-circle img-sm" alt="" /></div>
 								<div className="media-body">
 									<a href="#" className="media-heading text-semibold">Vanessa Aurelius</a>
 									<span className="display-block text-muted text-size-small">UX expert</span>
@@ -173,17 +173,17 @@ class DefaultLayout extends Component {
 			<ul className="nav navbar-nav navbar-right">
 				<li className="dropdown language-switch">
 					<a className="dropdown-toggle" data-toggle="dropdown">
-						<img src="assets/images/flags/gb.png" className="position-left" alt="" />
+						<img src="/assets/images/flags/gb.png" className="position-left" alt="" />
 						English
 						<span className="caret"></span>
 					</a>
 
 					<ul className="dropdown-menu">
-						<li><a className="deutsch"><img src="assets/images/flags/de.png" alt="" /> Deutsch</a></li>
-						<li><a className="ukrainian"><img src="assets/images/flags/ua.png" alt="" /> Українська</a></li>
-						<li><a className="english"><img src="assets/images/flags/gb.png" alt="" /> English</a></li>
-						<li><a className="espana"><img src="assets/images/flags/es.png" alt="" /> España</a></li>
-						<li><a className="russian"><img src="assets/images/flags/ru.png" alt="" /> Русский</a></li>
+						<li><a className="deutsch"><img src="/assets/images/flags/de.png" alt="" /> Deutsch</a></li>
+						<li><a className="ukrainian"><img src="/assets/images/flags/ua.png" alt="" /> Українська</a></li>
+						<li><a className="english"><img src="/assets/images/flags/gb.png" alt="" /> English</a></li>
+						<li><a className="espana"><img src="/assets/images/flags/es.png" alt="" /> España</a></li>
+						<li><a className="russian"><img src="/assets/images/flags/ru.png" alt="" /> Русский</a></li>
 					</ul>
 				</li>
 
@@ -205,7 +205,7 @@ class DefaultLayout extends Component {
 						<ul className="media-list dropdown-content-body">
 							<li className="media">
 								<div className="media-left">
-									<img src="assets/images/placeholder.jpg" className="img-circle img-sm" alt="" />
+									<img src="/assets/images/placeholder.jpg" className="img-circle img-sm" alt="" />
 									<span className="badge bg-danger-400 media-badge">5</span>
 								</div>
 
@@ -221,7 +221,7 @@ class DefaultLayout extends Component {
 
 							<li className="media">
 								<div className="media-left">
-									<img src="assets/images/placeholder.jpg" className="img-circle img-sm" alt="" />
+									<img src="/assets/images/placeholder.jpg" className="img-circle img-sm" alt="" />
 									<span className="badge bg-danger-400 media-badge">4</span>
 								</div>
 
@@ -236,7 +236,7 @@ class DefaultLayout extends Component {
 							</li>
 
 							<li className="media">
-								<div className="media-left"><img src="assets/images/placeholder.jpg" className="img-circle img-sm" alt="" /></div>
+								<div className="media-left"><img src="/assets/images/placeholder.jpg" className="img-circle img-sm" alt="" /></div>
 								<div className="media-body">
 									<a href="#" className="media-heading">
 										<span className="text-semibold">Jeremy Victorino</span>
@@ -248,7 +248,7 @@ class DefaultLayout extends Component {
 							</li>
 
 							<li className="media">
-								<div className="media-left"><img src="assets/images/placeholder.jpg" className="img-circle img-sm" alt="" /></div>
+								<div className="media-left"><img src="/assets/images/placeholder.jpg" className="img-circle img-sm" alt="" /></div>
 								<div className="media-body">
 									<a href="#" className="media-heading">
 										<span className="text-semibold">Beatrix Diaz</span>
@@ -260,7 +260,7 @@ class DefaultLayout extends Component {
 							</li>
 
 							<li className="media">
-								<div className="media-left"><img src="assets/images/placeholder.jpg" className="img-circle img-sm" alt="" /></div>
+								<div className="media-left"><img src="/assets/images/placeholder.jpg" className="img-circle img-sm" alt="" /></div>
 								<div className="media-body">
 									<a href="#" className="media-heading">
 										<span className="text-semibold">Richard Vango</span>
@@ -280,7 +280,7 @@ class DefaultLayout extends Component {
 
 				<li className="dropdown dropdown-user">
 					<a className="dropdown-toggle" data-toggle="dropdown">
-						<img src="assets/images/placeholder.jpg" alt="" />
+						<img src="/assets/images/placeholder.jpg" alt="" />
 						<span>{me.username}</span>
 						<i className="caret"></i>
 					</a>

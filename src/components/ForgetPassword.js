@@ -43,9 +43,9 @@ class ForgetPassword extends Component {
     return (
   <div className="page-container" style={{minHeight:"481px"}}>
     <div className="page-content">
-      <div className="content-wrapper col-md-4 col-md-offset-4">
+      <div className="content-wrapper">
         <form onSubmit={this.handleSubmit}>
-          <div className="panel panel-body login-form">
+          <div className="panel panel-body login-form col-md-4 col-md-offset-4">
             <div className="text-center">
               <div className="icon-object border-warning text-warning">
                 <i className="icon-spinner11"></i>

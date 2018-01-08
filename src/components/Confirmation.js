@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react';
 import toastr from 'toastr'
 import PropTypes from 'prop-types'
@@ -16,11 +15,12 @@ class Confirmation extends Component {
     super(props)
 
     this.state = {
-      message: "Your account has been created. \nPlease confirm your email address by clicking the link in the email sent to you.",
+      title: "Your account has been created",
+      content: "Please confirm your email address by clicking the link in the email sent to you.",
     }
 
     if (props.match.params.code) {
-      this.setState({"message": "Confirming new user... please wait."})
+      this.setState({"message": "Please wait...", "content": "Confirming new user."})
       this.props.client.confirmation(
         props.match.params.code,
       )
@@ -36,7 +36,7 @@ class Confirmation extends Component {
   }
 
   render() {
-    const { message } = this.state;
+    const { title, content } = this.state;
     return (
 
   <div className="page-container" style={{minHeight: "262px"}}>
@@ -44,12 +44,10 @@ class Confirmation extends Component {
 			<div className="content-wrapper">
         <div className="panel panel-body login-form col-md-4 col-md-offset-4">
           <div className="text-center">
-            <i className="fa fa-check-circle" style={{color: "green", fontSize: "10em"}}></i>
-            <h3>{message}</h3>
-            <p>
-              <small>Do not have an account?</small>
-              <Link className="btn btn-sm btn-white btn-block" to="/signup">Create an account</Link>
-            </p>
+            <div className="icon-object border-success text-success">
+              <i className="icon-checkmark4"></i>
+            </div>
+            <h5 className="content-group">{title}<small className="display-block">{content}</small></h5>
           </div>
         </div>
 			</div>

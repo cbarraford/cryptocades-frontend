@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react';
 import toastr from 'toastr'
 import PropTypes from 'prop-types'
@@ -46,24 +45,31 @@ class ResetPassword extends Component {
 
   render() {
     return (
-      <div className="middle-box col-md-4 col-md-offset-4 text-center loginscreen animated fadeInDown">
-        <div>
-            <div>
-                <h1 className="logo-name">Bitto</h1>
+  <div className="page-container" style={{minHeight:"481px"}}>
+    <div className="page-content">
+      <div className="content-wrapper">
+        <form onSubmit={this.handleSubmit}>
+          <div className="panel panel-body login-form col-md-4 col-md-offset-4">
+            <div className="text-center">
+              <div className="icon-object border-warning text-warning">
+                <i className="icon-key"></i>
+              </div>
+              <h5 className="content-group">Password reset <small className="display-block">Please enter your new password.</small></h5>
             </div>
-            <h3>Enter a new password</h3>
-            <form className="m-t" onSubmit={this.handleSubmit} >
-                <div className="form-group">
-                    <input type="password" className="form-control" placeholder="Password" required="" onChange={this.handleChange} id="password" />
-                </div>
-                <button type="submit" className="btn btn-primary block full-width m-b">Reset Password</button>
 
-                <p>
-                <Link to="/password/reset"><small>Forgot password?</small></Link>
-                </p>
-            </form>
-        </div>
+            <div className="form-group has-feedback">
+              <input type="password" className="form-control" placeholder="Your new password" onChange={this.handleChange} id="password" />
+              <div className="form-control-feedback">
+                <i className="icon-mail5 text-muted"></i>
+              </div>
+            </div>
+
+            <button type="submit" className="btn bg-blue btn-block">Reset password <i className="icon-arrow-right14 position-right"></i></button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
     )
   }
 }
