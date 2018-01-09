@@ -9,6 +9,7 @@ class DefaultLayout extends Component {
 
   render() {
     const { me } = this.props.store;
+    const tickets = me.mined_hases + me.bonus_hashes;
 
     return (
 	<div className="navbar navbar-inverse">
@@ -171,27 +172,12 @@ class DefaultLayout extends Component {
 			<p className="navbar-text"><span className="label bg-success-400">Online</span></p>
 
 			<ul className="nav navbar-nav navbar-right">
-				<li className="dropdown language-switch">
-					<a className="dropdown-toggle" data-toggle="dropdown">
-						<img src="/assets/images/flags/gb.png" className="position-left" alt="" />
-						English
-						<span className="caret"></span>
-					</a>
-
-					<ul className="dropdown-menu">
-						<li><a className="deutsch"><img src="/assets/images/flags/de.png" alt="" /> Deutsch</a></li>
-						<li><a className="ukrainian"><img src="/assets/images/flags/ua.png" alt="" /> Українська</a></li>
-						<li><a className="english"><img src="/assets/images/flags/gb.png" alt="" /> English</a></li>
-						<li><a className="espana"><img src="/assets/images/flags/es.png" alt="" /> España</a></li>
-						<li><a className="russian"><img src="/assets/images/flags/ru.png" alt="" /> Русский</a></li>
-					</ul>
-				</li>
 
 				<li className="dropdown">
 					<a href="#" className="dropdown-toggle" data-toggle="dropdown">
-						<i className="icon-bubbles4"></i>
+						<i className="fa fa-ticket"></i>
 						<span className="visible-xs-inline-block position-right">Messages</span>
-						<span className="badge bg-warning-400">2</span>
+						<span className="badge bg-warning-400">{tickets || 0}</span>
 					</a>
 
 					<div className="dropdown-menu dropdown-content width-350">

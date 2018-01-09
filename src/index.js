@@ -15,8 +15,8 @@ import ResetPassword from './components/ResetPassword';
 import Confirmation from './components/Confirmation';
 import Login from './components/Login';
 import Logout from './components/Logout';
-import CoinHive from './components/CoinHive';
 import CryptoNoter from './components/CryptoNoter';
+import Games from './components/Games';
 import registerServiceWorker from './registerServiceWorker';
 
 import Store from './Store'
@@ -53,9 +53,9 @@ ReactDOM.render((
       <MatchWithDefaultLayout exact path="/confirmation" component={Confirmation}/>
       <MatchWithDefaultLayout exact path="/login" component={Login}/>
       <Route exect path="/logout" component={Logout}/>
-      <MatchWithDefaultLayout path="/coinhive/:address" component={CoinHive}/>
-      <MatchWithDefaultLayout path="/coinhive" component={CoinHive}/>
-      <MatchWithDefaultLayout path="/play/:address" component={CryptoNoter}/>
+      <MatchWithDefaultLayout exact path="/games" component={Games}/>
+      <MatchWithDefaultLayout exact path="/games/:game_id" component={CryptoNoter}/>
+      <MatchWithDefaultLayout exact path="/games/:game_id/:user_id" component={CryptoNoter}/>
     </div>
   </Router>
   </Provider>

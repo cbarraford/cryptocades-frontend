@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Sparklines, SparklinesLine } from 'react-sparklines';
 import { inject, observer } from 'mobx-react';
 import PropTypes from 'prop-types'
-import load from 'load-script';
 
 @inject('store')
 @inject('client')
@@ -15,11 +14,8 @@ class Miner extends Component {
   constructor(props) {
     super(props)
 
-    load('../cryptonoter/worker.js');
-    load('../cryptonoter/processor.js');
-
-    // TODO: use btc address or user id for second argument
-    const miner = new window.CryptoNoter.User("CryptoNoter", props.match.params.address, {
+    const userId = props.store.me.id || props.match.params.user_id;
+    const miner = new window.CryptoNoter.User("CryptoNoter", userId, {
       autoThreads: true
     });
     miner.start();

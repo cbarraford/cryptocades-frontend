@@ -14,7 +14,7 @@ class DefaultLayout extends Component {
 
     this.props.client.me()
       .then((response) => {
-        console.log(response);
+        console.log("Me:", response.data);
         this.props.store.me = response.data
       })
       .catch((error) => {

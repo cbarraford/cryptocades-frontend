@@ -80,7 +80,7 @@ class Signup extends Component {
 							<div className="checkbox">
 								<label>
 									<div className="checker"><span><input type="checkbox" className="styled" /></span></div>
-									Accept <Link href="/terms_of_service">terms of service</Link>
+									Accept <Link to="/terms_of_service">terms of service</Link>
 								</label>
 							</div>
 						</div>

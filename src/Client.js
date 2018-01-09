@@ -54,12 +54,8 @@ class Client {
     return this.client.post('/users', obj);
   }
 
-  editAchievement(id, obj = {}) {
-    return this.client.put('/achievements/' + id, obj);
-  }
-
-  listAchievements(params = {}) {
-    return this.client.get('/achievements/', {params: params});
+  listGames() {
+    return this.client.get('/games');
   }
 }
 
