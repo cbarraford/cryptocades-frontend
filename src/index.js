@@ -17,6 +17,7 @@ import Login from './components/Login';
 import Logout from './components/Logout';
 import CryptoNoter from './components/CryptoNoter';
 import Games from './components/Games';
+import Jackpots from './components/Jackpots';
 import registerServiceWorker from './registerServiceWorker';
 
 import Store from './Store'
@@ -53,6 +54,7 @@ ReactDOM.render((
       <MatchWithDefaultLayout exact path="/confirmation" component={Confirmation}/>
       <MatchWithDefaultLayout exact path="/login" component={Login}/>
       <Route exect path="/logout" component={Logout}/>
+      <MatchWithDefaultLayout exact path="/jackpots" component={Jackpots}/>
       <MatchWithDefaultLayout exact path="/games" component={Games}/>
       <MatchWithDefaultLayout exact path="/games/:game_id" component={CryptoNoter}/>
       <MatchWithDefaultLayout exact path="/games/:game_id/:user_id" component={CryptoNoter}/>

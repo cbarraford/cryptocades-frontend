@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router-dom'
+import Countdown from 'react-countdown-now';
 
 @inject('store')
 @inject('client')
@@ -29,13 +30,15 @@ class DefaultLayout extends Component {
     const { me } = this.props.store;
     const { jackpots } = this.state;
     var jackpot = 0;
+    var endtime = Date.now();
     if (jackpots.length > 0) {
       jackpot = jackpots[0].jackpot.toLocaleString();
+      endtime = Date.parse(jackpots[0].end_time);
     }
     console.log("ME:", me);
     console.log("Mined:", me.mined_hashes);
     const tickets = me.mined_hashes + me.bonus_hashes;
-
+    const showTicketCount = tickets > 0 ? "" : " hide"
     return (
 	<div className="navbar navbar-inverse">
 		<div className="navbar-header">
@@ -48,13 +51,13 @@ class DefaultLayout extends Component {
 
 		<div className="navbar-collapse collapse" id="navbar-mobile">
 
-			<p className="navbar-text"><span className="label bg-success-400">Jackpot ${jackpot}</span></p>
+			<p className="navbar-text"><span className="label bg-success-400">Jackpot ${jackpot} - <Countdown date={endtime} /></span></p>
 
 			<ul className="nav navbar-nav navbar-right">
 				<li>
           <Link to="/store">
 						<i className="fa fa-ticket"></i>
-						<span className="badge bg-warning-400">{tickets || 0}</span>
+						<span className={"badge bg-warning-400" + showTicketCount}>{tickets || 0}</span>
           </Link>
 				</li>
 				<li className="dropdown dropdown-user">
