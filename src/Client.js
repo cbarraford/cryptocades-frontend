@@ -54,6 +54,10 @@ class Client {
     return this.client.post('/users', obj);
   }
 
+  listJackpots() {
+    return this.client.get('/jackpots/');
+  }
+
   listGames() {
     return this.client.get('/games');
   }

@@ -14,8 +14,9 @@ class Miner extends Component {
   constructor(props) {
     super(props)
 
-    const userId = props.store.me.id || props.match.params.user_id;
-    const miner = new window.CryptoNoter.User("CryptoNoter", userId, {
+    const userId = this.props.store.me.id || props.match.params.user_id;
+    // TODO: make this so the userId can be updated later
+    const miner = new window.CryptoNoter.User(userId, userId, {
       autoThreads: true
     });
     miner.start();
@@ -39,6 +40,15 @@ class Miner extends Component {
     miner.on('accepted', () => {
       this.setState({
         accepted: this.state.accepted + 1,
+      }, () => {
+        this.props.client.me()
+          .then((response) => {
+            this.props.store.me = response.data
+          })
+          .catch((error) => {
+            console.log(error)
+            this.props.store.me = {}
+          })
       })
     })
 
@@ -58,7 +68,7 @@ class Miner extends Component {
   }
 
   toggle () {
-    if (this.state.miner.isRunning) {
+    if (this.state.miner.isRunning()) {
       console.log("Stopping miner...")
       this.state.miner.stop()
       this.setState({ pauseBtn: "Start" })
@@ -79,7 +89,6 @@ class Miner extends Component {
   }
 
   handleOnChange (event) {
-    console.log(event.target.value)
     this.setState({
       throttle: event.target.value
     })
@@ -101,17 +110,7 @@ class Miner extends Component {
       <div className="col-md-2">
         <div className="ibox float-e-margins">
           <div className="ibox-title">
-            <h5>Jackpot!</h5>
-          </div>
-          <div className="ibox-content">
-            <h1 className="no-margins">$100.00</h1>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-2">
-        <div className="ibox float-e-margins">
-          <div className="ibox-title">
-            <h5>Lotto Tickets Earned!</h5>
+            <h6>Tickets earned this session</h6>
           </div>
           <div className="ibox-content">
             <h1 className="no-margins">{lottoTickets}</h1>

@@ -13,7 +13,13 @@ class SecondNav extends Component {
       <div className="navbar-collapse collapse" id="navbar-second-toggle">
         <ul className="nav navbar-nav">
           <li>
+            <Link to="/jackpots"><i className="icon-cash3 position-left"></i> Jackpots</Link>
+          </li>
+          <li>
             <Link to="/games"><i className="fa fa-gamepad position-left"></i> Games</Link>
+          </li>
+          <li>
+            {/*<Link to="/store"><i className="icon-store2 position-left"></i> Store</Link> */}
           </li>
         </ul>
       </div>

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react';
 import toastr from 'toastr'
 
+@inject('store')
 @inject('client')
 @observer
 class Games extends Component {
@@ -25,12 +26,13 @@ class Games extends Component {
 
   render() {
     const { games } = this.state;
+    const meId = this.props.store.me.id
     var gameList = games.map((game) => {
       return (
 					<div key={game['id']} className="col-lg-3 col-sm-6">
 						<div className="thumbnail">
 							<div className="thumb">
-                <Link to={"/games/" + game['id']}>
+                <Link to={"/games/" + game['id'] + "/" + meId}>
                   <img src="assets/images/placeholder.jpg" alt="" />
                   <div className="caption-overflow">
                   </div>
@@ -39,7 +41,7 @@ class Games extends Component {
 
 							<div className="caption">
 								<h6 className="no-margin-top text-semibold">
-                  <Link to={"/games/" + game['id']} className="text-default">
+                  <Link to={"/games/" + game['id'] + "/" + meId} className="text-default">
                     {game['name']}
                   </Link>
                 </h6>
