@@ -23,7 +23,7 @@ class Jackpots extends Component {
     })
     .catch((error) => {
       console.log("Error getting games:", error)
-      toastr.error("Failed to reset password:", error)
+      toastr.error("Failed to get jackpot list:", error)
     })
   }
 
