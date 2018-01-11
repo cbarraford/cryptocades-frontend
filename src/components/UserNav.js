@@ -175,7 +175,7 @@ class UserNav extends Component {
 
         <hr />
 
-        <p>My entires: {my_entries}</p>
+        <p>My entries: {my_entries}</p>
         <p>Odds: {o.format('fractional')}</p>
 
         <form onSubmit={this.handleSubmit}>
