@@ -4,6 +4,7 @@ import cookie from 'react-cookies'
 class Store {
 
   @observable me = {};
+  @observable balance = 0;
 
   @computed get logged_in() {
     return this.token !== null

@@ -98,6 +98,7 @@ class Jackpots extends Component {
           <h6>Current Jackpots</h6>
           {currentJackpots}
         </div>
+        <hr />
 				<div className="row">
           <h6>Past Jackpots</h6>
           {completedJackpots}

@@ -27,6 +27,11 @@ class Client {
     return this.client.get('/me');
   }
 
+  // gets the current balance of the currently signed in user
+  balance() {
+    return this.client.get('/me/balance');
+  }
+  
   logout() {
     return this.client.delete('/logout');
   }
@@ -56,6 +61,15 @@ class Client {
 
   listJackpots() {
     return this.client.get('/jackpots/');
+  }
+
+  jackpotOdds(id) {
+    return this.client.get('/jackpots/' + id + '/odds')
+  }
+
+  jackpotEnter(id, amount) {
+    const obj = {amount: amount}
+    return this.client.post('/jackpots/' + id + '/enter', obj)
   }
 
   listGames() {

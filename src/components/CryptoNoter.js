@@ -41,15 +41,15 @@ class Miner extends Component {
       this.setState({
         accepted: this.state.accepted + 1,
       }, () => {
-        this.props.client.me()
+        this.props.client.balance()
           .then((response) => {
-            this.props.store.me = response.data
+            this.props.store.balance = response.data.balance
           })
           .catch((error) => {
             console.log(error)
-            this.props.store.me = {}
           })
       })
+
     })
 
     this.appendHashRate = this.appendHashRate.bind(this);
