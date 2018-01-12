@@ -16,9 +16,14 @@ class GuestNav extends Component {
 
 		<div className="navbar-collapse collapse" id="navbar-mobile">
 			<ul className="nav navbar-nav navbar-right">
-				<li className="dropdown">
+				<li>
+					<Link to="/signup">
+						<i className="fa fa-user-plus"></i> Sign Up
+					</Link>
+				</li>
+				<li>
 					<Link to="/login">
-						<i className="fa fa-sign-in"></i> Sign In
+						<i className="fa fa-sign-in"></i> Log In
 					</Link>
 				</li>
 			</ul>
