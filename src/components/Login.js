@@ -65,7 +65,7 @@ class Login extends Component {
 				<form onSubmit={this.handleSubmit} >
 					<div className="panel panel-body login-form col-md-4 col-md-offset-4">
 						<div className="text-center">
-							<div className="icon-object border-slate-300 text-slate-300"><i className="icon-reading"></i></div>
+							<div className="icon-object border-slate-300 text-slate-300"><i className="icon-user"></i></div>
 							<h5 className="content-group">Login to your account <small className="display-block">Enter your credentials below</small></h5>
 						</div>
 

@@ -17,7 +17,7 @@ class GuestNav extends Component {
 		<div className="navbar-collapse collapse" id="navbar-mobile">
 			<ul className="nav navbar-nav navbar-right">
 				<li className="dropdown">
-					<Link to="/login" className="dropdown-toggle" data-toggle="dropdown">
+					<Link to="/login">
 						<i className="fa fa-sign-in"></i> Sign In
 					</Link>
 				</li>

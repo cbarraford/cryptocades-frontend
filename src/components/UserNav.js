@@ -155,7 +155,6 @@ class UserNav extends Component {
 						<li><Link to="/profile"><i className="icon-user-plus"></i> My profile</Link></li>
 						<li><Link to="/balance"><i className="icon-coins"></i> My balance</Link></li>
 						<li className="divider"></li>
-						<li><Link to="/settings"><i className="icon-cog5"></i> Account settings</Link></li>
 						<li><Link to="/logout"><i className="icon-switch2"></i> Logout</Link></li>
 					</ul>
 				</li>
