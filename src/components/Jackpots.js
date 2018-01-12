@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react';
 import Countdown from 'react-countdown-now';
 import toastr from 'toastr'
-
 import dateFormat from 'dateformat'
 
 @inject('store')

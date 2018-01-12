@@ -32,6 +32,10 @@ class Client {
     return this.client.get('/me/balance');
   }
   
+  myentries() {
+    return this.client.get('/me/entries');
+  }
+
   logout() {
     return this.client.delete('/logout');
   }
