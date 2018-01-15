@@ -5,6 +5,7 @@ const noopServiceWorkerMiddleware = require('react-dev-utils/noopServiceWorkerMi
 const path = require('path');
 const config = require('./webpack.config.dev');
 const paths = require('./paths');
+const auth = require('basic-auth');
 
 const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
 const host = process.env.HOST || '0.0.0.0';
@@ -85,6 +86,23 @@ module.exports = function(proxy, allowedHost) {
       disableDotRule: true,
     },
     public: allowedHost,
+    setup: function(app) {
+      app.all('*', function (req, res, next) {
+        if (process.env.AUTH_USER && process.env.AUTH_PASSWORD) {
+          var credentials = auth(req)
+
+          if (!credentials || credentials.name !== process.env.AUTH_USER || credentials.pass !== process.env.AUTH_PASSWORD) {
+            res.statusCode = 401
+            res.setHeader('WWW-Authenticate', 'Basic realm="Prototype Access"')
+            res.end('Access denied')
+          } else {
+            next()
+          }
+        } else {
+          next()
+        }
+      })
+    },
     proxy,
     before(app) {
       // This lets us open files from the runtime error overlay.
