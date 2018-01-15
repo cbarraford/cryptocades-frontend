@@ -2,7 +2,6 @@ import axios from 'axios';
 
 class Client {
   constructor() {
-    console.log("NODE_ENV:", process.env.NODE_ENV)
     let baseURL = '';
     if (process.env.NODE_ENV === 'staging') {
       // TODO: remove staging address from client side code

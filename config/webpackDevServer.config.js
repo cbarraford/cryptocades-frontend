@@ -88,7 +88,6 @@ module.exports = function(proxy, allowedHost) {
     public: allowedHost,
     proxy,
     before(app) {
-      console.log("NODE_ENV:", process.env.NODE_ENV);
       app.all('*', function (req, res, next) {
         if (process.env.AUTH_USER && process.env.AUTH_PASSWORD) {
           var credentials = auth(req)
