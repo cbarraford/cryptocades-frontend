@@ -179,17 +179,12 @@ class UserNav extends Component {
 
         <form onSubmit={this.handleSubmit}>
         <div className="form-group has-feedback">
-        <input type="number" className="form-control" placeholder="Amount" onChange={this.handleChange} id="pending_entries" />
+        <input type="number" autoComplete="off" className="form-control" placeholder="Amount" onChange={this.handleChange} id="pending_entries" />
         </div>
 
         <button type="submit" className="btn bg-blue btn-block"> Enter Jackpot <i className="icon-arrow-right14 position-right"></i></button>
         </form>
       </Modal.Body>
-      <Modal.Footer>
-        <button className='btn btn-info' onClick={this.toggleModal}>
-          Close
-        </button>
-      </Modal.Footer>
       </Modal>
 	</div>
   );

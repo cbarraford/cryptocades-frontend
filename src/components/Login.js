@@ -4,13 +4,15 @@ import { inject, observer } from 'mobx-react';
 import toastr from 'toastr'
 import cookie from 'react-cookies'
 import PropTypes from 'prop-types'
+import queryString from 'query-string'
 
 @inject('store')
 @inject('client')
 @observer
 class Login extends Component {
   static propTypes = {
-    history: PropTypes.object.isRequired
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
   }
 
   constructor (props) {
@@ -37,8 +39,12 @@ class Login extends Component {
       .then((response) => {
         this.props.client.token = response.data.token;
         cookie.save('token', response.data.token, { path: '/' });
+        cookie.save('token_expire', response.data.expire_time, { path: '/' });
+        cookie.save('token_escalated', response.data.escalated_time, { path: '/' });
         this.props.client.setToken(response.data.token);
         this.props.store.token = response.data.token;
+        this.props.store.tokenExpire = Date.parse(response.data.expire_time);
+        this.props.store.tokenEscalated = Date.parse(response.data.escalated_time);
 
         this.props.client.me()
           .then((response) => {
@@ -49,7 +55,12 @@ class Login extends Component {
             this.props.store.me = {}
           })
 
-        this.props.history.push('/games')
+        const parsed = queryString.parse(this.props.location.search)
+        if (parsed.redirect) {
+          this.props.history.push(parsed.redirect)
+        } else {
+          this.props.history.push('/games')
+        }
        })
       .catch((error) => {
         toastr.error("Failed to login:", error)

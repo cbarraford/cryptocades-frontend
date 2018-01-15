@@ -27,6 +27,14 @@ class Client {
     return this.client.get('/me');
   }
 
+  updateMe(obj) {
+    return this.client.put('/me', obj)
+  }
+
+  updateEmail(obj) {
+    return this.client.put('/me/email', obj)
+  }
+
   // gets the current balance of the currently signed in user
   balance() {
     return this.client.get('/me/balance');

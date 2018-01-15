@@ -11,6 +11,13 @@ class Store {
   }
 
   @observable token = cookie.load('token') || null;
+  @observable tokenEscalated = Date.parse(cookie.load('token_escalated')) || Date.now();
+  @observable tokenExpire = Date.parse(cookie.load('token_expire')) || Date.now();
+
+  // compute if we have escalated privileges 
+  @computed get hasEscalation() {
+    return this.tokenEscalated >= Date.now()
+  }
 }
 
 // we set the store to window.store so we have access to the store in the

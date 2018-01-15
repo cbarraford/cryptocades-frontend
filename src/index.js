@@ -19,6 +19,7 @@ import CryptoNoter from './components/CryptoNoter';
 import Games from './components/Games';
 import Jackpots from './components/Jackpots';
 import Entries from './components/Entries';
+import Profile from './components/Profile';
 import registerServiceWorker from './registerServiceWorker';
 
 import Store from './Store'
@@ -60,6 +61,7 @@ ReactDOM.render((
       <MatchWithDefaultLayout exact path="/games/:game_id" component={CryptoNoter}/>
       <MatchWithDefaultLayout exact path="/games/:game_id/:user_id" component={CryptoNoter}/>
       <MatchWithDefaultLayout exact path="/entries" component={Entries}/>
+      <MatchWithDefaultLayout exact path="/profile" component={Profile}/>
     </div>
   </Router>
   </Provider>

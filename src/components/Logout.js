@@ -34,6 +34,8 @@ export default class AuthCallback extends React.Component {
         .then((response) => {
           console.log("Token revoked")
           cookie.remove('token', { path: '/' })
+          cookie.remove('token_expire', { path: '/' });
+          cookie.remove('token_escalated', { path: '/' });
           this.props.store.me = {};
           this.props.store.token = null;
           this.setState({
@@ -47,6 +49,8 @@ export default class AuthCallback extends React.Component {
           this.props.store.me = {};
           this.props.store.token = null;
           cookie.remove('token', { path: '/' })
+          cookie.remove('token_expire', { path: '/' });
+          cookie.remove('token_escalated', { path: '/' });
           history.push('/')
         });
     }
