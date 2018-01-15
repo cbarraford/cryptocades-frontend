@@ -86,7 +86,9 @@ module.exports = function(proxy, allowedHost) {
       disableDotRule: true,
     },
     public: allowedHost,
-    setup: function(app) {
+    proxy,
+    before(app) {
+      console.log("NODE_ENV:", process.env.NODE_ENV);
       app.all('*', function (req, res, next) {
         if (process.env.AUTH_USER && process.env.AUTH_PASSWORD) {
           var credentials = auth(req)
@@ -101,10 +103,7 @@ module.exports = function(proxy, allowedHost) {
         } else {
           next()
         }
-      })
-    },
-    proxy,
-    before(app) {
+      });
       // This lets us open files from the runtime error overlay.
       app.use(errorOverlayMiddleware());
       // This service worker file is effectively a 'no-op' that will reset any
