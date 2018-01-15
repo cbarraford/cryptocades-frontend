@@ -40,7 +40,6 @@
         "raf": "3.4.0",
         "react": "^16.2.0",
         "react-bootstrap": "^0.32.0",
-        "react-coinhive": "^1.0.2",
         "react-cookies": "^0.1.0",
         "react-countdown-now": "^1.2.0",
         "react-dev-utils": "^4.2.1",
