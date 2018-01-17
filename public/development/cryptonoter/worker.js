@@ -5393,10 +5393,11 @@ var CryptonightWASMWrapper = (function () {
     var heap = Module.HEAPU8.buffer;
     this.input = new Uint8Array(heap, Module._malloc(84), 84);
     this.output = new Uint8Array(heap, Module._malloc(32), 32);
-    self.postMessage("ready");
+    self.postMessage("ready", "*");
     self.onmessage = this.onMessage.bind(this)
 });
 CryptonightWASMWrapper.prototype.onMessage = (function (msg) {
+    console.log("onMessage Job:", msg.data);
     var job = msg.data;
     if (job.verify_id) {
         this.verify(job);

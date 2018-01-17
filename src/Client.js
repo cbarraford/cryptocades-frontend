@@ -5,7 +5,7 @@ class Client {
     let baseURL = '';
     if (process.env.NODE_ENV === 'staging') {
       // TODO: remove staging address from client side code
-      baseURL = 'https://lotto-staging.herokuapp.com';
+      baseURL = 'https://staging-api.cryptokade.com';
     } else {
       baseURL = 'http://localhost:8080';
     }
