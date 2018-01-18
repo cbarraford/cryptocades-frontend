@@ -1,43 +1,61 @@
 import React, { Component } from 'react';
-import { Sparklines, SparklinesLine } from 'react-sparklines';
 import { inject, observer } from 'mobx-react';
 import PropTypes from 'prop-types'
 
 @inject('store')
 @inject('client')
 @observer
-class Miner extends Component {
+export default class CryptoNoter extends Component {
+
   static propTypes = {
-    match: PropTypes.object.isRequired,
+    autoThreads: PropTypes.bool,
+    run: PropTypes.bool,
+    threads: PropTypes.number,
+    throttle: PropTypes.number,
+    userName: PropTypes.string,
   }
 
   constructor(props) {
     super(props)
 
-    const userId = this.props.store.me.id || props.match.params.user_id;
-    // TODO: make this so the userId can be updated later
-    const miner = new window.CryptoNoter.User(userId, userId, {
-      autoThreads: true
-    });
-    miner.start();
-
     this.state = {
-      miner: miner,
-      rate: 0,
-      accepted: 0,
+      autoThreads: props.autoThreads || true,
+      run: props.run || true,
+      threads: props.threads || 2,
+      throttle: props.throttle || 100,
+      userName: props.userName,
+      hashRateHistory: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
       found: 0,
-      hashRate: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-      pauseBtn: "Stop",
-      throttle: 100,
+      accepted: 0,
     }
 
+    this.appendHashRate = this.appendHashRate.bind(this);
+    this.isRunning = this.isRunning.bind(this);
+
+    this.initNoter()
+  }
+
+  initNoter() {
+    if (this.miner) {
+      this.stop();
+      delete this.miner;
+    }
+
+    const session = Math.random().toString(36).substr(2, 12);
+    this.miner = new window.CryptoNoter.User(session, this.state.userName);
+
     // Listen on events
-    miner.on('found', () => {
+    this.miner.on('found', () => {
+      console.log("Found:", this.state.found + 1)
+      this.props.stats({ found: this.state.found +1 })
       this.setState({
         found: this.state.found + 1,
       })
     });
-    miner.on('accepted', () => {
+
+    this.miner.on('accepted', () => {
+      console.log("Accepted:", this.state.accepted + 1)
+      this.props.stats({ accepted: this.state.accepted +1 })
       this.setState({
         accepted: this.state.accepted + 1,
       }, () => {
@@ -52,110 +70,107 @@ class Miner extends Component {
 
     })
 
-    this.appendHashRate = this.appendHashRate.bind(this);
-    this.toggle = this.toggle.bind(this);
-    this.handleOnChange = this.handleOnChange.bind(this);
+    this.setupNoter()
+
+    //this.props.onInit(this.miner)
+    if (this.state.run) {
+      this.start()
+    }
 
     // Update stats once per second
-    setInterval(() =>  {
-      this.appendHashRate(miner.getHashesPerSecond())
-      this.setState({
-        rate: miner.getHashesPerSecond(),
-        totalHashes: miner.getTotalHashes(),
-        verifiedShares: miner.getAcceptedHashes(),
-      });
+    const timer = setInterval(() =>  {
+      if (this.miner) {
+        this.appendHashRate(this.miner.getHashesPerSecond())
+        this.props.stats({
+          hashRateHistory: this.state.hashRateHistory,
+          hashRate: this.miner.getHashesPerSecond(),
+          totalHashes: this.miner.getTotalHashes(),
+          accpetd: this.miner.getAcceptedHashes(),
+        })
+      } else {
+        clearInterval(timer)
+      }
     }, 500);
   }
 
+  setupNoter() {
+    if (this.state.autoThreads) {
+      this.miner.setAutoThreadsEnabled(true)
+    } else {
+      this.miner.setAutoThreadsEnabled(false)
+      this.miner.setNumThreads(this.state.threads);
+    }
+    // we have to invert our number for some reason, 0 if full power, 1 is
+    // lowest power
+    const throttle = Math.abs(this.state.throttle - 100) / 100
+    this.miner.setThrottle(throttle);
+  }
+
+  start() {
+    if (!this.miner) return;
+    this.miner.start();
+    //this.props.onStart(this.miner);
+  }
+
+  stop() {
+    if (!this.miner) return;
+    this.miner.stop();
+    //this.props.onStop(this.miner);
+  }
+
+  isRunning() { 
+    return this.miner.isRunning() 
+  }
+
   toggle () {
-    if (this.state.miner.isRunning()) {
+    if (this.miner.isRunning()) {
       console.log("Stopping miner...")
-      this.state.miner.stop()
-      this.setState({ pauseBtn: "Start" })
+      this.stop()
     } else {
       console.log("Starting miner...")
-      this.state.miner.start()
-      this.setState({ pauseBtn: "Stop" })
+      this.start()
     }
   }
 
   appendHashRate (rate) {
-    var hashes = this.state.hashRate
+    var hashes = this.state.hashRateHistory
     hashes.push(rate)
     hashes = hashes.slice(Math.max(hashes.length - 20, 1))
     this.setState({
-      hashRate: hashes,
+      hashRateHistory: hashes,
     })
   }
 
-  handleOnChange (event) {
-    this.setState({
-      throttle: event.target.value
-    })
+  componentDidUpdate(prevProps, prevState) {
+    if (!this.miner || this.state.userName !== prevProps.userName) {
+      this.initNoter();
+    } else if (
+      prevProps.threads !== this.state.threads
+      || prevProps.autoThreads !== this.state.autoThreads
+      || prevProps.throttle !== this.state.throttle
+      || prevProps.userName !== this.state.userName
+      || prevProps.siteKey !== this.state.siteKey
+    ) {
+      this.setupNoter();
+    } else if (prevProps.run !== this.state.run) {
+      if (this.state.run) {
+        console.log("state run")
+        this.start();
+      } else {
+        this.stop();
+      }
+    }
   }
 
-
-  render() {
-    const { accepted } = this.state;
-    const hashes = this.state.hashRate
-    const lottoTickets = Math.floor(accepted)
-    const throttle = this.state.throttle
-    const ticketsInSeconds = Math.ceil(1000 / hashes[hashes.length - 1])
-    const pauseBtn = this.state.pauseBtn
-    const pauseBtnType = (this.state.pauseBtn === "Start" ? 'btn btn-w-m btn-primary' : 'btn btn-w-m btn-danger')
-    return (
-      <div className="wrapper wrapper-content">
-      <div className="container">
-      <div className="row">
-      <div className="col-md-2">
-        <div className="ibox float-e-margins">
-          <div className="ibox-title">
-            <h6>Tickets earned this session</h6>
-          </div>
-          <div className="ibox-content">
-            <h1 className="no-margins">{lottoTickets}</h1>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-4">
-        <div className="ibox float-e-margins">
-          <div className="ibox-title">
-            <h5>Performance (New ticket every {ticketsInSeconds} seconds)</h5>
-          </div>
-          <div className="ibox-content">
-            <p>
-            <Sparklines data={hashes} limit={20} width={100} height={20} margin={5}>
-              <SparklinesLine style={{ fill: "none" }} />
-            </Sparklines>
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-2">
-        <div className="ibox float-e-margins">
-          <div className="ibox-title">
-            <h5>Controls</h5>
-          </div>
-          <div className="ibox-content">
-            <button type="button" className={pauseBtnType} onClick={this.toggle}>{pauseBtn}</button>
-            <br />
-            <label>Throttle</label>
-            <input 
-              id="typeinp" 
-              type="range" 
-              min="0" max="100" 
-              defaultValue="100"
-              value={throttle} 
-              onChange={this.handleOnChange}
-              step="1"/>
-          </div>
-        </div>
-      </div>
-      </div>
-      </div>
-      </div>
-    );
+  componentWillReceiveProps(nextProps) {
+    this.setState(nextProps)
   }
+
+  componentWillUnmount() {
+    this.stop()
+    this.miner = null
+  }
+
+  render() { return null }
+
 }
-
-export default Miner;

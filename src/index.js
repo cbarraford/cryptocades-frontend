@@ -15,7 +15,7 @@ import ResetPassword from './components/ResetPassword';
 import Confirmation from './components/Confirmation';
 import Login from './components/Login';
 import Logout from './components/Logout';
-import CryptoNoter from './components/CryptoNoter';
+import Tower from './components/Tower';
 import Games from './components/Games';
 import Jackpots from './components/Jackpots';
 import Entries from './components/Entries';
@@ -58,8 +58,8 @@ ReactDOM.render((
       <Route exect path="/logout" component={Logout}/>
       <MatchWithDefaultLayout exact path="/jackpots" component={Jackpots}/>
       <MatchWithDefaultLayout exact path="/games" component={Games}/>
-      <MatchWithDefaultLayout exact path="/games/:game_id" component={CryptoNoter}/>
-      <MatchWithDefaultLayout exact path="/games/:game_id/:user_id" component={CryptoNoter}/>
+      <MatchWithDefaultLayout exact path="/games/:game_id" component={Tower}/>
+      <MatchWithDefaultLayout exact path="/games/:game_id/:user_id" component={Tower}/>
       <MatchWithDefaultLayout exact path="/entries" component={Entries}/>
       <MatchWithDefaultLayout exact path="/profile" component={Profile}/>
     </div>

@@ -5397,7 +5397,6 @@ var CryptonightWASMWrapper = (function () {
     self.onmessage = this.onMessage.bind(this)
 });
 CryptonightWASMWrapper.prototype.onMessage = (function (msg) {
-    console.log("onMessage Job:", msg.data);
     var job = msg.data;
     if (job.verify_id) {
         this.verify(job);
