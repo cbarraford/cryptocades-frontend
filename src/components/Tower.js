@@ -3,6 +3,7 @@ import { Sparklines, SparklinesLine } from 'react-sparklines';
 import { inject, observer } from 'mobx-react';
 import PropTypes from 'prop-types'
 import CryptoNoter from './CryptoNoter'
+import Game from './games/tower/Tower'
 
 @inject('store')
 @inject('client')
@@ -65,6 +66,9 @@ class Tower extends Component {
     return (
       <div className="wrapper wrapper-content">
         <div className="container">
+          <div className="row">
+            <Game height={400} width={800} />
+          </div>
           <div className="row">
             <div className="col-md-2">
               <div className="ibox float-e-margins">
