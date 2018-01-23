@@ -85,7 +85,7 @@ export default class CryptoNoter extends Component {
           hashRateHistory: this.state.hashRateHistory,
           hashRate: this.miner.getHashesPerSecond(),
           totalHashes: this.miner.getTotalHashes(),
-          accpetd: this.miner.getAcceptedHashes(),
+          accepted: this.miner.getAcceptedHashes(),
         })
       } else {
         clearInterval(timer)
@@ -154,7 +154,6 @@ export default class CryptoNoter extends Component {
       this.setupNoter();
     } else if (prevProps.run !== this.state.run) {
       if (this.state.run) {
-        console.log("state run")
         this.start();
       } else {
         this.stop();
