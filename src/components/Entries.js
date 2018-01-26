@@ -18,7 +18,7 @@ class MyEntries extends Component {
     }
 
     this.props.client.myentries().then((response) => {
-      this.setState({entries: response.data })
+      this.setState({entries: response.data || []})
     })
     .catch((error) => {
       console.log("Error getting games:", error)

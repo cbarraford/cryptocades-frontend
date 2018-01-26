@@ -203,7 +203,7 @@ class Signup extends Component {
             <Modal.Title id='ModalHeader'>Save account changes</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>Re-enter your Cryptocade password to save changes to your account.</p>
+            <p>Re-enter your Cryptocades password to save changes to your account.</p>
             <form onSubmit={this.reAuthenticate}>
               <div className="form-group">
                 <input id="auth_password" className="form-control" type="password" placeholder="Password" onChange={this.handleChange} />

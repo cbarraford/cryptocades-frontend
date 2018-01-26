@@ -5,7 +5,7 @@ class Client {
     let baseURL = '';
     if (process.env.NODE_ENV === 'staging') {
       // TODO: remove staging address from client side code
-      baseURL = 'https://staging-api.cryptokade.com';
+      baseURL = 'https://staging-api.cryptocades.com';
     } else {
       baseURL = 'http://localhost:8080';
     }

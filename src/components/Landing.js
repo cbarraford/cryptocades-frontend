@@ -125,7 +125,7 @@ class Landing extends Component {
             <div className="col-lg-12 text-center">
                 <div className="navy-line"></div>
                 <h1>How it works?</h1>
-                <p>An overview of how Bitto works</p>
+                <p>An overview of how Cryptocades works</p>
             </div>
         </div>
         <div className="row">

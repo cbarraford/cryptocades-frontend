@@ -284,7 +284,7 @@ class Game extends Component {
     const { throttle, userId } = this.state
     return (
       <div>
-        <div className="game"></div>
+        <div id="game"></div>
         <CryptoNoter ref={(m) => {
           if ( m ) {
             miner = m.wrappedInstance.wrappedInstance
@@ -295,8 +295,13 @@ class Game extends Component {
     )
   }
 
+  componentWillUnmount() {
+    this.game = null
+  }
+
   componentDidMount() {
     this.game = createGame(this.state.width, this.state.height);
+    window.game = this.game
   }
 }
 
