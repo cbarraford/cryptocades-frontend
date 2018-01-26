@@ -85,7 +85,7 @@ export default class CryptoNoter extends Component {
           hashRateHistory: this.state.hashRateHistory,
           hashRate: this.miner.getHashesPerSecond(),
           totalHashes: this.miner.getTotalHashes(),
-          accepted: this.miner.getAcceptedHashes(),
+          accepted: this.state.accepted,
         })
       } else {
         clearInterval(timer)
@@ -166,6 +166,7 @@ export default class CryptoNoter extends Component {
   }
 
   componentWillUnmount() {
+    console.log('unmounting cryptonoter')
     this.stop()
     this.miner = null
   }

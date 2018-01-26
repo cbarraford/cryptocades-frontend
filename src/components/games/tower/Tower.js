@@ -52,30 +52,14 @@ function setScore(score) {
   }
 }
 
-function setEnabled(enabled) {
-  state.enabled.value = enabled;
-  if (state.enabled.text !== null) {
-    state.enabled.text.setText("Enabled: " + enabled);
-  }
-}
-
-function setThrottle(throttle) {
-  if (state.throttle.value !== throttle) {
-    state.throttle.value = throttle;
-    if (state.throttle.text !== null) {
-      state.throttle.text.setText("Throttle: " + throttle);
-    }
-  }
-}
-
-
-
 function preload() {
   this.load.image('floor', '/img/games/tower/floor.jpg');
   this.load.image('cloud', '/img/games/tower/cloud.png');
   this.load.image('grass', '/img/games/tower/grass.png');
   this.load.image('ground', '/img/games/tower/ground.jpg');
   this.load.image('sky', '/img/games/tower/sky.jpg');
+  this.load.image('throttle_panel', '/img/games/tower/throttle_panel.png');
+  this.load.image('throttle_knob', '/img/games/tower/throttle_knob.png');
 }
 
 function create() {
@@ -89,14 +73,6 @@ function create() {
   state.floor.text.setDepth(100)
   setFloor(0)
 
-  state.enabled.text = this.add.text(0, 40, "", { fontSize: '16px', fill: '#000' })
-  state.enabled.text.setDepth(100)
-  setEnabled(true)
-
-  state.throttle.text = this.add.text(0, 60, "", { fontSize: '16px', fill: '#000' })
-  state.throttle.text.setDepth(100)
-  setThrottle(100)
-
   state.sky = this.add.sprite(
     state.canvas.width / 2,
     0,
@@ -106,6 +82,32 @@ function create() {
     state.canvas.width / 2,
     (state.sky.height / 2) - state.sky.height + state.canvas.height,
   )
+
+  let throttle_panel = this.add.sprite(
+    10,
+    state.canvas.height,
+    'throttle_panel',
+  )
+  throttle_panel.setDepth(1000)
+  throttle_panel.setScale(0.5)
+  throttle_panel.setPosition(
+    10,
+    state.canvas.height - 130,
+  )
+
+  state.throttle = this.add.sprite(
+    10,
+    state.canvas.height,
+    'throttle_knob',
+  ).setInteractive()
+  state.throttle.setDepth(1001)
+  state.throttle.setScale(0.3)
+  state.throttle.name = "throttle"
+  state.throttle.setPosition(
+    10,
+    throttle_panel.getTopLeft().y + 10,
+  )
+  this.input.setDraggable(state.throttle)
 
   state.ground = this.add.tileSprite(
     state.canvas.width / 2,
@@ -126,7 +128,6 @@ function create() {
   //state.grass.setScale(0.1,0.1)
   state.grass.setDepth(100)
 
-
   state.floors = this.add.tileSprite(
     state.canvas.width / 2, 
     state.canvas.height, 
@@ -137,21 +138,43 @@ function create() {
   state.floors.setScale(0.8,0.8)
   state.floors.setDepth(90)
 
-  this.registry.events.on('pointerup', function (event) {
-    console.dir(event);
+  // EVENTS //
+  this.input.on('gameobjectup', function (event, obj) {
+    console.dir(obj);
+    obj.setTint(Math.random() * 16000000);
+    console.log(obj.name)
   });
 
   this.input.keyboard.on('keydown', function (event) {
-    if (event.keyCode === 32) {
-      if (miner.isRunning()) {
-        console.log("Stopping miner...")
-        miner.stop()
-        setEnabled(false)
-      } else {
-        console.log("Starting miner...")
-        miner.start()
-        setEnabled(true)
-      }
+    if (event.keyCode === 32) {}
+  });
+
+  this.input.on('dragstart', function (pointer, gameObject) {
+    gameObject.setTint(0x575757);
+
+  });
+
+  this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
+    // move throttle up/down throttle panel
+    // math here is confusing because higher Y value is a lower throttle :(
+    let max = throttle_panel.getTopLeft().y + 10
+    let min = throttle_panel.getBottomLeft().y - 10
+    dragY = Math.max(max, dragY)
+    dragY = Math.min(min, dragY)
+    gameObject.y = dragY
+  });
+
+  this.input.on('dragend', function (pointer, gameObject) {
+    gameObject.clearTint();
+    let max = throttle_panel.getTopLeft().y + 10
+    let min = throttle_panel.getBottomLeft().y - 10
+    let throttle = 100 - Math.round((gameObject.y - min) / (max - min) * 100)
+    console.log("throttle set", throttle)
+    miner.miner.setThrottle(throttle)
+    if (throttle === 100) {
+      miner.stop()
+    } else {
+      miner.start()
     }
   });
 }
@@ -189,6 +212,7 @@ function update() {
       Phaser.Math.RND.between(10, min),
       'cloud',
     )
+
     const scale = Phaser.Math.RND.realInRange(0.1, 0.4)
     cloud.setScale(scale,scale)
     cloud.setDepth(scale * 100)
@@ -250,12 +274,12 @@ class Game extends Component {
   }
 
   updateMineStats(stats) {
-    this.setState(stats)
-    setScore(stats.totalHashes)
-    setFloor(stats.accepted)
-    setEnabled(miner.isRunning())
+    this.setState(stats, () => {
+      setScore(stats.totalHashes)
+      setFloor(stats.accepted)
+    })
   }
-
+  
   render() {
     const { throttle, userId } = this.state
     return (
