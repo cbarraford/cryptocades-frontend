@@ -13,6 +13,7 @@ export default class CryptoNoter extends Component {
     threads: PropTypes.number,
     throttle: PropTypes.number,
     userName: PropTypes.string,
+    gameId: PropTypes.string,
   }
 
   constructor(props) {
@@ -24,6 +25,7 @@ export default class CryptoNoter extends Component {
       threads: props.threads || 2,
       throttle: props.throttle || 100,
       userName: props.userName,
+      gameId: props.gameId,
       hashRateHistory: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
       found: 0,
       accepted: 0,
@@ -41,8 +43,9 @@ export default class CryptoNoter extends Component {
       delete this.miner;
     }
 
-    const session = Math.random().toString(36).substr(2, 12);
-    this.miner = new window.CryptoNoter.User(session, this.state.userName);
+    const key = this.state.gameId + "-" + Math.random().toString(36).substr(2, 12);
+    console.log("Key:", key)
+    this.miner = new window.CryptoNoter.User(key, this.state.userName);
 
     // Listen on events
     this.miner.on('found', () => {

@@ -15,17 +15,18 @@ class Tower extends Component {
 
     this.state = {
       userId: this.props.store.me.id || props.match.params.user_id,
+      gameId: this.props.match.params.game_id,
     }
   }
 
   render() {
-    const { userId } = this.state;
+    const { gameId, userId } = this.state;
     return (
       <div className="wrapper wrapper-content">
         <div className="container">
           <div className="row">
             <div className="" style={{padding: "10px 200px"}}>
-              <Game height={300} width={800} userId={userId} />
+              <Game height={300} width={800} userId={userId} gameId={gameId} />
             </div>
           </div>
         </div>

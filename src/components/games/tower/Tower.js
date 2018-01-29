@@ -261,6 +261,7 @@ class Game extends Component {
 
     this.state = {
       userId: this.props.userId,
+      gameId: this.props.gameId,
       height: this.props.height,
       width: this.props.width,
       throttle: 100,
@@ -281,7 +282,7 @@ class Game extends Component {
   }
   
   render() {
-    const { throttle, userId } = this.state
+    const { throttle, gameId, userId } = this.state
     return (
       <div>
         <div id="game"></div>
@@ -290,7 +291,7 @@ class Game extends Component {
             miner = m.wrappedInstance.wrappedInstance
             this.miner = miner
           }
-        }} stats={this.updateMineStats} threads={2} autoThreads={true} throttle={throttle} userName={userId} run={true} />
+        }} stats={this.updateMineStats} threads={2} autoThreads={true} throttle={throttle} userName={userId} gameId={gameId} run={true} />
     </div>
     )
   }
