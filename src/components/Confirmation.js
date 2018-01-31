@@ -29,8 +29,7 @@ class Confirmation extends Component {
           this.props.history.push('/login')
         })
         .catch((error) => {
-          toastr.error("Failed to confirm new user:", error)
-          console.log(error)
+          toastr.error(error.response.data.message, "Failed to confirm new user")
         })
     }
   }

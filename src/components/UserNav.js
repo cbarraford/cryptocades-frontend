@@ -67,8 +67,7 @@ class UserNav extends Component {
             })
         })
         .catch((error) => {
-          toastr.error("Failed to enter into jackpot: " + error)
-          console.log(error)
+          toastr.error(error.response.data.message, "Failed to enter into jackpot")
         })
     }
   }

@@ -21,16 +21,14 @@ class MyEntries extends Component {
       this.setState({entries: response.data || []})
     })
     .catch((error) => {
-      console.log("Error getting games:", error)
-      toastr.error("Failed to get entries:", error)
+      toastr.error(error.response.data.message, "Failed to get entries")
     })
 
     this.props.client.listJackpots().then((response) => {
       this.setState({jackpots: response.data })
     })
     .catch((error) => {
-      console.log("Error getting games:", error)
-      toastr.error("Failed to get jackpot list:", error)
+      toastr.error(error.response.data.message, "Failed to get list of jackpots")
     })
   }
 

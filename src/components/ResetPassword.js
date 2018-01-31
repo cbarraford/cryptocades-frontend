@@ -38,8 +38,7 @@ class ResetPassword extends Component {
         this.props.history.push('/login')
       })
       .catch((error) => {
-        toastr.error("Failed to reset password:", error)
-        console.log(error)
+        toastr.error(error.response.data.message, "Failed to reset password")
       })
   }
 

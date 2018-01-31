@@ -21,8 +21,7 @@ class Jackpots extends Component {
       this.setState({jackpots: response.data })
     })
     .catch((error) => {
-      console.log("Error getting games:", error)
-      toastr.error("Failed to get jackpot list:", error)
+      toastr.error(error.response.data.message, "Failed to get list of jackpots")
     })
   }
 

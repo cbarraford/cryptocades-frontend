@@ -63,8 +63,7 @@ class Login extends Component {
         }
        })
       .catch((error) => {
-        toastr.error("Failed to login:", error)
-        console.log(error)
+        toastr.error(error.response.data.message, "Failed to login")
       })
   }
 

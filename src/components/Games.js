@@ -19,8 +19,7 @@ class Games extends Component {
       this.setState({games: response.data })
     })
     .catch((error) => {
-      console.log("Error getting games:", error)
-      toastr.error("Failed to get games list:", error)
+      toastr.error(error.response.data.message, "Failed to get list of games")
     })
   }
 
