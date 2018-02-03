@@ -69,7 +69,7 @@ class Signup extends Component {
         this.setState({ lastAccountChange: null })
       })
       .catch((error) => {
-        toastr.error(error.response.data.message, "Failed to update profile")
+        this.props.client.handleError(error, "Failed to update profile")
         if (error.response.status === 401) {
           history.push("/login?redirect=/profile")
         }
@@ -94,7 +94,7 @@ class Signup extends Component {
         this.setState({ lastAccountChange: null })
       })
       .catch((error) => {
-        toastr.error(error.response.data.message, "Failed to update email")
+        this.props.client.handleError(error, "Failed to update email")
         if (error.response.status === 401) {
           history.push("/login?redirect=/profile")
         }
@@ -129,7 +129,7 @@ class Signup extends Component {
         this.toggleModal()
       })
       .catch((error) => {
-        toastr.error(error.response.data.message, "Failed to reauthenticate")
+        this.props.client.handleError(error, "Failed to reauthenticate")
       })
   }
 

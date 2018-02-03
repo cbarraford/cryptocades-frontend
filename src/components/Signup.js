@@ -48,7 +48,7 @@ class Signup extends Component {
         this.props.history.push("/confirmation")
       })
       .catch((error) => {
-        toastr.error(error.response.data.message, "Failed to create account")
+        this.props.client.handleError(error, "Failed to create account")
       })
   }
 

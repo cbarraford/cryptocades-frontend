@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Table } from 'react-bootstrap/lib';
-import toastr from 'toastr'
 import dateFormat from 'dateformat'
 
 @inject('store')
@@ -21,14 +20,14 @@ class MyEntries extends Component {
       this.setState({entries: response.data || []})
     })
     .catch((error) => {
-      toastr.error(error.response.data.message, "Failed to get entries")
+      this.props.client.handleError(error,"Failed to get entries")
     })
 
     this.props.client.listJackpots().then((response) => {
       this.setState({jackpots: response.data })
     })
     .catch((error) => {
-      toastr.error(error.response.data.message, "Failed to get list of jackpots")
+      this.props.client.handleError(error, "Failed to get list of jackpots")
     })
   }
 

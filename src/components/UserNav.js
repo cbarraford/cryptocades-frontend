@@ -3,7 +3,6 @@ import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router-dom'
 import Countdown from 'react-countdown-now';
 import { Modal } from 'react-bootstrap/lib';
-import toastr from 'toastr'
 import odds from 'odds';
 
 @inject('store')
@@ -67,7 +66,7 @@ class UserNav extends Component {
             })
         })
         .catch((error) => {
-          toastr.error(error.response.data.message, "Failed to enter into jackpot")
+          this.props.client.handleError(error, "Failed to enter into jackpot")
         })
     }
   }

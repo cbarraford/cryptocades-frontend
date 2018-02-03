@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react';
-import toastr from 'toastr'
 
 @inject('store')
 @inject('client')
@@ -19,7 +18,7 @@ class Games extends Component {
       this.setState({games: response.data })
     })
     .catch((error) => {
-      toastr.error(error.response.data.message, "Failed to get list of games")
+      this.props.client.handleError(error, "Failed to get list of games")
     })
   }
 

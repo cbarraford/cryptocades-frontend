@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react';
 import Countdown from 'react-countdown-now';
-import toastr from 'toastr'
 import dateFormat from 'dateformat'
 
 @inject('store')
@@ -21,7 +20,7 @@ class Jackpots extends Component {
       this.setState({jackpots: response.data })
     })
     .catch((error) => {
-      toastr.error(error.response.data.message, "Failed to get list of jackpots")
+      this.props.client.handleError(error, "Failed to get list of jackpots")
     })
   }
 

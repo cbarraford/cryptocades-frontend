@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react';
-import toastr from 'toastr'
 import cookie from 'react-cookies'
 import PropTypes from 'prop-types'
 import queryString from 'query-string'
@@ -63,7 +62,7 @@ class Login extends Component {
         }
        })
       .catch((error) => {
-        toastr.error(error.response.data.message, "Failed to login")
+        this.props.client.handleError(error, "Failed to login")
       })
   }
 

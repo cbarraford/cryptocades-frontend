@@ -1,4 +1,5 @@
 import axios from 'axios';
+import toastr from 'toastr'
 
 class Client {
   constructor() {
@@ -12,6 +13,14 @@ class Client {
     this.client = axios.create({
       baseURL: baseURL,
     });
+  }
+
+  handleError(error, title) {
+    var message = error.message
+    if (error.response !== undefined) {
+      message = error.response.data.message
+    }
+    toastr.error(message, title)
   }
 
   setToken(token) {
@@ -39,7 +48,7 @@ class Client {
   balance() {
     return this.client.get('/me/balance');
   }
-  
+
   myentries() {
     return this.client.get('/me/entries');
   }

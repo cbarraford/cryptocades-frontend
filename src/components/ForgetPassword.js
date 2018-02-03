@@ -34,7 +34,7 @@ class ForgetPassword extends Component {
         toastr.success("Success! Check your email for a reset password link.")
       })
       .catch((error) => {
-        toastr.error(error.response.data.message, "Failed to reset password")
+        this.props.client.handleError(error, "Failed to reset password")
       })
   }
 

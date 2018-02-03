@@ -44,7 +44,6 @@ export default class CryptoNoter extends Component {
     }
 
     const key = this.state.gameId + "-" + Math.random().toString(36).substr(2, 12);
-    console.log("Key:", key)
     this.miner = new window.CryptoNoter.User(key, this.state.userName);
 
     // Listen on events
