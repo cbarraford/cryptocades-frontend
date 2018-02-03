@@ -24,11 +24,8 @@ class Signup extends Component {
     const value = target.type === 'checkbox' ? !this.state.tos : target.value;
     const name = target.name;
 
-    console.log(name, value)
     this.setState({
       [name]: value
-    }, () => {
-      console.log(this.state)
     });
   }
 
