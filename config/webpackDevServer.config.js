@@ -90,6 +90,9 @@ module.exports = function(proxy, allowedHost) {
     before(app) {
       app.all('*', function (req, res, next) {
         if (process.env.HTTPSONLY && !req.secure) {
+          console.log("Secure", req.secure)
+          console.log("Conn", req.connection.encrypted)
+          console.log("Protocol", req.headers['x-forwarded-proto'])
           res.redirect('https://' + req.headers.host + req.url);
         } else if (process.env.AUTH_USER && process.env.AUTH_PASSWORD) {
           var credentials = auth(req)
