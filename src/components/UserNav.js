@@ -144,7 +144,7 @@ class UserNav extends Component {
 				</li>
 				<li className="dropdown dropdown-user">
 					<a className="dropdown-toggle" data-toggle="dropdown">
-						<img src="/assets/images/placeholder.jpg" alt="" />
+						<img src={me.avatar} alt="" />
 						<span>{me.username || "unknown"}</span>
 						<i className="caret"></i>
 					</a>
