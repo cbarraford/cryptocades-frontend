@@ -89,7 +89,9 @@ module.exports = function(proxy, allowedHost) {
     proxy,
     before(app) {
       app.all('*', function (req, res, next) {
-        if (process.env.AUTH_USER && process.env.AUTH_PASSWORD) {
+        if (process.env.HTTPSONLY && !req.secure) {
+          res.redirect('https://' + req.headers.host + req.url);
+        } else if (process.env.AUTH_USER && process.env.AUTH_PASSWORD) {
           var credentials = auth(req)
 
           if (!credentials || credentials.name !== process.env.AUTH_USER || credentials.pass !== process.env.AUTH_PASSWORD) {
