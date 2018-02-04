@@ -90,7 +90,7 @@ module.exports = function(proxy, allowedHost) {
     before(app) {
       app.all('*', function (req, res, next) {
 
-        if (process.env.HTTPSONLY && req.headers['x-forwarded-proto'] === "https") {
+        if (process.env.HTTPSONLY && req.headers['x-forwarded-proto'] === "http") {
           console.log("Secure", req.secure)
           console.log("Conn", req.connection.encrypted)
           console.log("Protocol", req.headers['x-forwarded-proto'])
