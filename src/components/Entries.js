@@ -32,6 +32,7 @@ class MyEntries extends Component {
   }
 
   render() {
+    const { btcPrice } = this.props.store;
     const { entries, jackpots } = this.state;
     var entryList = entries.map((entry) => {
       var jackpot = {jackpot: 0};
@@ -44,7 +45,7 @@ class MyEntries extends Component {
       return (
 					<tr key={entry['id']}>
             <td>{dateFormat(Date.parse(jackpot['end_time']), "mmmm dS, yyyy, h:MM:ss TT")}</td>
-            <td>${jackpot.jackpot.toLocaleString()}</td>
+            <td>${(jackpot.jackpot * btcPrice.usd).toFixed(2)}</td>
             <td>{entry.amount}</td>
 					</tr>
       )

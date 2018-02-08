@@ -31,6 +31,10 @@ class Client {
     return this.client.get('/ping');
   }
 
+  btcPrice() {
+    return this.client.get('/currency/price/btc')
+  }
+
   // gets the user info the for currently signed in user
   me() {
     return this.client.get('/me');

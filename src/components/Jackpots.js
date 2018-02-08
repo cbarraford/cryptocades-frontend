@@ -16,42 +16,45 @@ class Jackpots extends Component {
       jackpots: [],
     }
 
-    this.props.client.listJackpots().then((response) => {
-      this.setState({jackpots: response.data })
-    })
-    .catch((error) => {
-      this.props.client.handleError(error, "Failed to get list of jackpots")
-    })
+    this.props.client.listJackpots()
+      .then((response) => {
+        this.setState({jackpots: response.data })
+      })
+      .catch((error) => {
+        this.props.client.handleError(error, "Failed to get list of jackpots")
+      })
+
   }
 
   render() {
     const { jackpots } = this.state;
+    const { btcPrice } = this.props.store;
 
     var currentJackpots = jackpots.map((jackpot) => {
       if (Date.parse(jackpot.end_time) < Date.now()) {
         return ""
       }
       return (
-					<div key={jackpot['id']} className="col-lg-3 col-sm-6">
-						<div className="thumbnail">
-							<div className="thumb">
-                <Link to={"/games/" + jackpot['id']}>
-                  <img src="assets/images/placeholder.jpg" alt="" />
-                  <div className="caption-overflow">
-                  </div>
-                </Link>
-							</div>
+        <div key={jackpot['id']} className="col-lg-3 col-sm-6">
+          <div className="thumbnail">
+            <div className="thumb">
+              <Link to={"/games/" + jackpot['id']}>
+                <img src="assets/images/placeholder.jpg" alt="" />
+                <div className="caption-overflow">
+                </div>
+              </Link>
+            </div>
 
-							<div className="caption">
-								<h6 className="no-margin-top text-semibold">
-                  <Link to={"/games/" + jackpot['id']} className="text-default">
-                    Amount: ${jackpot['jackpot']}
-                  </Link>
-                </h6>
-                Countdown: <Countdown date={Date.parse(jackpot['end_time'])} />
-							</div>
-						</div>
-					</div>
+            <div className="caption">
+              <h6 className="no-margin-top text-semibold">
+                <Link to={"/games/" + jackpot['id']} className="text-default">
+                  Amount: ${(jackpot['jackpot'] * btcPrice.usd).toFixed(2)}
+                </Link>
+              </h6>
+              Countdown: <Countdown date={Date.parse(jackpot['end_time'])} />
+            </div>
+          </div>
+        </div>
       )
     })
 
@@ -60,50 +63,50 @@ class Jackpots extends Component {
         return ""
       }
       return (
-					<div key={jackpot['id']} className="col-lg-3 col-sm-6">
-						<div className="thumbnail">
-							<div className="thumb">
-                <Link to={"/games/" + jackpot['id']}>
-                  <img src="assets/images/placeholder.jpg" alt="" />
-                  <div className="caption-overflow">
-                  </div>
-                </Link>
-							</div>
+        <div key={jackpot['id']} className="col-lg-3 col-sm-6">
+          <div className="thumbnail">
+            <div className="thumb">
+              <Link to={"/games/" + jackpot['id']}>
+                <img src="assets/images/placeholder.jpg" alt="" />
+                <div className="caption-overflow">
+                </div>
+              </Link>
+            </div>
 
-							<div className="caption">
-								<h6 className="no-margin-top text-semibold">
-                  <Link to={"/games/" + jackpot['id']} className="text-default">
-                    Amount: ${jackpot['jackpot']}
-                  </Link>
-                </h6>
-                Ended: {dateFormat(Date.parse(jackpot['end_time']), "mmmm dS, yyyy, h:MM:ss TT")}
-							</div>
-						</div>
-					</div>
+            <div className="caption">
+              <h6 className="no-margin-top text-semibold">
+                <Link to={"/games/" + jackpot['id']} className="text-default">
+                  Amount: ${jackpot['jackpot'] * btcPrice.usd}
+                </Link>
+              </h6>
+              Ended: {dateFormat(Date.parse(jackpot['end_time']), "mmmm dS, yyyy, h:MM:ss TT")}
+            </div>
+          </div>
+        </div>
       )
     })
 
     return (
-  <div className="page-container" style={{minHeight: "68px"}}>
-		<div className="page-content">
-			<div className="content-wrapper">
-				<h6 className="content-group text-semibold">
-          Jackpots
-				</h6>
+      <div className="page-container" style={{minHeight: "68px"}}>
+        <div className="page-content">
+          <div className="content-wrapper">
+            <h6 className="content-group text-semibold">
+              Jackpots
+            </h6>
 
-				<div className="row">
-          <h6>Current Jackpots</h6>
-          {currentJackpots}
+            <div className="row">
+              <h6>Current Jackpots</h6>
+              {currentJackpots}
+            </div>
+            <hr />
+            <div className="row">
+              <h6>Past Jackpots</h6>
+              {completedJackpots}
+            </div>
+          </div>
         </div>
-        <hr />
-				<div className="row">
-          <h6>Past Jackpots</h6>
-          {completedJackpots}
-        </div>
-			</div>
-		</div>
-	</div>
-  )
+      </div>
+    )
   }
 }
 

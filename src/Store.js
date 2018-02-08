@@ -5,6 +5,9 @@ class Store {
 
   @observable me = {};
   @observable balance = 0;
+  @observable btcPrice = {
+    usd: 0,
+  } ;
 
   @computed get logged_in() {
     return this.token !== null
@@ -18,6 +21,7 @@ class Store {
   @computed get hasEscalation() {
     return this.tokenEscalated >= Date.now()
   }
+
 }
 
 // we set the store to window.store so we have access to the store in the

@@ -20,6 +20,16 @@ class DefaultLayout extends Component {
         console.log(error)
         this.props.store.me = {}
       })
+
+    this.props.client.btcPrice()
+      .then((response) => {
+        this.props.store.btcPrice = response.data
+      })
+      .catch((error) => {
+        this.props.client.handleError(error, "Failed to get Bitcoin price")
+      })
+
+
   }
 
   render() {
