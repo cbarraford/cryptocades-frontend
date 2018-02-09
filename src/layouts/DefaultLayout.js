@@ -3,6 +3,9 @@ import { inject, observer } from 'mobx-react';
 import UserNav from '../components/UserNav';
 import GuestNav from '../components/GuestNav';
 import SecondNav from '../components/SecondNav';
+import ReactGA from 'react-ga';
+
+ReactGA.initialize('UA-113906692-1');
 
 @inject('store')
 @inject('client')
@@ -11,6 +14,9 @@ class DefaultLayout extends Component {
 
   constructor(props){
     super(props)
+
+    // send pageview to google analytics
+    ReactGA.pageview(window.location.pathname + window.location.search);
 
     this.props.client.me()
       .then((response) => {
