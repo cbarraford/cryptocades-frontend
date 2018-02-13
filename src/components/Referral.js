@@ -37,7 +37,7 @@ class Referral extends Component {
           <div className="content-wrapper">
             <div className="jumbotron">
               <h1 className="display-3">"Tell for Ten" Referral Program</h1>
-              <p className="lead">Tell 10 friends your referral url and both of you get 10 free plays*</p>
+              <p className="lead">Tell a friend to sign up with your referral url and both of you get 10 free plays (limited to 10 referrals)</p>
             </div>
             <div className="row">
               <div className="form-group">
