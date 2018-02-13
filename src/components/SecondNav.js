@@ -19,7 +19,7 @@ class SecondNav extends Component {
             <Link to="/games"><i className="fa fa-gamepad position-left"></i> Games</Link>
           </li>
           <li>
-            {/*<Link to="/store"><i className="icon-store2 position-left"></i> Store</Link> */}
+            <Link to="/referral"><i className="fa fa-handshake position-left"></i> Free Plays</Link>
           </li>
         </ul>
       </div>

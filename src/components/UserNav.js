@@ -138,7 +138,7 @@ class UserNav extends Component {
           <ul className="nav navbar-nav navbar-right">
             <li>
               <a className="btn btn-icon" onClick={this.toggleModal}>
-                <i className="fa fa-ticket"></i>
+                <i className="icon-ticket"></i>
                 <span className={"badge bg-warning-400" + showTicketCount}>{balance || 0}</span>
               </a>
             </li>

@@ -9,7 +9,7 @@ import cookie from 'react-cookies'
 @inject('store')
 @inject('client')
 @observer
-class Signup extends Component {
+class Profile extends Component {
   static propTypes = {
     history: PropTypes.object.isRequired
   }
@@ -219,4 +219,4 @@ class Signup extends Component {
   }
 }
 
-export default Signup
+export default Profile

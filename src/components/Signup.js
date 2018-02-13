@@ -2,10 +2,15 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react';
 import toastr from 'toastr'
+import PropTypes from 'prop-types'
+import qs from 'query-string'
 
 @inject('client')
 @observer
 class Signup extends Component {
+  static propTypes = {
+    location: PropTypes.object.isRequired,
+  }
 
   constructor (props) {
     super(props)
@@ -13,6 +18,7 @@ class Signup extends Component {
     this.state = {
       username: null,
       tos: false,
+      referral_code: qs.parse(this.props.location.search).referral
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -40,6 +46,7 @@ class Signup extends Component {
       email: this.state.email,
       password: this.state.password,
       btc_address: this.state.btc_address,
+      referral_code: this.state.referral_code,
     })
       .then((response) => {
         this.props.history.push("/confirmation")

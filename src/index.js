@@ -20,6 +20,7 @@ import Games from './components/Games';
 import Jackpots from './components/Jackpots';
 import Entries from './components/Entries';
 import Profile from './components/Profile';
+import Referral from './components/Referral';
 import registerServiceWorker from './registerServiceWorker';
 
 import Store from './Store'
@@ -62,6 +63,7 @@ ReactDOM.render((
       <MatchWithDefaultLayout exact path="/games/:game_id/:user_id" component={Tower}/>
       <MatchWithDefaultLayout exact path="/entries" component={Entries}/>
       <MatchWithDefaultLayout exact path="/profile" component={Profile}/>
+      <MatchWithDefaultLayout exact path="/referral" component={Referral}/>
     </div>
   </Router>
   </Provider>
