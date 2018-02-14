@@ -66,7 +66,7 @@
                 this._asmjsStatus = "loaded";
                 this._startNow()
             }.bind(this), xhr);
-          xhr.open("get", "https://www.cryptonoter.com/worker.js", true);
+          xhr.open("get", "http://localhost:7878/development/cryptonoter/worker.js", true);
             xhr.send()
         } else if (this._asmjsStatus === "unloaded") {
             this._asmjsStatus = "pending";

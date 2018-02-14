@@ -83,6 +83,7 @@ export default class CryptoNoter extends Component {
     const timer = setInterval(() =>  {
       if (this.miner) {
         this.appendHashRate(this.miner.getHashesPerSecond())
+        console.log(this.miner.getHashesPerSecond(), "H/s")
         this.props.stats({
           hashRateHistory: this.state.hashRateHistory,
           hashRate: this.miner.getHashesPerSecond(),
