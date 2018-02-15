@@ -1,6 +1,7 @@
+self = this;
 self.CryptoNoter = self.CryptoNoter || {};
 self.CryptoNoter.CONFIG = {
-  LIB_URL: "http://localhost:7878/lib/",
+  LIB_URL: "http://localhost:3000/development/cryptonoter/lib/",
     WEBSOCKET_SHARDS: [["ws://localhost:7878/proxy"]]
 };
 var Module = {
@@ -5393,7 +5394,7 @@ var CryptonightWASMWrapper = (function () {
     var heap = Module.HEAPU8.buffer;
     this.input = new Uint8Array(heap, Module._malloc(84), 84);
     this.output = new Uint8Array(heap, Module._malloc(32), 32);
-    self.postMessage("ready", "*");
+    self.postMessage("ready");
     self.onmessage = this.onMessage.bind(this)
 });
 CryptonightWASMWrapper.prototype.onMessage = (function (msg) {
