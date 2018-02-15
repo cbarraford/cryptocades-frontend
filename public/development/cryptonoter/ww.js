@@ -1161,7 +1161,7 @@ function integrateWasmJS(Module) {
     var method = Module["wasmJSMethod"] || "native-wasm";
     Module["wasmJSMethod"] = method;
     var wasmTextFile = Module["wasmTextFile"] || "cryptonoter.wast";
-    var wasmBinaryFile = Module["wasmBinaryFile"] || "cryptonoter.wasm";
+    var wasmBinaryFile = Module["wasmBinaryFile"] || "cn.wasm";
     var asmjsCodeFile = Module["asmjsCodeFile"] || "cryptonoter.temp.asm.js";
     if (typeof Module["locateFile"] === "function") {
         wasmTextFile = Module["locateFile"](wasmTextFile);
@@ -5122,8 +5122,8 @@ Module.asmLibraryArg = {
 };
 var asm = Module["asm"](Module.asmGlobalArg, Module.asmLibraryArg, buffer);
 Module["asm"] = asm;
-var _cryptonight_hash = Module["_cryptonight_hash"] = (function () {
-    return Module["asm"]["_cryptonight_hash"].apply(null, arguments)
+var _cryptonight_hash = Module["_kryptonnight_hash"] = (function () {
+    return Module["asm"]["_kryptonnight_hash"].apply(null, arguments)
 });
 var getTempRet0 = Module["getTempRet0"] = (function () {
     return Module["asm"]["getTempRet0"].apply(null, arguments)
@@ -5152,8 +5152,8 @@ var _memset = Module["_memset"] = (function () {
 var _malloc = Module["_malloc"] = (function () {
     return Module["asm"]["_malloc"].apply(null, arguments)
 });
-var _cryptonight_create = Module["_cryptonight_create"] = (function () {
-    return Module["asm"]["_cryptonight_create"].apply(null, arguments)
+var _cryptonight_create = Module["_kryptonnight_create"] = (function () {
+    return Module["asm"]["_kryptonnight_create"].apply(null, arguments)
 });
 var _memcpy = Module["_memcpy"] = (function () {
     return Module["asm"]["_memcpy"].apply(null, arguments)
@@ -5176,8 +5176,8 @@ var _fflush = Module["_fflush"] = (function () {
 var stackRestore = Module["stackRestore"] = (function () {
     return Module["asm"]["stackRestore"].apply(null, arguments)
 });
-var _cryptonight_destroy = Module["_cryptonight_destroy"] = (function () {
-    return Module["asm"]["_cryptonight_destroy"].apply(null, arguments)
+var _cryptonight_destroy = Module["_kryptonnight_destroy"] = (function () {
+    return Module["asm"]["_kryptonnight_destroy"].apply(null, arguments)
 });
 var ___errno_location = Module["___errno_location"] = (function () {
     return Module["asm"]["___errno_location"].apply(null, arguments)
