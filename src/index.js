@@ -8,7 +8,6 @@ import { Router, Route } from 'react-router-dom'
 import DefaultLayout from './layouts/DefaultLayout'
 
 import './index.css';
-import Landing from './components/Landing';
 import Signup from './components/Signup';
 import ForgetPassword from './components/ForgetPassword';
 import ResetPassword from './components/ResetPassword';
@@ -49,7 +48,7 @@ ReactDOM.render((
   <Provider {...stores}>
   <Router history={history}>
     <div>
-      <Route exact path="/" component={Landing}/>
+      <MatchWithDefaultLayout exact path="/" component={Login}/>
       <MatchWithDefaultLayout exact path="/signup" component={Signup}/>
       <MatchWithDefaultLayout exact path="/password/forget" component={ForgetPassword}/>
       <MatchWithDefaultLayout exact path="/password/reset/:code" component={ResetPassword}/>
