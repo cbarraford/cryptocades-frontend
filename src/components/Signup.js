@@ -4,8 +4,11 @@ import { inject, observer } from 'mobx-react';
 import toastr from 'toastr'
 import PropTypes from 'prop-types'
 import qs from 'query-string'
+import cookie from 'react-cookies'
+import FacebookLogin from 'react-facebook-login'
 
 @inject('client')
+@inject('store')
 @observer
 class Signup extends Component {
   static propTypes = {
@@ -21,9 +24,56 @@ class Signup extends Component {
       referral_code: qs.parse(this.props.location.search).referral
     }
 
+    this.fbResponse = this.fbResponse.bind(this);
+    this.postLogin = this.postLogin.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+  // TODO: not dry, use login func
+  fbResponse(req) {
+    if (!this.state.tos) {
+      toastr.error("Must agree to the terms of service.")
+      return false
+    }
+    this.postLogin(this.props.client.facebookLogin(req))
+  }
+
+  // TODO: not dry, use login func
+  postLogin(req) {
+    req
+      .then((response) => {
+        this.props.client.token = response.data.token;
+        cookie.save('token', response.data.token, { path: '/' });
+        cookie.save('token_expire', response.data.expire_time, { path: '/' });
+        cookie.save('token_escalated', response.data.escalated_time, { path: '/' });
+        this.props.client.setToken(response.data.token);
+        this.props.store.token = response.data.token;
+        this.props.store.tokenExpire = Date.parse(response.data.expire_time);
+        this.props.store.tokenEscalated = Date.parse(response.data.escalated_time);
+
+        this.props.client.me()
+          .then((response) => {
+            this.props.store.me = response.data
+          })
+          .catch((error) => {
+            console.log(error)
+            this.props.store.me = {}
+          })
+
+        const parsed = qs.parse(this.props.location.search)
+        if (parsed.redirect) {
+          this.props.history.push(parsed.redirect)
+        } else {
+          this.props.history.push('/games')
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+        this.props.client.handleError(error, "Failed to login")
+      })
+  }
+
 
   handleChange(event) {
     const target = event.target;
@@ -90,8 +140,20 @@ class Signup extends Component {
                     <i className="icon-mention text-muted"></i>
                   </div>
                 </div>
-
-                <div className="content-divider text-muted form-group"><span>Additions</span></div>
+                <div className="content-divider text-muted form-group"><span>Social Sign in</span></div>
+                <div className="text-center">
+                  <div style={{marginBottom: "20px"}}>
+                    <FacebookLogin
+                      appId="785415074997932"
+                      autoLoad={false}
+                      size="small"
+                      scope="public_profile,email,user_birthday"
+                      icon="fa-facebook"
+                      fields="name,email,picture"
+                      callback={this.fbResponse} />
+                  </div>
+                </div>
+                <div className="content-divider text-muted form-group"><span>Policy and Terms</span></div>
 
                 <div className="form-group">
                   <div className="checkbox">
@@ -107,6 +169,7 @@ class Signup extends Component {
                 </div>
 
                 <button type="submit" className="btn bg-teal btn-block btn-lg">Register <i className="icon-circle-right2 position-right"></i></button>
+
               </div>
             </form>
           </div>

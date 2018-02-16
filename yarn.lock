@@ -5305,6 +5305,10 @@ react-error-overlay@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-3.0.0.tgz#c2bc8f4d91f1375b3dad6d75265d51cd5eeaf655"
 
+react-facebook-login@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/react-facebook-login/-/react-facebook-login-4.0.0.tgz#f2384dd36d197a9ce6decc2f3189bc9e4ccac57d"
+
 react-ga@^2.4.1:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/react-ga/-/react-ga-2.4.1.tgz#dfbd5f028ed39a07067f7a8bf57dc0d240000767"

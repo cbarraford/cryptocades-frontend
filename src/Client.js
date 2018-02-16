@@ -66,6 +66,10 @@ class Client {
     return this.client.post('/login', obj);
   }
 
+  facebookLogin(obj) {
+    return this.client.post('/login/facebook', obj);
+  }
+
   confirmation(code) {
     return this.client.post('/users/confirmation/' + code);
   }
