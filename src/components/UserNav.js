@@ -124,7 +124,7 @@ class UserNav extends Component {
     return (
       <div className="navbar navbar-inverse">
         <div className="navbar-header">
-          <Link className="navbar-brand" to="/"><img src="/assets/images/logo_light.png" alt="" /></Link>
+          <Link className="navbar-brand" to="/"><img src="/img/logo.png" alt="" /></Link>
 
           <ul className="nav navbar-nav pull-right visible-xs-block">
             <li><a data-toggle="collapse" data-target="#navbar-mobile"><i className="icon-tree5"></i></a></li>
