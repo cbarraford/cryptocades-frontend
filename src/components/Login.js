@@ -105,7 +105,7 @@ class Login extends Component {
                 <div className="form-group">
                   <button type="submit" className="btn btn-primary btn-block">Sign in <i className="icon-circle-right2 position-right"></i></button>
                 </div>
-                <div className="content-divider text-muted form-group"><span>Social Signin</span></div>
+                <div className="content-divider text-muted form-group"><span>Social Sign in</span></div>
                 <div className="text-center">
                   <div>
                     <FacebookLogin
