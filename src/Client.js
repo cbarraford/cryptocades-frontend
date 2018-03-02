@@ -57,6 +57,14 @@ class Client {
     return this.client.get('/me/entries');
   }
 
+  myincomes() {
+    return this.client.get('/me/incomes');
+  }
+
+  myrank() {
+    return this.client.get('/me/incomes/rank');
+  }
+
   logout() {
     return this.client.delete('/logout');
   }

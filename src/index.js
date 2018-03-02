@@ -60,7 +60,7 @@ ReactDOM.render((
       <MatchWithDefaultLayout exact path="/games" component={Games}/>
       <MatchWithDefaultLayout exact path="/games/:game_id" component={Tower}/>
       <MatchWithDefaultLayout exact path="/games/:game_id/:user_id" component={Tower}/>
-      <MatchWithDefaultLayout exact path="/entries" component={Entries}/>
+      <MatchWithDefaultLayout exact path="/wallet" component={Entries}/>
       <MatchWithDefaultLayout exact path="/profile" component={Profile}/>
       <MatchWithDefaultLayout exact path="/referral" component={Referral}/>
     </div>

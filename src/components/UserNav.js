@@ -150,8 +150,8 @@ class UserNav extends Component {
               </a>
 
               <ul className="dropdown-menu dropdown-menu-right">
-                <li><Link to="/profile"><i className="icon-user-plus"></i> My profile</Link></li>
-                <li><Link to="/entries"><i className="icon-coins"></i> My entries</Link></li>
+                <li><Link to="/profile"><i className="icon-user-plus"></i> Profile</Link></li>
+                <li><Link to="/wallet"><i className="icon-coins"></i> Wallet</Link></li>
                 <li className="divider"></li>
                 <li><Link to="/logout"><i className="icon-switch2"></i> Logout</Link></li>
               </ul>
