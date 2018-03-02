@@ -106,6 +106,7 @@ class MyEntries extends Component {
       return (
         <tr key={income['id']}>
           <td>{ game.id === 0 ? income.session_id : game.name }</td>
+          <td>{dateFormat(Date.parse(income['updated_time']), "mmmm dS, yyyy")}</td>
           <td>{income.amount}</td>
         </tr>
       )
@@ -150,6 +151,7 @@ class MyEntries extends Component {
                     <thead>
                       <tr>
                         <th>Description</th>
+                        <th>Date</th>
                         <th>Amount</th>
                       </tr>
                     </thead>
@@ -169,7 +171,7 @@ class MyEntries extends Component {
                   <Table striped hover>
                     <thead>
                       <tr>
-                        <th>Jackpot End</th>
+                        <th>Jackpot Date</th>
                         <th>Jackpot Amount</th>
                         <th>Number of Entries</th>
                       </tr>
