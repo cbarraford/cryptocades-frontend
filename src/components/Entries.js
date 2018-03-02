@@ -128,7 +128,7 @@ class MyEntries extends Component {
               </div>
 
               <div className="col-lg-4">
-                <div className="panel bg-pink-400">
+                <div className="panel bg-blue-400">
                   <div className="panel-body">
                     <h3 className="no-margin">{rank}%</h3>
                     Earned play percentile
