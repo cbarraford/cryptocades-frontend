@@ -36,6 +36,7 @@ class Signup extends Component {
       toastr.error("Must agree to the terms of service.")
       return false
     }
+    req.referral_code = this.state.referral_code
     this.postLogin(this.props.client.facebookLogin(req))
   }
 

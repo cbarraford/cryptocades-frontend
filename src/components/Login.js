@@ -20,6 +20,7 @@ class Login extends Component {
 
     this.state = {
       username: null,
+      referral_code: qs.parse(this.props.location.search).referral
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -29,6 +30,7 @@ class Login extends Component {
   }
 
   fbResponse(req) {
+    req.referral_code = this.state.referral_code
     this.postLogin(this.props.client.facebookLogin(req))
   }
 
