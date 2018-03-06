@@ -39,7 +39,7 @@ class Signup extends Component {
 
   // TODO: not dry, use login func
   fbResponse(req) {
-    if (this.captcha_code === null) {
+    if (this.state.captcha_code === null) {
       toastr.error("Please check the Google ReCAPTCHA checkbox.")
       return
     }
@@ -100,7 +100,7 @@ class Signup extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    if (this.captcha_code === null) {
+    if (this.state.captcha_code === null) {
       toastr.error("Please check the Google ReCAPTCHA checkbox.")
       return
     }
