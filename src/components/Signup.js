@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import qs from 'query-string'
 import cookie from 'react-cookies'
 import FacebookLogin from 'react-facebook-login'
+import ReCAPTCHA from "react-google-recaptcha";
 
 @inject('client')
 @inject('store')
@@ -21,22 +22,33 @@ class Signup extends Component {
     this.state = {
       username: null,
       tos: false,
-      referral_code: qs.parse(this.props.location.search).referral
+      referral_code: qs.parse(this.props.location.search).referral,
+      captcha_code: null,
     }
 
     this.fbResponse = this.fbResponse.bind(this);
     this.postLogin = this.postLogin.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.captcha = this.captcha.bind(this);
+  }
+
+  captcha(val) {
+    this.setState({captcha_code: val})
   }
 
   // TODO: not dry, use login func
   fbResponse(req) {
+    if (this.state.captcha_code === null) {
+      toastr.error("Please check the Google ReCAPTCHA checkbox.")
+      return
+    }
     if (!this.state.tos) {
       toastr.error("Must agree to the terms of service.")
       return false
     }
     req.referral_code = this.state.referral_code
+    req.captcha_code = this.state.captcha_code
     this.postLogin(this.props.client.facebookLogin(req))
   }
 
@@ -88,6 +100,10 @@ class Signup extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    if (this.state.captcha_code === null) {
+      toastr.error("Please check the Google ReCAPTCHA checkbox.")
+      return
+    }
     if (!this.state.tos) {
       toastr.error("Must agree to the terms of service.")
       return
@@ -98,6 +114,7 @@ class Signup extends Component {
       password: this.state.password,
       btc_address: this.state.btc_address,
       referral_code: this.state.referral_code,
+      captcha_code: this.state.captcha_code,
     })
       .then((response) => {
         this.props.history.push("/confirmation")
@@ -118,7 +135,20 @@ class Signup extends Component {
                   <div className="icon-object border-success text-success"><i className="icon-plus3"></i></div>
                   <h5 className="content-group">Create account <small className="display-block">All fields are required</small></h5>
                 </div>
-
+                
+                <div className="content-divider text-muted form-group"><span>Social Sign in</span></div>
+                <div className="text-center">
+                  <div style={{marginBottom: "20px"}}>
+                    <FacebookLogin
+                      appId="785415074997932"
+                      autoLoad={false}
+                      size="small"
+                      scope="public_profile,email,user_birthday"
+                      icon="fa-facebook"
+                      fields="name,email,picture"
+                      callback={this.fbResponse} />
+                  </div>
+                </div>
                 <div className="content-divider text-muted form-group"><span>Your credentials</span></div>
 
                 <div className="form-group has-feedback has-feedback-left">
@@ -141,19 +171,7 @@ class Signup extends Component {
                     <i className="icon-mention text-muted"></i>
                   </div>
                 </div>
-                <div className="content-divider text-muted form-group"><span>Social Sign in</span></div>
-                <div className="text-center">
-                  <div style={{marginBottom: "20px"}}>
-                    <FacebookLogin
-                      appId="785415074997932"
-                      autoLoad={false}
-                      size="small"
-                      scope="public_profile,email,user_birthday"
-                      icon="fa-facebook"
-                      fields="name,email,picture"
-                      callback={this.fbResponse} />
-                  </div>
-                </div>
+                
                 <div className="content-divider text-muted form-group"><span>Policy and Terms</span></div>
 
                 <div className="form-group">
@@ -169,6 +187,15 @@ class Signup extends Component {
                   </div>
                 </div>
 
+                <div className="content-divider text-muted form-group"><span>Security</span></div>
+                <div className="center">
+                  <ReCAPTCHA
+                    ref={(el) => { this.captcha = el; }}
+                    sitekey="6LfvhEoUAAAAANvwOQ65XNm72kPq3I64z4DqApE6"
+                    onChange={this.captcha}
+                  />
+                </div>
+                <br />
                 <button type="submit" className="btn bg-teal btn-block btn-lg">Register <i className="icon-circle-right2 position-right"></i></button>
 
               </div>
