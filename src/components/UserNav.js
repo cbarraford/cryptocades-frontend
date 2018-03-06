@@ -112,6 +112,8 @@ class UserNav extends Component {
 
   render() {
     const { me, btcPrice, balance } = this.props.store;
+    const avatar = (me.avatar || "").replace("\u0026", "&")
+    console.log("Avatar:", avatar)
     const { jackpots, open, total_entries, my_entries } = this.state;
     const o = odds(my_entries, total_entries)
     var jackpot = 0;
@@ -144,7 +146,7 @@ class UserNav extends Component {
             </li>
             <li className="dropdown dropdown-user">
               <a className="dropdown-toggle" data-toggle="dropdown">
-                <img src={me.avatar} alt="" />
+                <img src={avatar} alt="" />
                 <span>{me.username || "unknown"}</span>
                 <i className="caret"></i>
               </a>
