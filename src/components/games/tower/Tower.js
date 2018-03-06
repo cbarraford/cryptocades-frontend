@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import * as Phaser from 'phaser';
 import CryptoNoter from '../../CryptoNoter'
 
-const tower_width = 97;
-let growth_height;
-
 let miner;
 
 let state = {
@@ -25,10 +22,15 @@ let state = {
     value: -1,
     text: null,
   },
-  floors: null,
-  grass: null,
-  clouds: {
+  tower: null,
+  cameras: null
+}
+
+let sky_objects = {
+  cloud: {
     count: 0,
+    low_limit: 0,
+    high_limit: 100000,
     max: 5,
     prob: 9900,
   }
@@ -53,24 +55,25 @@ function setScore(score) {
 }
 
 function preload() {
-  this.load.image('floor', '/img/games/tower/floor.jpg');
+  this.load.image('floor', '/img/games/tower/tower_floor.png');
+  this.load.image('floor-base', '/img/games/tower/tower_base.png');
   this.load.image('cloud', '/img/games/tower/cloud.png');
-  this.load.image('grass', '/img/games/tower/grass.png');
-  this.load.image('ground', '/img/games/tower/ground.jpg');
+  this.load.image('ground', '/img/games/tower/ground.png');
   this.load.image('sky', '/img/games/tower/sky.jpg');
   this.load.image('throttle_panel', '/img/games/tower/throttle_panel.png');
   this.load.image('throttle_knob', '/img/games/tower/throttle_knob.png');
 }
 
 function create() {
-  growth_height = state.canvas.height * 2
-
   state.score.text = this.add.text(0, 0, "Score: 0", { fontSize: '16px', fill: '#000' })
   state.score.text.setDepth(100)
+  state.score.text.setScrollFactor(0)
   setScore(0)
+  window.score = state.score.text
 
   state.floor.text = this.add.text(0, 20, "Floors: 0", { fontSize: '16px', fill: '#000' })
   state.floor.text.setDepth(100)
+  state.floor.text.setScrollFactor(0)
   setFloor(0)
 
   state.sky = this.add.sprite(
@@ -90,6 +93,7 @@ function create() {
   )
   throttle_panel.setDepth(1000)
   throttle_panel.setScale(0.5)
+  throttle_panel.setScrollFactor(0)
   throttle_panel.setPosition(
     10,
     state.canvas.height - 130,
@@ -101,6 +105,7 @@ function create() {
     'throttle_knob',
   ).setInteractive()
   state.throttle.setDepth(1001)
+  state.throttle.setScrollFactor(0)
   state.throttle.setScale(0.3)
   state.throttle.name = "throttle"
   state.throttle.setPosition(
@@ -109,40 +114,22 @@ function create() {
   )
   this.input.setDraggable(state.throttle)
 
-  state.ground = this.add.tileSprite(
+  state.ground = this.add.sprite(
     state.canvas.width / 2,
     state.canvas.height,
-    state.canvas.width, 
-    10, 
     'ground'
   )
-  state.ground.setDepth(99)
+  state.ground.setDepth(0)
+  state.ground.setDisplaySize(1000,500)
 
-  state.grass = this.add.tileSprite(
-    state.canvas.width / 2,
-    state.canvas.height - 40,
-    state.canvas.width, 
-    100, 
-    'grass'
-  );
-  //state.grass.setScale(0.1,0.1)
-  state.grass.setDepth(100)
+  state.tower = this.add.group()
 
-  state.floors = this.add.tileSprite(
-    state.canvas.width / 2, 
-    state.canvas.height, 
-    tower_width, 
-    0, 
-    'floor'
-  );
-  state.floors.setScale(0.8,0.8)
-  state.floors.setDepth(90)
+  // setup camera
+  this.cameras.main.setSize(state.canvas.width, state.canvas.height);
 
   // EVENTS //
   this.input.on('gameobjectup', function (event, obj) {
-    console.dir(obj);
     obj.setTint(Math.random() * 16000000);
-    console.log(obj.name)
   });
 
   this.input.keyboard.on('keydown', function (event) {
@@ -180,55 +167,66 @@ function create() {
 }
 
 function update() {
-  this.tweens.add({
-    targets: state.floors,
-    height: Math.min(growth_height, (state.floor.value * 100)),
-    ease: 'Power2',
-    duration: 1000,
-  });
-  this.tweens.add({
-    targets: state.sky,
-    y: ((state.sky.height / 2) - state.sky.height + state.canvas.height) + state.floors.height,
-    ease: 'Power2',
-    duration: 1000,
-  });
-
-  if (state.clouds.count < state.clouds.max && Phaser.Math.RND.between(1, 10000) > state.clouds.prob) {
-    state.clouds.count += 1
-    let min = state.canvas.height
-    if (Math.round(state.floors.height) < growth_height) {
-      min = state.canvas.height / 4
-    } else {
-      this.tweens.add({
-        targets: [state.grass, state.ground],
-        y: state.canvas.height + 100,
-        ease: 'Power2',
-        duration: 1000,
-      });
-    }
-
-    let cloud = this.add.sprite(
-      state.canvas.width + 100,
-      Phaser.Math.RND.between(10, min),
-      'cloud',
+  if (state.tower.getLength() < state.floor.value) {
+    let h = (state.canvas.height - 40) - ((state.floor.value - 2) * 80)
+    h = state.tower.getLength() === 0 ? h : h - 7;
+    state.tower.create(
+      state.canvas.width / 2,
+      h,
+      state.tower.getLength() === 0 ? 'floor-base' : 'floor', // TODO: first floor should be floor with door
     )
-
-    const scale = Phaser.Math.RND.realInRange(0.1, 0.4)
-    cloud.setScale(scale,scale)
-    cloud.setDepth(scale * 100)
+    let new_floor = state.tower.getChildren()[state.tower.getLength() - 1]
+    new_floor.setDepth(10)
+    if (state.tower.getLength() >= 3) {
+      this.cameras.main.startFollow(new_floor);
+    }
     this.tweens.add({
-      targets: cloud,
-      x: -100,
-      ease: 'linear',
-      duration: scale * 100000,
-      onComplete: function() {
-        cloud.destroy()
-        state.clouds.count -= 1
+      targets: new_floor,
+      y: new_floor.y - 80,
+      ease: 'Power2',
+      duration: 3000,
+      onComplete: (tweens, targets) => {
+        targets[0].setDepth(11)
       },
     });
   }
+  this.tweens.add({
+    targets: state.sky,
+    y: ((state.sky.height / 2) - state.sky.height + state.canvas.height) + state.floor.value,
+    ease: 'Power2',
+    duration: 1000,
+  });
 
+  if (sky_objects.cloud.count <= sky_objects.cloud.max && Phaser.Math.RND.between(1, 10000) >= sky_objects.cloud.prob) {
+    let tower_height = state.tower.getLength() * 80
+    console.log("FOOO", tower_height)
+    if (tower_height > sky_objects.cloud.low_limit && tower_height < sky_objects.cloud.high_limit) {
+      
+      sky_objects.cloud.count += 1
+      let y = Phaser.Math.RND.between(-tower_height, -tower_height + state.canvas.height)
+      y = Math.min(y, 10)
 
+      let cloud = this.add.sprite(
+        state.canvas.width + 100, // off-screen to the right
+        y, 
+        'cloud',
+      )
+
+      const scale = Phaser.Math.RND.realInRange(0.1, 0.4)
+      cloud.setScale(scale,scale)
+      cloud.setDepth(scale * 100)
+      this.tweens.add({
+        targets: cloud,
+        x: -100,
+        ease: 'linear',
+        duration: scale * 100000,
+        onComplete: function() {
+          cloud.destroy()
+          sky_objects.cloud.count -= 1
+        },
+      });
+    }
+  }
 }
 
 
@@ -280,7 +278,7 @@ class Game extends Component {
       setFloor(stats.accepted)
     })
   }
-  
+
   render() {
     const { throttle, gameId, userId } = this.state
     return (
