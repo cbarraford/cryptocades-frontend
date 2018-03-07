@@ -63,6 +63,7 @@ body {
     background-image: none;
     background-color: #266586;
     color: white;
+    position: relative;
 }
 
 .secondbar .navbar-nav > li > a:hover {

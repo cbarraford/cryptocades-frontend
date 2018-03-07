@@ -27,7 +27,7 @@ class Games extends Component {
     const meId = this.props.store.me.id
     var gameList = games.map((game) => {
       return (
-					<div key={game['id']} className="col-lg-3 col-sm-6">
+					<div key={game['id']} className="col-lg-3 col-sm-6 text-center">
 						<div className="thumbnail">
 							<div className="thumb">
                 <Link to={"/games/" + game['id'] + "/" + meId}>
@@ -38,7 +38,7 @@ class Games extends Component {
 							</div>
 
 							<div className="caption">
-								<h6 className="no-margin-top text-semibold">
+								<h6 className="no-margin-top text-semibold" style={{fontSize: "20px", fontWeight: 600}}>
                   <Link to={"/games/" + game['id'] + "/" + meId} className="text-default">
                     {game['name']}
                   </Link>

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router-dom'
-import Countdown from 'react-countdown-now';
 import { Modal } from 'react-bootstrap/lib';
 import odds from 'odds';
 
@@ -116,10 +115,8 @@ class UserNav extends Component {
     const { jackpots, open, total_entries, my_entries } = this.state;
     const o = odds(my_entries, total_entries)
     var jackpot = 0;
-    var endtime = Date.now();
     if (jackpots.length > 0) {
       jackpot = jackpots[0].jackpot
-      endtime = Date.parse(jackpots[0].end_time);
     }
     const showTicketCount = balance > 0 ? "" : " hide"
     return (
