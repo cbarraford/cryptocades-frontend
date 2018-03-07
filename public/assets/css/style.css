@@ -1,0 +1,43 @@
+body {
+    background-color: #fdfbf0;
+}
+
+.navbar-default{
+    background-image: url("/assets/images/header_footer.png");
+    height: 155px;
+    background-size: contain;
+    background-color: #fdfbf0;
+    border-color: #fdfbf0;
+}
+
+.key-pattern {
+    background-image: url("/img/pattern.png");
+    background-repeat: repeat;
+    background-size: 20px;
+    border-radius: 125px;
+    color: #57e5c4;
+}
+
+.facebook-button button {
+    background-color: white;
+    color: #266586;
+    border-color: #57e5c4;
+    border-width: 3px;
+    border-radius: 5px;
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+    background-color: transparent;
+    color: white;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: white;
+    font-size: 10px;
+    margin: 30px 0px;
+}
+
+.navbar-brand > img {
+    margin-top: 15px;
+    height: 60px;
+}

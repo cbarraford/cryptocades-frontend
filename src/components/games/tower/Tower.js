@@ -55,13 +55,13 @@ function setScore(score) {
 }
 
 function preload() {
-  this.load.image('floor', '/img/games/tower/tower_floor.png');
-  this.load.image('floor-base', '/img/games/tower/tower_base.png');
-  this.load.image('cloud', '/img/games/tower/cloud.png');
-  this.load.image('ground', '/img/games/tower/ground.png');
-  this.load.image('sky', '/img/games/tower/sky.jpg');
-  this.load.image('throttle_panel', '/img/games/tower/throttle_panel.png');
-  this.load.image('throttle_knob', '/img/games/tower/throttle_knob.png');
+  this.load.image('floor', '/img/games/1/tower_floor.png');
+  this.load.image('floor-base', '/img/games/1/tower_base.png');
+  this.load.image('cloud', '/img/games/1/cloud.png');
+  this.load.image('ground', '/img/games/1/ground.png');
+  this.load.image('sky', '/img/games/1/sky.jpg');
+  this.load.image('throttle_panel', '/img/games/1/throttle_panel.png');
+  this.load.image('throttle_knob', '/img/games/1/throttle_knob.png');
 }
 
 function create() {

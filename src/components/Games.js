@@ -31,7 +31,7 @@ class Games extends Component {
 						<div className="thumbnail">
 							<div className="thumb">
                 <Link to={"/games/" + game['id'] + "/" + meId}>
-                  <img src="assets/images/placeholder.jpg" alt="" />
+                  <img src={"/img/games/" + game['id'] + "/logo.png"} alt="" />
                   <div className="caption-overflow">
                   </div>
                 </Link>

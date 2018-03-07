@@ -113,7 +113,6 @@ class UserNav extends Component {
   render() {
     const { me, btcPrice, balance } = this.props.store;
     const avatar = (me.avatar || "").replace("\u0026", "&")
-    console.log("Avatar:", avatar)
     const { jackpots, open, total_entries, my_entries } = this.state;
     const o = odds(my_entries, total_entries)
     var jackpot = 0;
@@ -124,7 +123,7 @@ class UserNav extends Component {
     }
     const showTicketCount = balance > 0 ? "" : " hide"
     return (
-      <div className="navbar navbar-inverse">
+      <div className="navbar navbar-default">
         <div className="navbar-header">
           <Link className="navbar-brand" to="/"><img src="/img/logo.png" alt="" /></Link>
 

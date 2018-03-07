@@ -58,7 +58,6 @@ class DefaultLayout extends Component {
     return (
       <div>
         <GuestNav />
-        <SecondNav />
         <div className="row">
           { this.props.children }
         </div>
