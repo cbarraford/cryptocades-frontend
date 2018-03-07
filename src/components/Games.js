@@ -9,7 +9,7 @@ class Games extends Component {
 
   constructor(props) {
     super(props)
-    
+
     this.state = {
       games: [],
     }
@@ -17,9 +17,9 @@ class Games extends Component {
     this.props.client.listGames().then((response) => {
       this.setState({games: response.data })
     })
-    .catch((error) => {
-      this.props.client.handleError(error, "Failed to get list of games")
-    })
+      .catch((error) => {
+        this.props.client.handleError(error, "Failed to get list of games")
+      })
   }
 
   render() {
@@ -27,45 +27,44 @@ class Games extends Component {
     const meId = this.props.store.me.id
     var gameList = games.map((game) => {
       return (
-					<div key={game['id']} className="col-lg-3 col-sm-6 text-center">
-						<div className="thumbnail">
-							<div className="thumb">
-                <Link to={"/games/" + game['id'] + "/" + meId}>
-                  <img src={"/img/games/" + game['id'] + "/logo.png"} alt="" />
-                  <div className="caption-overflow">
-                  </div>
-                </Link>
-							</div>
+        <div key={game['id']} className="col-lg-3 text-center">
+          <div className="thumbnail">
+            <div className="thumb">
+              <Link to={"/games/" + game['id'] + "/" + meId}>
+                <img src={"/img/games/" + game['id'] + "/logo.png"} alt="" />
+                <div className="caption-overflow">
+                </div>
+              </Link>
+            </div>
 
-							<div className="caption">
-								<h6 className="no-margin-top text-semibold" style={{fontSize: "20px", fontWeight: 600}}>
-                  <Link to={"/games/" + game['id'] + "/" + meId} className="text-default">
-                    {game['name']}
-                  </Link>
-                </h6>
-                {game['description']}
-							</div>
-						</div>
-					</div>
+            <div className="caption">
+              <h6 className="no-margin-top text-semibold" style={{fontSize: "20px", fontWeight: 600}}>
+                <Link to={"/games/" + game['id'] + "/" + meId} className="text-default">
+                  {game['name']}
+                </Link>
+              </h6>
+              {game['description']}
+            </div>
+          </div>
+        </div>
       )
     })
 
     return (
-  <div className="page-container" style={{minHeight: "68px"}}>
-		<div className="page-content">
-			<div className="content-wrapper">
-				<h6 className="content-group text-semibold">
-          Games
-					<small className="display-block">Select a game to play!</small>
-				</h6>
+      <div className="page-container" style={{minHeight: "68px"}}>
+        <div className="page-content">
+          <div className="content-wrapper">
+            <h1 className="content-group text-semibold content-header text-center">
+              Games
+            </h1>
 
-				<div className="row">
-          {gameList}
+            <div className="row">
+              {gameList}
+            </div>
+          </div>
         </div>
-			</div>
-		</div>
-	</div>
-  )
+      </div>
+    )
   }
 }
 

@@ -76,3 +76,8 @@ body {
 }
 
 
+.content-header {
+    font-size: 40px;
+    font-weight: 600;
+    color: #266586;
+}
