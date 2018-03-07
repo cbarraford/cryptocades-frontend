@@ -33,40 +33,41 @@ class Referral extends Component {
     return (
       <div className="page-container" style={{minHeight: "262px"}}>
         <div className="page-content">
-          <div className="content-wrapper">
-            <div className="jumbotron">
-              <h1 className="display-3">"Tell for Ten" Referral Program</h1>
-              <p className="lead">Tell a friend to sign up with your referral url and both of you get 10 free plays (limited to 10 referrals)</p>
+          <div className="content-wrapper" style={{color: "#266586"}}>
+
+            <div className="text-center">
+              <h1 className="content-group text-semibold content-header text-center">
+                Free Plays
+              </h1>
+              <h3>Referral Program</h3>
+              <p>Tell a friend to sign up with your referral url and both of you and your friend get 10 free plays (limited to 10 referrals)</p>
             </div>
             <div className="row">
               <div className="form-group">
-                <label className="control-label col-lg-1">Referral URL</label>
-                <div className="col-lg-6">
-                  <div className="input-group">
-                    <input type="text" className="form-control" value={referral_url} readOnly />
-                    <span className="input-group-btn">
-                      <CopyToClipboard text={referral_url}
-                        onCopy={() => toastr.success("Copied to clipboard")}>
-                        <button className="btn bg-green" type="button">Copy to Clipboard</button>
-                      </CopyToClipboard>
-                    </span>
-                  </div>
+                <div className="input-group col-lg-6 col-lg-offset-3">
+                  <input type="text" className="form-control" value={referral_url} readOnly />
+                  <span className="input-group-btn">
+                    <CopyToClipboard text={referral_url}
+                      onCopy={() => toastr.success("Copied to clipboard")}>
+                      <button className="btn bg-teal-400" type="button">Copy to Clipboard</button>
+                    </CopyToClipboard>
+                  </span>
                 </div>
               </div>
             </div>
-            <hr />
             <div className="row">
-              <FacebookButton title="Share via facebook!" element='a' url={referral_url} message={message} appId='785415074997932'>
-                <i className="icon-facebook2" style={style}></i>
-              </FacebookButton>
-              <TwitterButton title="Share via twitter!" element='a' url={referral_url} message={message}>
-                <i className="icon-twitter2" style={style}></i>
-              </TwitterButton>
+              <center><div className="center">
+                Share:
+                <FacebookButton title="Share via facebook!" element='a' url={referral_url} message={message} appId='785415074997932'>
+                  <i className="icon-facebook2" style={style}></i>
+                </FacebookButton>
+                <TwitterButton title="Share via twitter!" element='a' url={referral_url} message={message}>
+                  <i className="icon-twitter2" style={style}></i>
+                </TwitterButton>
+              </div>
+            </center>
             </div>
           </div>
-          <p>
-            <small className="text-muted">*limited to ten referrals maximum</small>
-          </p>
         </div>
       </div>
     )

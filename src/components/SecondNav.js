@@ -92,7 +92,7 @@ class SecondNav extends Component {
             </li>
             <li className="text-center">
               <Link to="/referral">
-                <i className="fa fa-handshake"></i>
+                <img src="/img/3diamonds.png" style={{height: "13px"}}/>
                 <br />
                 Free Plays
               </Link>
