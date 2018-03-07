@@ -139,82 +139,93 @@ class Profile extends Component {
       <div className="page-container" style={{minHeight: "262px"}}>
         <div className="page-content">
           <div className="content-wrapper">
-            <div className="panel panel-flat">
-              <div className="panel-heading">
-                <h6 className="panel-title">Profile information<a className="heading-elements-toggle"><i className="icon-more"></i></a></h6>
+            <div className="row">
+              <div className="col-lg-6 col-lg-offset-3">
+                <h1 className="content-group text-semibold content-header text-center">
+                  Profile
+                </h1>
               </div>
+              <div className="row">
+              <div className="col-lg-6 col-lg-offset-3">
+                <div className="panel panel-flat">
+                  <div className="panel-heading">
+                    <h6 className="panel-title">Profile information<a className="heading-elements-toggle"><i className="icon-more"></i></a></h6>
+                  </div>
 
-              <div className="panel-body">
-                <form onSubmit={this.updateProfile} >
-                  <div className="form-group">
-                    <div className="row">
-                      <div className="col-md-6">
-                        <label>Bitcoin Address</label>
-                        <input type="text" className="form-control" ref="btc_address" onChange={this.handleChange} placeholder="1MiJFQvupX5kSZcUtfSoD9NtLevUgjv3uq" id="btc_address" />
+                  <div className="panel-body">
+                    <form onSubmit={this.updateProfile} >
+                      <div className="form-group">
+                        <div className="row">
+                          <div className="col-md-10 col-md-offset-1">
+                            <label>Bitcoin Address</label>
+                            <input type="text" className="form-control" ref="btc_address" onChange={this.handleChange} placeholder="1MiJFQvupX5kSZcUtfSoD9NtLevUgjv3uq" id="btc_address" />
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
 
-                  <div className="form-group">
-                    <div className="row">
-                      <div className="col-md-6">
-                        <label>Password</label>
-                        <input type="password" className="form-control" ref="password" onChange={this.handleChange} id="password" />
+                      <div className="form-group">
+                        <div className="row">
+                          <div className="col-md-10 col-md-offset-1">
+                            <label>Password</label>
+                            <input type="password" className="form-control" ref="password" onChange={this.handleChange} id="password" />
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
 
-                  <div className="text-right">
-                    <button type="submit" className="btn btn-primary"><i className="icon-floppy-disk"></i> Save</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-
-            <div className="panel panel-flat">
-              <div className="panel-heading">
-                <h6 className="panel-title">Change Email<a className="heading-elements-toggle"><i className="icon-more"></i></a></h6>
-              </div>
-
-              <div className="panel-body">
-                <form onSubmit={this.updateEmail} >
-                  <div className="form-group">
-                    <div className="row">
-                      <div className="col-md-6">
-                        <label>Email</label>
-                        <input type="email" className="form-control" ref="email" onChange={this.handleChange} id="email" />
+                      <div className="text-right">
+                        <button type="submit" className="btn btn-primary"><i className="icon-floppy-disk"></i> Save</button>
                       </div>
-                    </div>
+                    </form>
+                  </div>
+                </div>
+
+                <div className="panel panel-flat">
+                  <div className="panel-heading">
+                    <h6 className="panel-title">Change Email<a className="heading-elements-toggle"><i className="icon-more"></i></a></h6>
                   </div>
 
-                  <div className="text-right">
-                    <button type="submit" className="btn btn-primary"><i className="icon-floppy-disk"></i> Save</button>
+                  <div className="panel-body">
+                    <form onSubmit={this.updateEmail} >
+                      <div className="form-group">
+                        <div className="row">
+                          <div className="col-md-10 col-md-offset-1">
+                            <label>Email</label>
+                            <input type="email" className="form-control" ref="email" onChange={this.handleChange} id="email" />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="text-right">
+                        <button type="submit" className="btn btn-primary"><i className="icon-floppy-disk"></i> Save</button>
+                      </div>
+                    </form>
                   </div>
-                </form>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <Modal show={openModal} onHide={this.toggleModal} >
-          <Modal.Header className="bg-warning" closeButton>
-            <Modal.Title id='ModalHeader'>Save account changes</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <p>Re-enter your Cryptocades password to save changes to your account.</p>
-            <form onSubmit={this.reAuthenticate}>
-              <div className="form-group">
-                <input id="auth_password" className="form-control" type="password" placeholder="Password" onChange={this.handleChange} />
-                <p>
-                  <small>
-                    <Link to="/password/forget" >Forgot your password?</Link>
-                  </small>
-                </p>
-              </div>
-              <button type="submit" className="btn bg-blue btn-block">Save changes</button>
-            </form>
-          </Modal.Body>
-        </Modal>
       </div>
+      <Modal show={openModal} onHide={this.toggleModal} >
+        <Modal.Header className="bg-warning" closeButton>
+          <Modal.Title id='ModalHeader'>Save account changes</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Re-enter your Cryptocades password to save changes to your account.</p>
+          <form onSubmit={this.reAuthenticate}>
+            <div className="form-group">
+              <input id="auth_password" className="form-control" type="password" placeholder="Password" onChange={this.handleChange} />
+              <p>
+                <small>
+                  <Link to="/password/forget" >Forgot your password?</Link>
+                </small>
+              </p>
+            </div>
+            <button type="submit" className="btn bg-blue btn-block">Save changes</button>
+          </form>
+        </Modal.Body>
+      </Modal>
+    </div>
     )
   }
 }
