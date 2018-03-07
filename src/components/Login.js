@@ -84,52 +84,57 @@ class Login extends Component {
         <div className="page-content">
           <div className="content-wrapper">
             <form onSubmit={this.handleSubmit} >
-              <div className="panel panel-body login-form col-md-4 col-md-offset-4">
+              <div style={{paddingBottom: "40px"}} className="panel panel-body login-form col-md-4 col-md-offset-4 key-pattern">
                 <div className="text-center">
-                  <div className="icon-object border-slate-300 text-slate-300"><i className="icon-user"></i></div>
-                  <h5 className="content-group">Login to your account <small className="display-block">Enter your credentials below</small></h5>
-                </div>
+                  <img style={{height: "60px"}} alt="sign up" src="/img/diamond_lock.png"/>
+                  <h5 style={{color: "white"}} className="content-group">Log In</h5>
 
-                <div className="form-group has-feedback has-feedback-left">
-                  <input type="text" className="form-control" placeholder="Username" onChange={this.handleChange} id="username" />
-                  <div className="form-control-feedback">
-                    <i className="icon-user text-muted"></i>
+                  <p>Social Sign In</p>
+                  <div className="row">
+                    <div className="facebook-button col-md-10 col-md-offset-1">
+                      <FacebookLogin
+                        appId="785415074997932"
+                        autoLoad={false}
+                        size="small"
+                        scope="public_profile,email,user_birthday"
+                        icon="fa-facebook"
+                        fields="name,email,picture"
+                        callback={this.fbResponse} />
+                    </div>
                   </div>
-                </div>
+                  <h5 className="content-group">OR</h5>
 
-                <div className="form-group has-feedback has-feedback-left">
-                  <input type="password" className="form-control" placeholder="Password" onChange={this.handleChange} id="password" />
-                  <div className="form-control-feedback">
-                    <i className="icon-lock2 text-muted"></i>
-                  </div>
                 </div>
+                <div className="col-md-10 col-md-offset-1">
+                  <div className="form-group has-feedback has-feedback-left">
+                    <input type="text" className="form-control" placeholder="Username" onChange={this.handleChange} id="username" />
+                    <div className="form-control-feedback">
+                      <i className="icon-user text-muted"></i>
+                    </div>
+                  </div>
 
-                <div className="form-group">
-                  <button type="submit" className="btn btn-primary btn-block">Sign in <i className="icon-circle-right2 position-right"></i></button>
-                </div>
-                <div className="content-divider text-muted form-group"><span>Social Sign in</span></div>
-                <div className="text-center">
-                  <div>
-                    <FacebookLogin
-                      appId="785415074997932"
-                      autoLoad={false}
-                      size="small"
-                      scope="public_profile,email,user_birthday"
-                      icon="fa-facebook"
-                      fields="name,email,picture"
-                      callback={this.fbResponse} />
+                  <div className="form-group has-feedback has-feedback-left">
+                    <input type="password" className="form-control" placeholder="Password" onChange={this.handleChange} id="password" />
+                    <div className="form-control-feedback">
+                      <i className="icon-lock2 text-muted"></i>
+                    </div>
                   </div>
-                  <hr />
-                  <Link to="/password/forget">Forgot password?</Link>
-                  <p className="text-muted text-center"><small>Do not have an account?</small><Link className="btn btn-sm btn-white btn-block" to="/signup">Create an account</Link>
-                  </p>
+
+                  <div className="form-group text-center">
+                    <button type="submit" className="btn btn-block">Log in</button>
+                    <hr />
+                    <Link to="/password/forget">Forgot password?</Link>
+                    <p className="text-center">
+                      <small style={{color: "white"}} >Do not have an account?</small><Link to="/signup"> Create an account</Link>
+                    </p>
+                  </div>
                 </div>
               </div>
             </form>
           </div>
         </div>
       </div>
-    )
+)
   }
 }
 
