@@ -5,7 +5,7 @@ class GuestNav extends Component {
 
   render() {
     return (
-      <div className="navbar navbar-default navbar-custom">
+      <div className="navbar navbar-default firstbar" style={{backgroundColor: "#fdfbf0"}}>
         <div className="navbar-header">
           <Link className="navbar-brand" to="/"><img src="/img/logo.png" alt="" /></Link>
 

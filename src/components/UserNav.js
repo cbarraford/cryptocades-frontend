@@ -123,7 +123,7 @@ class UserNav extends Component {
     }
     const showTicketCount = balance > 0 ? "" : " hide"
     return (
-      <div className="navbar navbar-default">
+      <div className="navbar navbar-default firstbar" style={{backgroundColor: "#266586"}}>
         <div className="navbar-header">
           <Link className="navbar-brand" to="/"><img src="/img/logo.png" alt="" /></Link>
 
@@ -134,8 +134,6 @@ class UserNav extends Component {
 
         <div className="navbar-collapse collapse" id="navbar-mobile">
 
-          <p className="navbar-text"><span className="label bg-success-400">Jackpot ${(jackpot * btcPrice.usd).toFixed(2)} - <Countdown date={endtime} /></span></p>
-
           <ul className="nav navbar-nav navbar-right">
             <li>
               <a className="btn btn-icon" onClick={this.toggleModal}>
@@ -143,14 +141,14 @@ class UserNav extends Component {
                 <span className={"badge bg-warning-400" + showTicketCount}>{balance || 0}</span>
               </a>
             </li>
-            <li className="dropdown dropdown-user">
+            <li className="dropdown dropdown-user" style={{width: "180px"}}>
               <a className="dropdown-toggle" data-toggle="dropdown">
                 <img src={avatar} alt="" />
                 <span>{me.username || "unknown"}</span>
                 <i className="caret"></i>
               </a>
 
-              <ul className="dropdown-menu dropdown-menu-right">
+              <ul style={{marginTop: 0}} className="dropdown-menu dropdown-menu-right">
                 <li><Link to="/profile"><i className="icon-user-plus"></i> Profile</Link></li>
                 <li><Link to="/wallet"><i className="icon-coins"></i> Wallet</Link></li>
                 <li className="divider"></li>

@@ -5,12 +5,14 @@ body {
     background-color: #fdfbf0;
 }
 
-.navbar-default{
+.firstbar{
+    background: linear-gradient(to right, #57e5c4, #266586);
     background-image: url("/assets/images/header_footer.png");
-    height: 155px;
+    background-repeat: no-repeat;
+    height: 140px;
     background-size: contain;
-    background-color: #fdfbf0;
     border-color: #fdfbf0;
+    border-width: 0px;
 }
 
 .key-pattern {
@@ -40,18 +42,36 @@ body {
     width: 100%;
 }
 
-.navbar-default .navbar-nav > li > a:hover {
+.firstbar .navbar-nav > li > a:hover {
     background-color: transparent;
     color: white;
 }
 
-.navbar-default .navbar-nav > li > a {
+.firstbar .navbar-nav > li > a {
     color: white;
     font-size: 10px;
-    margin: 30px 0px;
+    margin-top: 30px;
 }
 
 .navbar-brand > img {
-    margin-top: 15px;
-    height: 60px;
+    margin-top: 25px;
+    margin-left: 20px;
+    height: 30px;
 }
+
+.secondbar {
+    background-image: none;
+    background-color: #266586;
+    color: white;
+}
+
+.secondbar .navbar-nav > li > a:hover {
+    background-color: transparent;
+    color: white;
+}
+
+.secondbar .navbar-nav > li > a {
+    color: white;
+}
+
+
