@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router-dom'
-import { Modal } from 'react-bootstrap/lib';
-import odds from 'odds';
 
 @inject('store')
 @inject('client')
@@ -14,7 +12,6 @@ class UserNav extends Component {
 
     this.state = {
       jackpots: [],
-      open: false,
       total_entries: 0,
       my_entries: 0,
       pending_entries: 0,
@@ -38,8 +35,6 @@ class UserNav extends Component {
         console.log(error)
       })
 
-    this.toggleModal = this.toggleModal.bind(this);
-    this.updateOdds = this.updateOdds.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -55,7 +50,9 @@ class UserNav extends Component {
       const amount = parseInt(this.state.pending_entries, 10);
       this.props.client.jackpotEnter(id, amount)
         .then((response) => {
-          this.toggleModal()
+          this.setState({ pending_entries: 0 }, () => {
+            this.refs.pending_entries.value = 0
+          })
           this.props.client.balance()
             .then((response) => {
               this.props.store.balance = response.data.balance
@@ -70,54 +67,9 @@ class UserNav extends Component {
     }
   }
 
-  toggleModal() {
-    this.props.client.balance()
-      .then((response) => {
-        this.props.store.balance = response.data.balance
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-
-    this.props.client.listJackpots()
-      .then((response) => {
-        this.setState({
-          jackpots: response.data,
-        }, () => {
-          this.updateOdds();
-          this.setState({ open: !this.state.open })
-        })
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
-
-  updateOdds() {
-    if (this.state.jackpots.length > 0) {
-      const id = this.state.jackpots[0].id
-      this.props.client.jackpotOdds(id)
-        .then((response) => {
-          this.setState({
-            total_entries: response.data.total,
-            my_entries: response.data.entries,
-          })
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    }
-  }
-
   render() {
-    const { me, btcPrice, balance } = this.props.store;
+    const { me, balance } = this.props.store;
     const avatar = (me.avatar || "").replace("\u0026", "&")
-    const { jackpots, open, total_entries, my_entries } = this.state;
-    const o = odds(my_entries, total_entries)
-    var jackpot = 0;
-    if (jackpots.length > 0) {
-      jackpot = jackpots[0].jackpot
-    }
     const showTicketCount = balance > 0 ? "" : " hide"
     return (
       <div className="navbar navbar-default firstbar" style={{backgroundColor: "#266586"}}>
@@ -132,16 +84,33 @@ class UserNav extends Component {
         <div className="navbar-collapse collapse" id="navbar-mobile">
 
           <ul className="nav navbar-nav navbar-right">
-            <li>
-              <a className="btn btn-icon" onClick={this.toggleModal}>
+            <li className="dropdown dropdown-user">
+              <a className="btn btn-icon" data-toggle="dropdown">
                 <i className="icon-ticket"></i>
-                <span className={"badge bg-warning-400" + showTicketCount}>{balance || 0}</span>
+                <span className={"badge bg-warning-400" + showTicketCount} style={{paddingTop:0, paddingBottom:0}}>{balance || 0}</span>
               </a>
+              <ul className="dropdown-menu dropdown-menu-right" style={{width: "400px", padding: 0}}>
+                <div class="panel panel-flat" style={{margin:0}}>
+                  <div class="panel-heading">
+                    <h6 class="panel-title">{(balance || 0) === 0 ? "Sorry, you have no plays to enter into the jackpot. Play a game to earn plays!": "You have up to " + balance + " plays to enter!"}</h6>
+                  </div>
+
+                  <div class="panel-body">
+                    <form onSubmit={this.handleSubmit}>
+                      <div className="form-group has-feedback">
+                        <input type="number" autoComplete="off" className="form-control" placeholder="Amount" onChange={this.handleChange} ref="pending_entries" id="pending_entries" />
+                      </div>
+
+                      <button type="submit" className="btn btn-block"style={{backgroundColor: "#266586", color: "#fdfbf0"}}>Enter Jackpot</button>
+                    </form>
+                  </div>
+                </div>
+              </ul>
             </li>
             <li className="dropdown dropdown-user" style={{width: "180px"}}>
               <a className="dropdown-toggle" data-toggle="dropdown">
                 <img src={avatar} alt="" />
-                <span>{me.username || "unknown"}</span>
+                <span>{me.username || "please wait..."}</span>
                 <i className="caret"></i>
               </a>
 
@@ -154,32 +123,6 @@ class UserNav extends Component {
             </li>
           </ul>
         </div>
-
-        <Modal
-          show={open}
-          onHide={this.toggleModal}
-        >
-          <Modal.Header className="bg-success" closeButton>
-            <Modal.Title id='ModalHeader'>Enter the Jackpot!</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <h6 className="text-semibold">${(jackpot * btcPrice.usd).toFixed(2)}</h6>
-            <p>Total entries: {total_entries}</p>
-
-            <hr />
-
-            <p>My entries: {my_entries}</p>
-            <p>Odds: {o.format('fractional')}</p>
-
-            <form onSubmit={this.handleSubmit}>
-              <div className="form-group has-feedback">
-                <input type="number" autoComplete="off" className="form-control" placeholder="Amount" onChange={this.handleChange} id="pending_entries" />
-              </div>
-
-              <button type="submit" className="btn bg-blue btn-block"> Enter Jackpot <i className="icon-arrow-right14 position-right"></i></button>
-            </form>
-          </Modal.Body>
-        </Modal>
       </div>
     );
   }
