@@ -29,7 +29,8 @@ class Referral extends Component {
     const { referral_code } = this.props.store.me
     const referral_url = this.state.baseURL + "/signup?referral=" + referral_code
     const message = "Get 10 free plays when you sign up for #Cryptocades with my referral code!"
-    const style = { fontSize: "3em", margin: "3px" }
+    const fbStyle = { color: "#3b5998", fontSize: "3em", margin: "3px" }
+    const twitterStyle = { color: "#00aced", fontSize: "3em", margin: "3px" }
     return (
       <div className="page-container" style={{minHeight: "262px"}}>
         <div className="page-content">
@@ -56,16 +57,17 @@ class Referral extends Component {
               </div>
             </div>
             <div className="row">
-              <center><div className="center">
-                Share:
-                <FacebookButton title="Share via facebook!" element='a' url={referral_url} message={message} appId='785415074997932'>
-                  <i className="icon-facebook2" style={style}></i>
-                </FacebookButton>
-                <TwitterButton title="Share via twitter!" element='a' url={referral_url} message={message}>
-                  <i className="icon-twitter2" style={style}></i>
-                </TwitterButton>
+              <div className="col-lg-4 col-lg-offset-5">
+                <div className="pull-right">
+                  Share:
+                  <FacebookButton title="Share via facebook!" element='a' url={referral_url} message={message} appId='785415074997932'>
+                    <i className="icon-facebook2" style={fbStyle}></i>
+                  </FacebookButton>
+                  <TwitterButton title="Share via twitter!" element='a' url={referral_url} message={message}>
+                    <i className="icon-twitter2" style={twitterStyle}></i>
+                  </TwitterButton>
+                </div>
               </div>
-            </center>
             </div>
           </div>
         </div>
