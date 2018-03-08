@@ -89,7 +89,7 @@ class Login extends Component {
                   <img style={{height: "60px"}} alt="sign up" src="/img/diamond_lock.png"/>
                   <h5 style={{color: "white"}} className="content-group">Log In</h5>
 
-                  <p>Social Sign In</p>
+                  <p>Social Log In</p>
                   <div className="row">
                     <div className="facebook-button col-md-10 col-md-offset-1">
                       <FacebookLogin
