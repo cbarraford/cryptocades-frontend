@@ -74,6 +74,7 @@ class MyEntries extends Component {
   render() {
     const { balance } = this.props.store;
     const { incomes, entries, jackpots, games, rank } = this.state;
+    const attrPanel = {minHeight: "140px", backgroundColor: "#57e5c4", color: "#266586"}
     var entryList = entries.map((entry) => {
       var jackpot = {jackpot: 0};
       for (var j of jackpots) {
@@ -116,32 +117,35 @@ class MyEntries extends Component {
       <div className="page-container" style={{minHeight: "68px"}}>
         <div className="page-content">
           <div className="content-wrapper">
-
+      
             <div className="row">
-              <div className="col-lg-4 col-lg-offset-2">
-                <div className="panel bg-teal-400">
-                  <div className="panel-body">
-                    <h3 className="no-margin">{balance}</h3>
-                    My Balance
-                    <div className="text-muted text-size-small"># of available plays to use</div>
+              <div className="col-lg-3 col-lg-offset-3">
+                <div className="panel" style={attrPanel}>
+                  <div className="panel-body text-center">
+                    <span style={{fontSize:"30px", fontWeight: 600}}>Balance</span>
+                    <h3 className="no-margin" style={{fontSize: "20px"}}><i class="icon-ticket"></i> {balance}</h3>
+                    <div className="text-size-small">
+                      Number of available plays to use
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="col-lg-4">
-                <div className="panel bg-blue-400">
-                  <div className="panel-body">
+              <div className="col-lg-3">
+                <div className="panel" style={attrPanel}>
+                  <div className="panel-body text-center">
+                    <span style={{fontSize:"30px", fontWeight: 600}}>Rank</span>
                     <h3 className="no-margin">{rank}%</h3>
-                    Earned play percentile
-                    <div className="text-muted text-size-small">(relative to other players)</div>
+                    <div className="text-size-small">
+                      Lifetime earnings ranking
+                    </div>
                   </div>
                 </div>
               </div>
-
             </div>
 
             <div className="row">
-              <div className="panel panel-flat col-lg-6 border-top-xlg border-top-warning">
+              <div className="panel panel-flat col-lg-6 border-top-xlg border-top-warning" style={{borderTopColor: "#57e5c4"}}>
                 <div className="panel-heading">
                   <h6 className="panel-title"><span className="text-semibold">Earned Plays</span></h6>
                 </div>
@@ -162,7 +166,7 @@ class MyEntries extends Component {
                 </div>
               </div>
 
-              <div className="panel panel-flat col-lg-6 border-top-xlg border-top-warning">
+              <div className="panel panel-flat col-lg-6 border-top-xlg border-top-warning" style={{borderTopColor: "#57e5c4"}}>
                 <div className="panel-heading">
                   <h6 className="panel-title"><span className="text-semibold">Spent Plays</span></h6>
                 </div>

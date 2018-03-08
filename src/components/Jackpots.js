@@ -149,7 +149,7 @@ class Jackpots extends Component {
                 <div className="panel-body text-center">
                   <span style={{fontSize:"30px", fontWeight: 600}}>Countdown</span>
                   <h6 className="">
-                    <Countdown date={Date.parse(jackpot['end_time'])} renderer={renderer}/>
+                    <i class="fas fa-clock"></i> <Countdown date={Date.parse(jackpot['end_time'])} renderer={renderer}/>
                   </h6>
                 </div>
               </div>
