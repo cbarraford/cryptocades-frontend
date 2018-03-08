@@ -49,7 +49,7 @@ class Referral extends Component {
                   <span className="input-group-btn">
                     <CopyToClipboard text={referral_url}
                       onCopy={() => toastr.success("Copied to clipboard")}>
-                      <button className="btn bg-teal-400" type="button">Copy to Clipboard</button>
+                      <button className="btn" type="button" style={{backgroundColor: "#266586", color: "white"}}>Copy to Clipboard</button>
                     </CopyToClipboard>
                   </span>
                 </div>

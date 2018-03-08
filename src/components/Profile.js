@@ -135,6 +135,10 @@ class Profile extends Component {
 
   render() {
     const { openModal } = this.state
+    const saveStyle = {
+      backgroundColor: "#266586",
+      color: "white",
+    }
     return (
       <div className="page-container" style={{minHeight: "262px"}}>
         <div className="page-content">
@@ -173,7 +177,7 @@ class Profile extends Component {
                       </div>
 
                       <div className="text-right">
-                        <button type="submit" className="btn btn-primary"><i className="icon-floppy-disk"></i> Save</button>
+                        <button type="submit" className="btn" style={saveStyle}><i className="icon-floppy-disk"></i> Save</button>
                       </div>
                     </form>
                   </div>
@@ -196,7 +200,7 @@ class Profile extends Component {
                       </div>
 
                       <div className="text-right">
-                        <button type="submit" className="btn btn-primary"><i className="icon-floppy-disk"></i> Save</button>
+                        <button type="submit" className="btn" style={saveStyle}><i className="icon-floppy-disk"></i> Save</button>
                       </div>
                     </form>
                   </div>
