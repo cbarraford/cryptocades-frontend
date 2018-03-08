@@ -59,6 +59,7 @@ class Games extends Component {
             </h1>
 
             <div className="row">
+              <div className="col-lg-3"></div>
               {gameList}
             </div>
           </div>
