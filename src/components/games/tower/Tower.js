@@ -54,10 +54,23 @@ function setScore(score) {
   }
 }
 
+function setThrottle(throttle) {
+  if (state.throttle.value !== throttle) {
+    state.throttle.value = throttle;
+    if (state.throttle.text !== null) {
+      state.throttle.text.setText(throttle + "%");
+    }
+  }
+}
+
 function preload() {
   this.load.image('floor', '/img/games/1/tower_floor.png');
   this.load.image('floor-base', '/img/games/1/tower_base.png');
-  this.load.image('cloud', '/img/games/1/cloud.png');
+  this.load.image('floor-award', '/img/games/1/tower_award.png');
+  this.load.image('cloud1', '/img/games/1/cloud1.png');
+  this.load.image('cloud2', '/img/games/1/cloud2.png');
+  this.load.image('cloud3', '/img/games/1/cloud3.png');
+  this.load.image('cloud4', '/img/games/1/cloud4.png');
   this.load.image('ground', '/img/games/1/ground.png');
   this.load.image('sky', '/img/games/1/sky.jpg');
   this.load.image('throttle_panel', '/img/games/1/throttle_panel.png');
@@ -68,13 +81,24 @@ function create() {
   state.score.text = this.add.text(0, 0, "Score: 0", { fontSize: '16px', fill: '#000' })
   state.score.text.setDepth(100)
   state.score.text.setScrollFactor(0)
-  setScore(0)
-  window.score = state.score.text
+  setThrottle(0)
 
   state.floor.text = this.add.text(0, 20, "Floors: 0", { fontSize: '16px', fill: '#000' })
   state.floor.text.setDepth(100)
   state.floor.text.setScrollFactor(0)
   setFloor(0)
+  
+
+  state.throttle.text = this.add.text(0, 80, "100%", { fontSize: '17px', fill: '#000', align: 'right' })
+  state.throttle.text.setDepth(100)
+  state.throttle.text.setScrollFactor(0)
+  setThrottle(0)
+  window.throttle_text = state.throttle.text
+
+  let throttle_label = this.add.text(60, 100, "Speed", { fontSize: '18px', fill: '#000' })
+  throttle_label.setDepth(100)
+  throttle_label.setScrollFactor(0)
+  throttle_label.setRotation(1.5708)
 
   state.sky = this.add.sprite(
     state.canvas.width / 2,
@@ -95,24 +119,24 @@ function create() {
   throttle_panel.setScale(0.5)
   throttle_panel.setScrollFactor(0)
   throttle_panel.setPosition(
-    10,
+    20,
     state.canvas.height - 130,
   )
 
-  state.throttle = this.add.sprite(
-    10,
+  let throttle = this.add.sprite(
+    20,
     state.canvas.height,
     'throttle_knob',
   ).setInteractive()
-  state.throttle.setDepth(1001)
-  state.throttle.setScrollFactor(0)
-  state.throttle.setScale(0.3)
-  state.throttle.name = "throttle"
-  state.throttle.setPosition(
-    10,
-    throttle_panel.getTopLeft().y + 10,
+  throttle.setDepth(1001)
+  throttle.setScrollFactor(0)
+  throttle.setScale(0.3)
+  throttle.name = "throttle"
+  throttle.setPosition(
+    20,
+    throttle_panel.getTopLeft().y + 20,
   )
-  this.input.setDraggable(state.throttle)
+  this.input.setDraggable(throttle)
 
   state.ground = this.add.sprite(
     state.canvas.width / 2,
@@ -128,10 +152,6 @@ function create() {
   this.cameras.main.setSize(state.canvas.width, state.canvas.height);
 
   // EVENTS //
-  this.input.on('gameobjectup', function (event, obj) {
-    obj.setTint(Math.random() * 16000000);
-  });
-
   this.input.keyboard.on('keydown', function (event) {
     if (event.keyCode === 32) {}
   });
@@ -144,8 +164,8 @@ function create() {
   this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
     // move throttle up/down throttle panel
     // math here is confusing because higher Y value is a lower throttle :(
-    let max = throttle_panel.getTopLeft().y + 10
-    let min = throttle_panel.getBottomLeft().y - 10
+    let max = throttle_panel.getTopLeft().y + 20
+    let min = throttle_panel.getBottomLeft().y - 20
     dragY = Math.max(max, dragY)
     dragY = Math.min(min, dragY)
     gameObject.y = dragY
@@ -153,10 +173,10 @@ function create() {
 
   this.input.on('dragend', function (pointer, gameObject) {
     gameObject.clearTint();
-    let max = throttle_panel.getTopLeft().y + 10
-    let min = throttle_panel.getBottomLeft().y - 10
+    let max = throttle_panel.getTopLeft().y + 20
+    let min = throttle_panel.getBottomLeft().y - 20
+    setThrottle(Math.round((gameObject.y - min) / (max - min) * 100))
     let throttle = 100 - Math.round((gameObject.y - min) / (max - min) * 100)
-    console.log("throttle set", throttle)
     miner.miner.setThrottle(throttle)
     if (throttle === 100) {
       miner.stop()
@@ -170,10 +190,13 @@ function update() {
   if (state.tower.getLength() < state.floor.value) {
     let h = (state.canvas.height - 40) - ((state.floor.value - 2) * 80)
     h = state.tower.getLength() === 0 ? h : h - 7;
+    let floor_type = 'floor'
+    if (state.tower.getLength() % 20 === 0) { floor_type = 'floor-award' }
+    if (state.tower.getLength() === 0) { floor_type = 'floor-base' }
     state.tower.create(
       state.canvas.width / 2,
       h,
-      state.tower.getLength() === 0 ? 'floor-base' : 'floor', // TODO: first floor should be floor with door
+      floor_type,
     )
     let new_floor = state.tower.getChildren()[state.tower.getLength() - 1]
     new_floor.setDepth(10)
@@ -199,7 +222,6 @@ function update() {
 
   if (sky_objects.cloud.count <= sky_objects.cloud.max && Phaser.Math.RND.between(1, 10000) >= sky_objects.cloud.prob) {
     let tower_height = state.tower.getLength() * 80
-    console.log("FOOO", tower_height)
     if (tower_height > sky_objects.cloud.low_limit && tower_height < sky_objects.cloud.high_limit) {
       
       sky_objects.cloud.count += 1
@@ -209,12 +231,12 @@ function update() {
       let cloud = this.add.sprite(
         state.canvas.width + 100, // off-screen to the right
         y, 
-        'cloud',
+        'cloud' + Phaser.Math.RND.between(1, 4),
       )
 
       const scale = Phaser.Math.RND.realInRange(0.1, 0.4)
       cloud.setScale(scale,scale)
-      cloud.setDepth(scale * 100)
+      //cloud.setDepth(scale * 100)
       this.tweens.add({
         targets: cloud,
         x: -100,

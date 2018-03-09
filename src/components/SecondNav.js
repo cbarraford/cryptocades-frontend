@@ -79,7 +79,7 @@ class SecondNav extends Component {
             <br />
             <span>
               <span style={{fontSize: "30px", fontWeight:600}}>
-                <i class="fab fa-bitcoin"></i> {jackpot} ≈ ${(jackpot * btcPrice.usd).toFixed(2)}
+                <i className="fab fa-bitcoin"></i> {jackpot} ≈ ${(jackpot * btcPrice.usd).toFixed(2)}
               </span>
             </span>
           </div>

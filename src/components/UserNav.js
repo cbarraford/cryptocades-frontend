@@ -90,12 +90,12 @@ class UserNav extends Component {
                 <span className={"badge bg-warning-400" + showTicketCount} style={{paddingTop:0, paddingBottom:0}}>{balance || 0}</span>
               </a>
               <ul className="dropdown-menu dropdown-menu-right" style={{width: "400px", padding: 0}}>
-                <div class="panel panel-flat" style={{margin:0}}>
-                  <div class="panel-heading">
-                    <h6 class="panel-title">{(balance || 0) === 0 ? "Sorry, you have no plays to enter into the jackpot. Play a game to earn plays!": "You have up to " + balance + " plays to enter!"}</h6>
+                <div className="panel panel-flat" style={{margin:0}}>
+                  <div className="panel-heading">
+                    <h6 className="panel-title">{(balance || 0) === 0 ? "Sorry, you have no plays to enter into the jackpot. Play a game to earn plays!": "You have up to " + balance + " plays to enter!"}</h6>
                   </div>
 
-                  <div class="panel-body">
+                  <div className="panel-body">
                     <form onSubmit={this.handleSubmit}>
                       <div className="form-group has-feedback">
                         <input type="number" autoComplete="off" className="form-control" placeholder="Amount" onChange={this.handleChange} ref="pending_entries" id="pending_entries" />
