@@ -258,7 +258,7 @@ function update() {
         obj.count += 1
         let y = Phaser.Math.RND.between(0 + 30, state.canvas.height - 30)
         // don't want stuff flying ground level in the beginning 
-        if (state.tower.getLength() <= 5) {
+        if (state.tower.getLength() <= 6) {
           y = Math.min(y, tower_height / 2)
         }
 
