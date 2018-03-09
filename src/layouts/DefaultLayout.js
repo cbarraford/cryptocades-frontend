@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 import UserNav from '../components/UserNav';
 import GuestNav from '../components/GuestNav';
 import SecondNav from '../components/SecondNav';
+import cookie from 'react-cookies'
 import ReactGA from 'react-ga';
 
 ReactGA.initialize('UA-113906692-1');
@@ -24,6 +25,13 @@ class DefaultLayout extends Component {
       })
       .catch((error) => {
         console.log(error)
+        if (error.response.status === 401 && this.props.store.token !== null) {
+          cookie.remove('token', { path: '/' })
+          cookie.remove('token_expire', { path: '/' });
+          cookie.remove('token_escalated', { path: '/' });
+          this.props.store.me = {};
+          this.props.store.token = null;
+        }
         this.props.store.me = {}
       })
 
@@ -40,8 +48,9 @@ class DefaultLayout extends Component {
 
   render() {
     // TODO: be more dry about these rendered returns 
-
-    const { logged_in } = this.props.store
+    /*eslint no-unused-vars: */
+    // we import `me` only to trigger a re-render when me gets updated
+    const { me, logged_in } = this.props.store
 
     if (logged_in) {
       return (
