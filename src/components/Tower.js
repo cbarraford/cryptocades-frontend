@@ -24,11 +24,7 @@ class Tower extends Component {
     return (
       <div className="wrapper wrapper-content">
         <div className="container">
-          <div className="row">
-            <div className="" style={{padding: "10px 200px"}}>
-              <Game height={300} width={800} userId={userId} gameId={gameId} />
-            </div>
-          </div>
+          <Game height={300} width={800} userId={userId} gameId={gameId} />
         </div>
       </div>
     );

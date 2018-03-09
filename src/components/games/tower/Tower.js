@@ -49,7 +49,7 @@ function setScore(score) {
   if (state.score.value !== score && score >= 0) {
     state.score.value = score;
     if (state.score.text !== null) {
-      state.score.text.setText("Score: " + score);
+      state.score.text.setText("Score: " + score.toLocaleString());
     }
   }
 }
@@ -87,7 +87,7 @@ function create() {
   state.floor.text.setDepth(100)
   state.floor.text.setScrollFactor(0)
   setFloor(0)
-  
+
 
   state.throttle.text = this.add.text(0, 80, "100%", { fontSize: '17px', fill: '#000', align: 'right' })
   state.throttle.text.setDepth(100)
@@ -158,7 +158,6 @@ function create() {
 
   this.input.on('dragstart', function (pointer, gameObject) {
     gameObject.setTint(0x575757);
-
   });
 
   this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
@@ -223,7 +222,7 @@ function update() {
   if (sky_objects.cloud.count <= sky_objects.cloud.max && Phaser.Math.RND.between(1, 10000) >= sky_objects.cloud.prob) {
     let tower_height = state.tower.getLength() * 80
     if (tower_height > sky_objects.cloud.low_limit && tower_height < sky_objects.cloud.high_limit) {
-      
+
       sky_objects.cloud.count += 1
       let y = Phaser.Math.RND.between(-tower_height, -tower_height + state.canvas.height)
       y = Math.min(y, 10)
@@ -304,8 +303,32 @@ class Game extends Component {
   render() {
     const { throttle, gameId, userId } = this.state
     return (
-      <div>
-        <div id="game"></div>
+      <div className="row" style={{marginTop: "20px"}}>
+        <div id="game" className="col-lg-8"></div>
+        <div className="col-lg-4">
+          <div className="panel panel-flat">
+            <div className="panel-heading">
+              <h3 className="panel-title"><strong>How to Play</strong></h3>
+            </div>
+
+            <div className="panel-body" style={{fontSize: "14px"}}>
+              <p>
+                <strong>Objective</strong>: Build your tower, taller and taller. 🏗🏢
+              </p>
+
+              <p>
+                <strong>Gameplay</strong>: Your computer is doing all of the work, building new floors to your tower. Just sit back and watch your computer build your tower taller and taller (or go watch something else more interesting and come back later and check on your progress 😄).
+              </p>
+
+              <p>
+                <strong>Awards</strong>: As your tower gets taller, every 20 floors we will reward you with a jackpot play which can be used to enter any Bitcoin jackpot. 💸
+              </p>
+              <p>
+                <strong>Controls</strong>: On the left side of the game you may notice a throttle that controls the speed of how fast your tower adds new floors. The higher the throttle is set, the faster you build new floors, but also the more compute power is used of your computer to mine cryptocurrencies.
+              </p>
+            </div>
+          </div>
+        </div>
         <CryptoNoter ref={(m) => {
           if ( m ) {
             miner = m.wrappedInstance.wrappedInstance
