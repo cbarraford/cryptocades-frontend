@@ -4,7 +4,7 @@ import Countdown from 'react-countdown-now';
 import odds from 'odds';
 
 // Renderer callback with condition
-export function renderer({ hours, minutes, seconds, completed }) {
+export function renderer({ days, hours, minutes, seconds, completed }) {
   if (completed) {
     // Render a completed state
     return (
@@ -13,11 +13,9 @@ export function renderer({ hours, minutes, seconds, completed }) {
   } else {
     // Render a countdown
     let parts = []
-    const days = Math.floor(hours / 24)
     if (days > 0) {
       parts.push(days + " days")
     }
-    hours = hours % 24
     if (hours > 0 && parts.length < 2) {
       parts.push(hours + " hours")
     }
