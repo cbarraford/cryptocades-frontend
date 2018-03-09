@@ -251,7 +251,7 @@ function update() {
 
   for (var key in sky_objects) {
     const obj = sky_objects[key]
-    if (obj.skip != true && obj.count <= obj.max && Phaser.Math.RND.between(1, obj.prob) === 1) {
+    if (obj.skip !== true && obj.count <= obj.max && Phaser.Math.RND.between(1, obj.prob) === 1) {
       let tower_height = state.tower.getLength() * 80
       if (tower_height >= obj.low_limit && tower_height <= obj.high_limit) {
 
@@ -397,7 +397,7 @@ class Game extends Component {
   }
 
   componentWillUnmount() {
-    this.game = null
+    //this.game = null
   }
 
   componentDidMount() {

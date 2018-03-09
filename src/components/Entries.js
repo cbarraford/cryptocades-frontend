@@ -123,7 +123,7 @@ class MyEntries extends Component {
                 <div className="panel" style={attrPanel}>
                   <div className="panel-body text-center">
                     <span style={{fontSize:"30px", fontWeight: 600}}>Balance</span>
-                    <h3 className="no-margin" style={{fontSize: "20px"}}><i class="icon-ticket"></i> {balance}</h3>
+                    <h3 className="no-margin" style={{fontSize: "20px"}}><i className="icon-ticket"></i> {balance}</h3>
                     <div className="text-size-small">
                       Number of available plays to use
                     </div>
