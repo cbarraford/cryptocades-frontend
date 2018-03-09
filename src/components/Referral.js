@@ -45,7 +45,7 @@ class Referral extends Component {
             </div>
             <div className="row">
               <div className="form-group">
-                <div className="input-group col-lg-6 col-lg-offset-3">
+                <div className="input-group col-md-6 col-md-offset-3">
                   <input type="text" className="form-control" value={referral_url} readOnly />
                   <span className="input-group-btn">
                     <CopyToClipboard text={referral_url}
@@ -57,7 +57,7 @@ class Referral extends Component {
               </div>
             </div>
             <div className="row">
-              <div className="col-lg-4 col-lg-offset-5">
+              <div className="col-md-4 col-md-offset-5">
                 <div className="pull-right">
                   Share:
                   <FacebookButton title="Share via facebook!" element='a' url={referral_url} message={message} appId='785415074997932'>

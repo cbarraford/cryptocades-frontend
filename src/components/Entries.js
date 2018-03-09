@@ -119,7 +119,7 @@ class MyEntries extends Component {
           <div className="content-wrapper">
       
             <div className="row">
-              <div className="col-lg-3 col-lg-offset-3">
+              <div className="col-md-3 col-md-offset-3">
                 <div className="panel" style={attrPanel}>
                   <div className="panel-body text-center">
                     <span style={{fontSize:"30px", fontWeight: 600}}>Balance</span>
@@ -131,7 +131,7 @@ class MyEntries extends Component {
                 </div>
               </div>
 
-              <div className="col-lg-3">
+              <div className="col-md-3">
                 <div className="panel" style={attrPanel}>
                   <div className="panel-body text-center">
                     <span style={{fontSize:"30px", fontWeight: 600}}>Rank</span>
@@ -145,7 +145,7 @@ class MyEntries extends Component {
             </div>
 
             <div className="row">
-              <div className="panel panel-flat col-lg-6 border-top-xlg border-top-warning" style={{borderTopColor: "#57e5c4"}}>
+              <div className="panel panel-flat col-md-6 border-top-xlg border-top-warning" style={{borderTopColor: "#57e5c4"}}>
                 <div className="panel-heading">
                   <h6 className="panel-title"><span className="text-semibold">Earned Plays</span></h6>
                 </div>
@@ -166,7 +166,7 @@ class MyEntries extends Component {
                 </div>
               </div>
 
-              <div className="panel panel-flat col-lg-6 border-top-xlg border-top-warning" style={{borderTopColor: "#57e5c4"}}>
+              <div className="panel panel-flat col-md-6 border-top-xlg border-top-warning" style={{borderTopColor: "#57e5c4"}}>
                 <div className="panel-heading">
                   <h6 className="panel-title"><span className="text-semibold">Spent Plays</span></h6>
                 </div>

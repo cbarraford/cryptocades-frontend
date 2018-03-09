@@ -27,7 +27,7 @@ class Games extends Component {
     const meId = this.props.store.me.id
     var gameList = games.map((game) => {
       return (
-        <div key={game['id']} className="col-lg-3 ">
+        <div key={game['id']} className="col-md-3 ">
           <div className="thumbnail">
             <div className="thumb">
               <Link to={"/games/" + game['id'] + "/" + meId}>
@@ -60,7 +60,7 @@ class Games extends Component {
             </h1>
 
             <div className="row">
-              <div className="col-lg-3"></div>
+              <div className="col-md-3"></div>
               {gameList}
             </div>
           </div>

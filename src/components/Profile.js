@@ -144,13 +144,13 @@ class Profile extends Component {
         <div className="page-content">
           <div className="content-wrapper">
             <div className="row">
-              <div className="col-lg-6 col-lg-offset-3">
+              <div className="col-md-6 col-md-offset-3">
                 <h1 className="content-group text-semibold content-header text-center">
                   Profile
                 </h1>
               </div>
               <div className="row">
-              <div className="col-lg-6 col-lg-offset-3">
+              <div className="col-md-6 col-md-offset-3">
                 <div className="panel panel-flat">
                   <div className="panel-heading">
                     <h6 className="panel-title">Profile information<a className="heading-elements-toggle"><i className="icon-more"></i></a></h6>

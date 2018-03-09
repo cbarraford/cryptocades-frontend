@@ -120,7 +120,7 @@ class Jackpots extends Component {
         <div key={jackpot['id']}>
           <div className="row">
 
-            <div className="col-lg-4">
+            <div className="col-md-4">
               <div className="panel" style={attrPanel}>
                 <div className="panel-body text-center">
                   <span style={{fontSize:"30px", fontWeight: 600}}>Prize</span>
@@ -132,7 +132,7 @@ class Jackpots extends Component {
               </div>
             </div>
 
-            <div className="col-lg-4">
+            <div className="col-md-4">
               <div className="panel" style={attrPanel}>
                 <div className="panel-body text-center">
                   <span style={{fontSize:"30px", fontWeight: 600}}>Your Odds</span>
@@ -144,7 +144,7 @@ class Jackpots extends Component {
               </div>
             </div>
 
-            <div className="col-lg-4">
+            <div className="col-md-4">
               <div className="panel" style={attrPanel}>
                 <div className="panel-body text-center">
                   <span style={{fontSize:"30px", fontWeight: 600}}>Countdown</span>
@@ -157,7 +157,7 @@ class Jackpots extends Component {
           </div>
 
           <div className="row">
-            <div className="panel panel-flat border-top-xlg border-top-warning col-lg-6 col-lg-offset-3" style={{borderTopColor: "#57e5c4"}}>
+            <div className="panel panel-flat border-top-xlg border-top-warning col-md-6 col-md-offset-3" style={{borderTopColor: "#57e5c4"}}>
               <div className="panel-heading">
                 <h6 className="panel-title"><span className="text-semibold">Enter amount of plays to enter</span></h6>
               </div>

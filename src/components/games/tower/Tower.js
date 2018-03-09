@@ -361,8 +361,8 @@ class Game extends Component {
     const { throttle, gameId, userId } = this.state
     return (
       <div className="row" style={{marginTop: "20px"}}>
-        <div id="game" className="col-lg-8"></div>
-        <div className="col-lg-4">
+        <div id="game" className="col-md-8"></div>
+        <div className="col-md-4">
           <div className="panel panel-flat">
             <div className="panel-heading">
               <h3 className="panel-title"><strong>How to Play</strong></h3>
