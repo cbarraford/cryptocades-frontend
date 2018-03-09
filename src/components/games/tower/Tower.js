@@ -48,7 +48,7 @@ let sky_objects = {
   airplane: {
     skip: false,
     count: 0,
-    low_limit: 0,
+    low_limit: 300,
     high_limit: 100000,
     scale_low:0.5,
     scale_high:0.8,
