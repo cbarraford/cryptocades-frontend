@@ -23,9 +23,11 @@ class Tower extends Component {
     const { id } = this.props.store.me
     const { gameId, userId } = this.state;
     return (
-      <div className="wrapper wrapper-content">
-        <div className="container">
-          <Game height={600} width={800} userId={userId || id.toString()} gameId={gameId} />
+      <div className="page-container" style={{minHeight: "68px"}}>
+        <div className="page-content">
+          <div className="wrapper wrapper-content">
+            <Game height={600} width={800} userId={userId || id.toString()} gameId={gameId} />
+          </div>
         </div>
       </div>
     );

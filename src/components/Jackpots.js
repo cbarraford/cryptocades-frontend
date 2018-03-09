@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react';
 import Countdown from 'react-countdown-now';
-import dateFormat from 'dateformat'
 import odds from 'odds';
 
 // Renderer callback with condition
@@ -177,7 +175,7 @@ class Jackpots extends Component {
       )
     })
 
-    var completedJackpots = jackpots.map((jackpot) => {
+      /*var completedJackpots = jackpots.map((jackpot) => {
       if (Date.parse(jackpot.end_time) >= Date.now()) {
         return ""
       }
@@ -203,7 +201,7 @@ class Jackpots extends Component {
           </div>
         </div>
       )
-    })
+    }) */
 
     return (
       <div className="page-container" style={{minHeight: "68px"}}>
