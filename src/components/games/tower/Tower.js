@@ -28,11 +28,40 @@ let state = {
 
 let sky_objects = {
   cloud: {
+    skip: false,
     count: 0,
     low_limit: 0,
     high_limit: 100000,
+    scale_low:0.1,
+    scale_high:0.4,
+    duration_low: 10,
+    duration_high: 20,
     max: 5,
-    prob: 9900,
+    prob: 500,
+    objName: () => {
+      return 'cloud' + Phaser.Math.RND.between(1, 4)
+    },
+    direction: () => {
+      return 0
+    }
+  },
+  airplane: {
+    skip: false,
+    count: 0,
+    low_limit: 0,
+    high_limit: 100000,
+    scale_low:0.5,
+    scale_high:0.8,
+    duration_low: 10,
+    duration_high: 20,
+    max: 1,
+    prob: 5000,
+    objName: () => {
+      return 'airplane'
+    },
+    direction: () => {
+      return Phaser.Math.RND.between(0,1)
+    }
   }
 }
 
@@ -71,6 +100,7 @@ function preload() {
   this.load.image('cloud2', '/img/games/1/cloud2.png');
   this.load.image('cloud3', '/img/games/1/cloud3.png');
   this.load.image('cloud4', '/img/games/1/cloud4.png');
+  this.load.image('airplane', '/img/games/1/airplane.png');
   this.load.image('ground', '/img/games/1/ground.png');
   this.load.image('sky', '/img/games/1/sky.jpg');
   this.load.image('throttle_panel', '/img/games/1/throttle_panel.png');
@@ -120,7 +150,7 @@ function create() {
   throttle_panel.setScrollFactor(0)
   throttle_panel.setPosition(
     20,
-    state.canvas.height - 130,
+    170,
   )
 
   let throttle = this.add.sprite(
@@ -199,7 +229,7 @@ function update() {
     )
     let new_floor = state.tower.getChildren()[state.tower.getLength() - 1]
     new_floor.setDepth(10)
-    if (state.tower.getLength() >= 3) {
+    if (state.tower.getLength() >= 6) {
       this.cameras.main.startFollow(new_floor);
     }
     this.tweens.add({
@@ -219,33 +249,60 @@ function update() {
     duration: 1000,
   });
 
-  if (sky_objects.cloud.count <= sky_objects.cloud.max && Phaser.Math.RND.between(1, 10000) >= sky_objects.cloud.prob) {
-    let tower_height = state.tower.getLength() * 80
-    if (tower_height > sky_objects.cloud.low_limit && tower_height < sky_objects.cloud.high_limit) {
+  for (var key in sky_objects) {
+    const obj = sky_objects[key]
+    if (obj.skip != true && obj.count <= obj.max && Phaser.Math.RND.between(1, obj.prob) === 1) {
+      let tower_height = state.tower.getLength() * 80
+      if (tower_height >= obj.low_limit && tower_height <= obj.high_limit) {
 
-      sky_objects.cloud.count += 1
-      let y = Phaser.Math.RND.between(-tower_height, -tower_height + state.canvas.height)
-      y = Math.min(y, 10)
+        obj.count += 1
+        let y = Phaser.Math.RND.between(0 + 30, state.canvas.height - 30)
+        // don't want stuff flying ground level in the beginning 
+        if (state.tower.getLength() <= 5) {
+          y = Math.min(y, tower_height / 2)
+        }
 
-      let cloud = this.add.sprite(
-        state.canvas.width + 100, // off-screen to the right
-        y, 
-        'cloud' + Phaser.Math.RND.between(1, 4),
-      )
+        let direction = obj.direction()
+        let x = state.canvas.width + 100 
+        let x_target = -100
+        if (direction === 1) {
+          x = -100
+          x_target = state.canvas.width + 100
+        }
+        let sprite = this.add.sprite(
+          x,
+          y, 
+          obj.objName(),
+        )
 
-      const scale = Phaser.Math.RND.realInRange(0.1, 0.4)
-      cloud.setScale(scale,scale)
-      //cloud.setDepth(scale * 100)
-      this.tweens.add({
-        targets: cloud,
-        x: -100,
-        ease: 'linear',
-        duration: scale * 100000,
-        onComplete: function() {
-          cloud.destroy()
-          sky_objects.cloud.count -= 1
-        },
-      });
+        if (direction === 1) {
+          sprite.setFlipX(true)
+        }
+
+        if (obj.scale_low > 0 || obj.scale_high > 0) {
+          const scale = Phaser.Math.RND.realInRange(
+            obj.scale_low,
+            obj.scale_high,
+          )
+          sprite.setScale(scale,scale)
+        }
+
+        const duration = Phaser.Math.RND.realInRange(
+          obj.duration_low,
+          obj.duration_high,
+        ) * 1000
+
+        this.tweens.add({
+          targets: sprite,
+          x: x_target,
+          ease: 'linear',
+          duration: duration,
+          onComplete: function() {
+            sprite.destroy()
+            obj.count -= 1
+          },
+        });
+      }
     }
   }
 }
