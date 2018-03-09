@@ -313,7 +313,7 @@ function createGame(width, height) {
     backgroundColor: '#000',
     width: width,
     height: height,
-    type: Phaser.AUTO,
+    type: Phaser.CANVAS,
     parent: 'game',
     title: 'Tallest Tower',
     version: '0.2a',
@@ -397,12 +397,11 @@ class Game extends Component {
   }
 
   componentWillUnmount() {
-    //this.game = null
+    this.game = null
   }
 
   componentDidMount() {
     this.game = createGame(this.state.width, this.state.height);
-    window.game = this.game
   }
 }
 
