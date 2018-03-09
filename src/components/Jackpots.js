@@ -124,7 +124,7 @@ class Jackpots extends Component {
               <div className="panel" style={attrPanel}>
                 <div className="panel-body text-center">
                   <span style={{fontSize:"30px", fontWeight: 600}}>Prize</span>
-                  <h3 className="no-margin" style={{fontSize: "20px"}}><i class="fab fa-bitcoin"></i> {jackpot.jackpot}</h3>
+                  <h3 className="no-margin" style={{fontSize: "20px"}}><i className="fab fa-bitcoin"></i> {jackpot.jackpot}</h3>
                   <div className="text-size-small">
                     (valued at ~${(jackpot['jackpot'] * btcPrice.usd).toFixed(2)} USD)
                   </div>
@@ -149,7 +149,7 @@ class Jackpots extends Component {
                 <div className="panel-body text-center">
                   <span style={{fontSize:"30px", fontWeight: 600}}>Countdown</span>
                   <h6 className="">
-                    <i class="fas fa-clock"></i> <Countdown date={Date.parse(jackpot['end_time'])} renderer={renderer}/>
+                    <i className="fas fa-clock"></i> <Countdown date={Date.parse(jackpot['end_time'])} renderer={renderer}/>
                   </h6>
                 </div>
               </div>
