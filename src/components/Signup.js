@@ -181,11 +181,11 @@ class Signup extends Component {
                     <div className="checkbox">
                       <label>
                         <div className="checker">
-                          <span className={this.state.tos ? "checked" : ""}>
+                          <span className={this.state.tos ? "checked" : ""} style={{color: "inherit", borderColor:"inherit"}}>
                             <input type="checkbox" onChange={this.handleChange} checked={this.state.tos} name='tos' />
                           </span>
                         </div>
-                        Accept <Link to="#">terms of service</Link>
+                        Accept <Link to="https://cryptocades.com/terms/">terms of service</Link>
                       </label>
                     </div>
                   </div>

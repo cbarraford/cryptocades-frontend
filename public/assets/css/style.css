@@ -30,6 +30,7 @@ body {
 
 .key-pattern a:link, .key-pattern a:visited {
     color: #57e5c4;
+    text-decoration: underline;
 }
 
 .facebook-button button {
