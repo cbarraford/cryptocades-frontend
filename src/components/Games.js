@@ -42,7 +42,7 @@ class Games extends Component {
                 <Link to={"/games/" + game['id'] + "/" + meId} className="text-default">
                   {game['name']}
                 </Link>
-                <span className="pull-right badge" style={{backgroundColor:"#266586"}}>{game.type}</span>
+                <span className="pull-right badge" style={{backgroundColor:"#266586", fontSize: "15px", padding: "5px"}}>{game.type}</span>
               </h6>
               {game['description']}
             </div>
