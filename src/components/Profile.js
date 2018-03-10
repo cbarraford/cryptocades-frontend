@@ -161,7 +161,7 @@ class Profile extends Component {
                       <div className="form-group">
                         <div className="row">
                           <div className="col-md-10 col-md-offset-1">
-                            <label>Bitcoin Address</label>
+                            <label>Enter Bitcoin Wallet Address</label>
                             <input type="text" className="form-control" ref="btc_address" onChange={this.handleChange} placeholder="1MiJFQvupX5kSZcUtfSoD9NtLevUgjv3uq" id="btc_address" />
                           </div>
                         </div>
