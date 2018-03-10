@@ -41,7 +41,7 @@ class Referral extends Component {
                 Free Plays
               </h1>
               <h3>Referral Program</h3>
-              <p>Tell a friend to sign up with your referral url and both of you and your friend get 10 free plays (limited to 10 referrals)</p>
+              <p>Tell a friend to sign up with your referral url and both you and your friend get 10 free plays (limited to 10 referrals)</p>
             </div>
             <div className="row">
               <div className="form-group">
