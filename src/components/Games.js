@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react';
+import toastr from 'toastr'
 
 @inject('store')
 @inject('client')
@@ -20,6 +21,15 @@ class Games extends Component {
       .catch((error) => {
         this.props.client.handleError(error, "Failed to get list of games")
       })
+
+    this.handleClick = this.handleClick.bind(this)
+  }
+
+  handleClick(e, game) {
+    if (game && !game.available) {
+      e.preventDefault()
+      toastr.info("Sorry, this game isn't available yet")
+    }
   }
 
   render() {
@@ -27,10 +37,10 @@ class Games extends Component {
     const meId = this.props.store.me.id
     var gameList = games.map((game) => {
       return (
-        <div key={game['id']} className="col-md-3 ">
+        <div key={game['id']} className={(game['available'] ? "" : "disabled-link ") + "col-md-3"}>
           <div className="thumbnail">
             <div className="thumb">
-              <Link to={"/games/" + game['id'] + "/" + meId}>
+              <Link to={"/games/" + game['id'] + "/" + meId} onClick={(e) => this.handleClick(e, game)}>
                 <img src={"/img/games/" + game['id'] + "/logo.png"} alt="" />
                 <div className="caption-overflow">
                 </div>
@@ -39,8 +49,8 @@ class Games extends Component {
 
             <div className="caption">
               <h6 className="no-margin-top text-semibold" style={{fontSize: "20px", fontWeight: 600}}>
-                <Link to={"/games/" + game['id'] + "/" + meId} className="text-default">
-                  {game['name']}
+                <Link to={"/games/" + game['id'] + "/" + meId} className="text-default" onClick={(e) => this.handleClick(e, game)}>
+                  {game['name'] + (game['available'] ? "" : " (Coming Soon)")}
                 </Link>
                 <span className="pull-right badge" style={{backgroundColor:"#266586", fontSize: "15px", padding: "5px"}}>{game.type}</span>
               </h6>

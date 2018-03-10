@@ -83,3 +83,7 @@ body {
     font-weight: 600;
     color: #266586;
 }
+
+.disabled-link {
+  pointer-events: none;
+}
