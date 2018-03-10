@@ -13,7 +13,7 @@ class GuestNav extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    window.resize()
+    window.onresize();
   }
 
   render() {
