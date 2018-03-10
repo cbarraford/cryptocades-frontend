@@ -35,6 +35,11 @@ class UserNav extends Component {
         console.log(error)
       })
 
+    window.onresize = (e) => {
+      let nav = document.getElementsByClassName('firstbar')[0]
+      nav.style.height = document.body.clientWidth / 9.3 + "px"
+    }
+
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -65,6 +70,10 @@ class UserNav extends Component {
           this.props.client.handleError(error, "Failed to enter into jackpot")
         })
     }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    window.onresize();
   }
 
   render() {

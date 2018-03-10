@@ -3,6 +3,19 @@ import { Link } from 'react-router-dom'
 
 class GuestNav extends Component {
 
+  constructor(props) {
+    super(props)
+
+    window.onresize = (e) => {
+      let nav = document.getElementsByClassName('firstbar')[0]
+      nav.style.height = document.body.clientWidth / 9.3 + "px"
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    window.resize()
+  }
+
   render() {
     return (
       <div className="navbar navbar-default firstbar" style={{backgroundColor: "#fdfbf0"}}>
