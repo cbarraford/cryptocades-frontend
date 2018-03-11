@@ -262,6 +262,10 @@ module.exports = {
     // It is absolutely essential that NODE_ENV was set to production here.
     // Otherwise React will be compiled in the very slow development mode.
     new webpack.DefinePlugin(env.stringified),
+    new webpack.DefinePlugin({
+      'CANVAS_RENDERER': JSON.stringify(true),
+      'WEBGL_RENDERER': JSON.stringify(true)
+    }),
     // Minify the code.
     new webpack.optimize.UglifyJsPlugin({
       compress: {
