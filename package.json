@@ -78,7 +78,6 @@
         "start": "node scripts/start.js",
         "build": "node scripts/build.js",
         "test": "node scripts/test.js --env=jsdom",
-        "heroku-postbuild": "node scripts/build.js"
     },
     "jest": {
         "collectCoverageFrom": [
@@ -116,5 +115,11 @@
     },
     "eslintConfig": {
         "extends": "react-app"
+    },
+    "devDependencies": {
+        "envify": "^4.1.0",
+        "uglify-js": "^3.3.14",
+        "uglifyify": "^4.0.5",
+        "webpack-merge": "^4.1.2"
     }
 }
