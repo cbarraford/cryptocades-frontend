@@ -14,7 +14,9 @@ class Referral extends Component {
     let baseURL = '';
     if (process.env.NODE_ENV === 'staging') {
       // TODO: remove staging address from client side code
-      baseURL = 'https://staging.cryptocades.com';
+      baseURL = 'https://staging-app.cryptocades.com';
+    } else if (process.env.NODE_ENV === 'production') {
+      baseURL = 'https://app.cryptocades.com';
     } else {
       baseURL = 'http://localhost:3000';
     }
