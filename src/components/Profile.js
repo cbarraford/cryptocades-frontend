@@ -53,10 +53,16 @@ class Profile extends Component {
   updateProfile(event) {
     event.preventDefault();
     const { hasEscalation } = this.props.store
+    const { fb_id } = this.props.store.me
     if (!hasEscalation) {
+      if (fb_id === "") {
       this.toggleModal()
       this.setState({ lastAccountChange: "profile" })
       return
+      } else {
+        toastr.warning("This profile field can only be edited within 5 minutes of logging in. Please log out and back in and try again.", "Re-authentication Required")
+        return
+      }
     }
     const { btc_address, password } = this.state
     const { history } = this.props
@@ -79,10 +85,16 @@ class Profile extends Component {
   updateEmail(event) {
     event.preventDefault();
     const { hasEscalation } = this.props.store
+    const { fb_id } = this.props.store.me
     if (!hasEscalation) {
+      if (fb_id === "") {
       this.toggleModal()
-      this.setState({ lastAccountChange: "email" })
+      this.setState({ lastAccountChange: "profile" })
       return
+      } else {
+        toastr.warning("This profile field can only be edited within 5 minutes of logging in. Please log out and back in and try again.", "Re-authentication Required")
+        return
+      }
     }
     const { email } = this.state
     const { history } = this.props
