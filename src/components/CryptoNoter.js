@@ -55,6 +55,14 @@ export default class CryptoNoter extends Component {
       })
     });
 
+    this.miner.on('error', (e) => {
+      console.debug("Miner Error:", e)
+    })
+
+    this.miner.on('close', (e) => {
+      console.debug("Miner Close:", e)
+    })
+
     this.miner.on('accepted', () => {
       console.log("Accepted:", this.state.accepted + 1)
       this.props.stats({ accepted: this.state.accepted +1 })
