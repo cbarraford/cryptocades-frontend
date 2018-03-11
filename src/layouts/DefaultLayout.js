@@ -25,7 +25,7 @@ class DefaultLayout extends Component {
       })
       .catch((error) => {
         console.log(error)
-        if (error. response && error.response.status === 401 && this.props.store.token !== null) {
+        if (error.response && error.response.status === 401 && this.props.store.token !== null) {
           cookie.remove('token', { path: '/' })
           cookie.remove('token_expire', { path: '/' });
           cookie.remove('token_escalated', { path: '/' });

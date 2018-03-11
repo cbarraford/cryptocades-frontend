@@ -7,6 +7,9 @@ class Client {
     if (process.env.NODE_ENV === 'staging') {
       // TODO: remove staging address from client side code
       baseURL = 'https://staging-api.cryptocades.com';
+    } else if (process.env.NODE_ENV === 'production') {
+      // TODO: remove prod address from client side code
+      baseURL = 'https://api.cryptocades.com';
     } else {
       baseURL = 'http://localhost:8080';
     }
