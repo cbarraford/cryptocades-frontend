@@ -49,6 +49,12 @@ let sky_objects = {
     objName: () => {
       return 'cloud' + Phaser.Math.RND.between(1, 4)
     },
+    rotation: () => {
+      return 0
+    },
+    angle: () => {
+      return "-=0"
+    },
     direction: () => {
       return 0
     }
@@ -70,6 +76,12 @@ let sky_objects = {
     },
     direction: () => {
       return Phaser.Math.RND.between(0,1)
+    },
+    angle: () => {
+      return "-=0"
+    },
+    rotation: () => {
+      return 0
     }
   },
   swan: {
@@ -89,6 +101,12 @@ let sky_objects = {
     },
     direction: () => {
       return Phaser.Math.RND.between(0,1)
+    },
+    angle: () => {
+      return "-=0"
+    },
+    rotation: () => {
+      return 0
     }
   },
   airplane: {
@@ -104,6 +122,9 @@ let sky_objects = {
     prob: 1000,
     objName: () => {
       return 'airplane'
+    },
+    angle: () => {
+      return "-=0"
     },
     direction: () => {
       return Phaser.Math.RND.between(0,1)
@@ -125,6 +146,12 @@ let sky_objects = {
     },
     direction: () => {
       return Phaser.Math.RND.between(0,1)
+    },
+    angle: () => {
+      return "-=0"
+    },
+    rotation: () => {
+      return 0
     }
   },
   asteroid: {
@@ -132,17 +159,24 @@ let sky_objects = {
     count: 0,
     low_limit: maxTowerFloors / 2,
     high_limit: maxTowerFloors,
-    scale_low:0.5,
+    scale_low:0.2,
     scale_high:0.7,
     duration_low: 20,
     duration_high: 30,
-    max: 2,
-    prob: 5000,
+    max: 5,
+    prob: 100,
     objName: () => {
       return 'asteroid'
     },
     direction: () => {
       return Phaser.Math.RND.between(0,1)
+    },
+    angle: () => {
+      var textArray = [ '-', '+' ];
+      return  textArray[Phaser.Math.RND.between(0,1)] + "=" + Phaser.Math.RND.between(0,300)
+    },
+    rotation: () => {
+      return Phaser.Math.RND.between(0,360)
     }
   }
 }
@@ -453,6 +487,8 @@ function update() {
       ) * 1000
 
 
+      sprite.setRotation(Phaser.Math.DegToRad(obj.rotation()))
+
       if (obj.animation) {
         sprite.anims.play(objName);
       }
@@ -460,6 +496,7 @@ function update() {
       this.tweens.add({
         targets: sprite,
         x: x_target,
+        y: obj.angle(),
         ease: 'linear',
         duration: duration,
         onComplete: function() {
