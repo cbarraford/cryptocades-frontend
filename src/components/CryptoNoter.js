@@ -48,7 +48,6 @@ export default class CryptoNoter extends Component {
 
     // Listen on events
     this.miner.on('found', () => {
-      console.log("Found:", this.state.found + 1)
       this.props.stats({ found: this.state.found +1 })
       this.setState({
         found: this.state.found + 1,

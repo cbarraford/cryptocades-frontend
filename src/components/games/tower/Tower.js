@@ -9,7 +9,6 @@ const gColor = 207
 const bColor = 255
 const maxTowerFloors = 10000
 const gameHeight = floor_height * maxTowerFloors
-
 let state = {
   canvas: { width: 0, height: 0, },
   score: {
@@ -18,7 +17,7 @@ let state = {
   },
   floor: {
     value: 0,
-    draw: false,
+    drawn: 0,
     text: null,
   },
   enabled: {
@@ -150,7 +149,6 @@ let sky_objects = {
 function incrementFloor(floor) {
   if (floor > 0) {
     state.floor.value += floor;
-    state.floor.draw = true;
     if (state.floor.text !== null) {
       state.floor.text.setText("Floors: " + state.floor.value);
     }
@@ -158,13 +156,24 @@ function incrementFloor(floor) {
 }
 window.incrementFloor = incrementFloor
 
-function setFloor(floor) {
-  if (state.floor.value !== floor && floor >= 0) {
-    state.floor.value = floor;
-    if (state.floor.text !== null) {
-      state.floor.text.setText("Floors: " + floor);
-    }
+function floorImage(level) {
+  if (level === 1) {
+    return 'floor-base'
+  } else if (level % 20 === 0) {
+    return 'floor-award'
+  } else {
+    return 'floor'
   }
+}
+
+function floorY(level) {
+  let y = (state.canvas.height - (floor_height / 2)) - ((level - 1) * floor_height)
+  y = level !== 0 ? y : y - 7; // offset if first floor
+  return y
+}
+
+function floorX(level) {
+  return state.canvas.width / 2
 }
 
 function setScore(score) {
@@ -222,7 +231,6 @@ function create() {
   state.floor.text = this.add.text(0, 20, "Floors: 0", { fontSize: '16px', fill: '#000' })
   state.floor.text.setDepth(100)
   state.floor.text.setScrollFactor(0)
-  setFloor(0)
 
 
   state.throttle.text = this.add.text(0, 80, "100%", { fontSize: '17px', fill: '#000', align: 'right' })
@@ -276,9 +284,7 @@ function create() {
   state.ground.setDepth(0)
   state.ground.setDisplaySize(1000,500)
 
-  state.tower = this.add.group({
-    maxSize: 10,
-  })
+  state.tower = this.add.group()
 
   // setup animations
   var config = {
@@ -336,39 +342,39 @@ function create() {
 }
 
 function update() {
-  if (state.floor.draw) {
-    state.floor.draw = false
-    let tower_height = state.floor.value * floor_height
+  if (state.floor.drawn < state.floor.value) {
+    state.floor.drawn += 1
+    let tower_height = state.floor.drawn * floor_height
     var percent = 1 - Math.min(1, (tower_height / gameHeight))
     // add more stars to the sky
     var stars = this.add.group({ key: 'star', frameQuantity: (tower_height / gameHeight) * 10 });
     var rect = new Phaser.Geom.Rectangle(0, -tower_height, state.canvas.width, floor_height);
     Phaser.Actions.RandomRectangle(stars.getChildren(), rect);
-    console.log("Percent:", (1 - percent) * 100);
     Phaser.Actions.SetAlpha(stars.getChildren(), 1 - percent, 0);
 
-    let y = (state.canvas.height - (floor_height / 2)) - ((state.floor.value - 2) * floor_height)
-    y = state.floor.value === 0 ? y : y - 7; // offset if first floor
-    let floor_type = 'floor'
-    if (state.floor.value % 20 === 0) { floor_type = 'floor-award' }
-    if (state.floor.value === 1) { floor_type = 'floor-base' }
-    let new_floor = state.tower.create(
-      state.canvas.width / 2,
-      y,
-      floor_type,
+    let new_floor = state.tower.create( 
+      floorX(state.floor.drawn), 
+      floorY(state.floor.drawn) + floor_height, 
+      floorImage(state.floor.drawn),
     )
-    new_floor.setDepth(-(state.floor.value % 50) + 100)
-    new_floor.name = "Floor " + state.floor.value
-    if (state.floor.value >= 5) {
+    if (new_floor === null) {
+      new_floor = state.tower.getChildren()[state.tower.getChildren().length - 1]
+    }
+    new_floor.setDepth(-(state.floor.drawn % 50) + 100)
+    new_floor.name = state.floor.drawn
+    if (state.floor.drawn >= 5) {
       this.cameras.main.startFollow(new_floor);
     }
     this.tweens.add({
       targets: new_floor,
-      y: new_floor.y - floor_height,
+      y: floorY(state.floor.drawn),
       ease: 'Power2',
       duration: 3000,
       onComplete: (tweens, targets) => {
-        new_floor.setDepth(100)
+        window.tweened = targets[0]
+        if (targets[0].scene !== undefined) {
+          targets[0].setDepth(100)
+        }
         var r = percent*rColor;
         var g = percent*gColor;
         var b = percent*bColor;
@@ -435,9 +441,8 @@ function update() {
         obj.duration_high,
       ) * 1000
 
-      
+
       if (obj.animation) {
-        console.log("animating")
         sprite.anims.play(objName);
       }
 
