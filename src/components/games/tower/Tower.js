@@ -223,8 +223,8 @@ function update() {
     let h = (state.canvas.height - 40) - ((state.floor.value - 2) * 80)
     h = state.tower.getLength() === 0 ? h : h - 7;
     let floor_type = 'floor'
-    if (state.tower.getLength() % 20 === 0) { floor_type = 'floor-award' }
-    if (state.tower.getLength() === 0) { floor_type = 'floor-base' }
+    if (state.floor.value % 20 === 0) { floor_type = 'floor-award' }
+    if (state.floor.value === 1) { floor_type = 'floor-base' }
     state.tower.create(
       state.canvas.width / 2,
       h,
@@ -255,7 +255,7 @@ function update() {
   for (var key in sky_objects) {
     const obj = sky_objects[key]
     if (obj.skip !== true && obj.count <= obj.max && Phaser.Math.RND.between(1, obj.prob) === 1) {
-      let tower_height = state.tower.getLength() * 80
+      let tower_height = state.floor.value * 80
       if (tower_height >= obj.low_limit && tower_height <= obj.high_limit) {
         obj.count += 1
         // flux is the wiggle room from center (Y) to place our obj in the sky
