@@ -126,6 +126,9 @@ let sky_objects = {
     angle: () => {
       return "-=0"
     },
+    rotation: () => {
+      return 0
+    },
     direction: () => {
       return Phaser.Math.RND.between(0,1)
     }
