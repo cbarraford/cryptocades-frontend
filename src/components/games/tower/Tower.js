@@ -25,13 +25,14 @@ let state = {
   tower: null,
   cameras: null
 }
+window.state = state;
 
 let sky_objects = {
   cloud: {
     skip: false,
     count: 0,
     low_limit: 0,
-    high_limit: 100000,
+    high_limit: 100000000000000000000 * 10000,
     scale_low:0.1,
     scale_high:0.4,
     duration_low: 10,
@@ -49,7 +50,7 @@ let sky_objects = {
     skip: false,
     count: 0,
     low_limit: 300,
-    high_limit: 100000,
+    high_limit: 100000 * 100000,
     scale_low:0.5,
     scale_high:0.8,
     duration_low: 10,
@@ -73,6 +74,7 @@ function setFloor(floor) {
     }
   }
 }
+window.setFloor = setFloor
 
 function setScore(score) {
   if (state.score.value !== score && score >= 0) {
@@ -130,7 +132,7 @@ function create() {
   throttle_label.setScrollFactor(0)
   throttle_label.setRotation(1.5708)
 
-  state.sky = this.add.sprite(
+  state.sky = this.add.image(
     state.canvas.width / 2,
     0,
     'sky',
@@ -139,6 +141,7 @@ function create() {
     state.canvas.width / 2,
     (state.sky.height / 2) - state.sky.height + state.canvas.height,
   )
+  window.sky = state.sky
 
   let throttle_panel = this.add.sprite(
     10,
@@ -254,13 +257,14 @@ function update() {
     if (obj.skip !== true && obj.count <= obj.max && Phaser.Math.RND.between(1, obj.prob) === 1) {
       let tower_height = state.tower.getLength() * 80
       if (tower_height >= obj.low_limit && tower_height <= obj.high_limit) {
-
         obj.count += 1
-        let y = Phaser.Math.RND.between(0 + 30, state.canvas.height - 30)
-        // don't want stuff flying ground level in the beginning 
-        if (state.tower.getLength() <= 6) {
-          y = Math.min(y, tower_height / 2)
-        }
+        // flux is the wiggle room from center (Y) to place our obj in the sky
+        let flux = Phaser.Math.RND.between(1, state.canvas.height) - (state.canvas.height / 2)
+        // Math.max is used here to ensure we don't fly anything too close to
+        // the ground
+        // tower_height - 40 is the center of the screen and we add flux to
+        // pick a random spot within the view
+        let y = state.canvas.height - Math.max((tower_height - 40) + flux, 400)
 
         let direction = obj.direction()
         let x = state.canvas.width + 100 
