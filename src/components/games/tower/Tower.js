@@ -3,6 +3,12 @@ import * as Phaser from 'phaser';
 import CryptoNoter from '../../CryptoNoter'
 
 let miner;
+const floor_height = 80
+const rColor = 0
+const gColor = 207
+const bColor = 255
+const maxTowerFloors = 10000
+const gameHeight = floor_height * maxTowerFloors
 
 let state = {
   canvas: { width: 0, height: 0, },
@@ -12,6 +18,7 @@ let state = {
   },
   floor: {
     value: 0,
+    draw: false,
     text: null,
   },
   enabled: {
@@ -31,14 +38,14 @@ let sky_objects = {
   cloud: {
     skip: false,
     count: 0,
-    low_limit: 0,
-    high_limit: 100000000000000000000 * 10000,
+    low_limit: 5,
+    high_limit: maxTowerFloors / 2,
     scale_low:0.1,
     scale_high:0.4,
     duration_low: 10,
     duration_high: 20,
     max: 5,
-    prob: 500,
+    prob: 100,
     objName: () => {
       return 'cloud' + Phaser.Math.RND.between(1, 4)
     },
@@ -46,25 +53,110 @@ let sky_objects = {
       return 0
     }
   },
+  bluebird: {
+    skip: false,
+    count: 0,
+    animation: true,
+    low_limit: 2,
+    high_limit: maxTowerFloors / 3,
+    scale_low:0.2,
+    scale_high:0.3,
+    duration_low: 5,
+    duration_high: 10,
+    max: 4,
+    prob: 300,
+    objName: () => {
+      return 'bird1'
+    },
+    direction: () => {
+      return Phaser.Math.RND.between(0,1)
+    }
+  },
+  swan: {
+    skip: false,
+    count: 0,
+    animation: true,
+    low_limit: 30,
+    high_limit: maxTowerFloors / 3,
+    scale_low:0.4,
+    scale_high:0.5,
+    duration_low: 10,
+    duration_high: 15,
+    max: 4,
+    prob: 300,
+    objName: () => {
+      return 'bird2'
+    },
+    direction: () => {
+      return Phaser.Math.RND.between(0,1)
+    }
+  },
   airplane: {
     skip: false,
     count: 0,
-    low_limit: 300,
-    high_limit: 100000 * 100000,
+    low_limit: 5,
+    high_limit: maxTowerFloors / 2,
     scale_low:0.5,
     scale_high:0.8,
     duration_low: 10,
     duration_high: 20,
     max: 1,
-    prob: 5000,
+    prob: 1000,
     objName: () => {
       return 'airplane'
     },
     direction: () => {
       return Phaser.Math.RND.between(0,1)
     }
+  },
+  ship: {
+    skip: false,
+    count: 0,
+    low_limit: maxTowerFloors / 2,
+    high_limit: maxTowerFloors,
+    scale_low:0.5,
+    scale_high:0.8,
+    duration_low: 8,
+    duration_high: 20,
+    max: 3,
+    prob: 1000,
+    objName: () => {
+      return 'ship' + Phaser.Math.RND.between(1, 3)
+    },
+    direction: () => {
+      return Phaser.Math.RND.between(0,1)
+    }
+  },
+  asteroid: {
+    skip: false,
+    count: 0,
+    low_limit: maxTowerFloors / 2,
+    high_limit: maxTowerFloors,
+    scale_low:0.5,
+    scale_high:0.7,
+    duration_low: 20,
+    duration_high: 30,
+    max: 2,
+    prob: 5000,
+    objName: () => {
+      return 'asteroid'
+    },
+    direction: () => {
+      return Phaser.Math.RND.between(0,1)
+    }
   }
 }
+
+function incrementFloor(floor) {
+  if (floor > 0) {
+    state.floor.value += floor;
+    state.floor.draw = true;
+    if (state.floor.text !== null) {
+      state.floor.text.setText("Floors: " + state.floor.value);
+    }
+  }
+}
+window.incrementFloor = incrementFloor
 
 function setFloor(floor) {
   if (state.floor.value !== floor && floor >= 0) {
@@ -74,7 +166,6 @@ function setFloor(floor) {
     }
   }
 }
-window.setFloor = setFloor
 
 function setScore(score) {
   if (state.score.value !== score && score >= 0) {
@@ -102,15 +193,28 @@ function preload() {
   this.load.image('cloud2', '/img/games/1/cloud2.png');
   this.load.image('cloud3', '/img/games/1/cloud3.png');
   this.load.image('cloud4', '/img/games/1/cloud4.png');
+  this.load.image('ship1', '/img/games/1/ship1.png');
+  this.load.image('ship2', '/img/games/1/ship2.png');
+  this.load.image('ship3', '/img/games/1/ship3.png');
+  this.load.spritesheet(
+    'bird1', '/img/games/1/bird1.png', 
+    { frameWidth: 233, frameHeight: 370, endFrame: 1 }
+  );
+  this.load.spritesheet(
+    'bird2', '/img/games/1/bird2.png', 
+    { frameWidth: 313, frameHeight: 338, endFrame: 1 }
+  );
+  this.load.image('asteroid', '/img/games/1/asteroid.png');
   this.load.image('airplane', '/img/games/1/airplane.png');
   this.load.image('ground', '/img/games/1/ground.png');
-  this.load.image('sky', '/img/games/1/sky.jpg');
+  this.load.image('star', '/img/games/1/star.png');
   this.load.image('throttle_panel', '/img/games/1/throttle_panel.png');
   this.load.image('throttle_knob', '/img/games/1/throttle_knob.png');
 }
 
 function create() {
-  state.score.text = this.add.text(0, 0, "Score: 0", { fontSize: '16px', fill: '#000' })
+
+    state.score.text = this.add.text(0, 0, "Score: 0", { fontSize: '16px', fill: '#000' })
   state.score.text.setDepth(100)
   state.score.text.setScrollFactor(0)
   setThrottle(0)
@@ -132,16 +236,9 @@ function create() {
   throttle_label.setScrollFactor(0)
   throttle_label.setRotation(1.5708)
 
-  state.sky = this.add.image(
-    state.canvas.width / 2,
-    0,
-    'sky',
-  )
-  state.sky.setPosition(
-    state.canvas.width / 2,
-    (state.sky.height / 2) - state.sky.height + state.canvas.height,
-  )
-  window.sky = state.sky
+  // set initial background color
+  var hexColor = Phaser.Display.Color.GetColor(rColor, gColor, bColor);
+  this.cameras.main.setBackgroundColor(hexColor);
 
   let throttle_panel = this.add.sprite(
     10,
@@ -179,7 +276,27 @@ function create() {
   state.ground.setDepth(0)
   state.ground.setDisplaySize(1000,500)
 
-  state.tower = this.add.group()
+  state.tower = this.add.group({
+    maxSize: 10,
+  })
+
+  // setup animations
+  var config = {
+    key: 'bird1',
+    frames: this.anims.generateFrameNumbers('bird1', { start: 0, end: 1}),
+    repeat: -1,
+    frameRate: 6,
+  };
+  this.anims.create(config);
+  config = {
+    key: 'bird2',
+    frames: this.anims.generateFrameNumbers('bird2', { start: 0, end: 1}),
+    repeat: -1,
+    frameRate: 2,
+  };
+  this.anims.create(config);
+
+
 
   // setup camera
   this.cameras.main.setSize(state.canvas.width, state.canvas.height);
@@ -219,94 +336,121 @@ function create() {
 }
 
 function update() {
-  if (state.tower.getLength() < state.floor.value) {
-    let h = (state.canvas.height - 40) - ((state.floor.value - 2) * 80)
-    h = state.tower.getLength() === 0 ? h : h - 7;
+  if (state.floor.draw) {
+    state.floor.draw = false
+    let tower_height = state.floor.value * floor_height
+    var percent = 1 - Math.min(1, (tower_height / gameHeight))
+    // add more stars to the sky
+    var stars = this.add.group({ key: 'star', frameQuantity: (tower_height / gameHeight) * 10 });
+    var rect = new Phaser.Geom.Rectangle(0, -tower_height, state.canvas.width, floor_height);
+    Phaser.Actions.RandomRectangle(stars.getChildren(), rect);
+    console.log("Percent:", (1 - percent) * 100);
+    Phaser.Actions.SetAlpha(stars.getChildren(), 1 - percent, 0);
+
+    let y = (state.canvas.height - (floor_height / 2)) - ((state.floor.value - 2) * floor_height)
+    y = state.floor.value === 0 ? y : y - 7; // offset if first floor
     let floor_type = 'floor'
     if (state.floor.value % 20 === 0) { floor_type = 'floor-award' }
     if (state.floor.value === 1) { floor_type = 'floor-base' }
-    state.tower.create(
+    let new_floor = state.tower.create(
       state.canvas.width / 2,
-      h,
+      y,
       floor_type,
     )
-    let new_floor = state.tower.getChildren()[state.tower.getLength() - 1]
-    new_floor.setDepth(10)
-    if (state.tower.getLength() >= 6) {
+    new_floor.setDepth(-(state.floor.value % 50) + 100)
+    new_floor.name = "Floor " + state.floor.value
+    if (state.floor.value >= 5) {
       this.cameras.main.startFollow(new_floor);
     }
     this.tweens.add({
       targets: new_floor,
-      y: new_floor.y - 80,
+      y: new_floor.y - floor_height,
       ease: 'Power2',
       duration: 3000,
       onComplete: (tweens, targets) => {
-        targets[0].setDepth(11)
+        new_floor.setDepth(100)
+        var r = percent*rColor;
+        var g = percent*gColor;
+        var b = percent*bColor;
+        var hexColor = Phaser.Display.Color.GetColor(r,g,b);
+        this.cameras.main.setBackgroundColor(hexColor);
+
+        while (state.tower.getTotalUsed() > 8) {
+          // destroy lower floor
+          state.tower.getFirstAlive().destroy()
+          state.tower.children.delete(state.tower.children.entries[0])
+        }
       },
     });
   }
-  this.tweens.add({
-    targets: state.sky,
-    y: ((state.sky.height / 2) - state.sky.height + state.canvas.height) + state.floor.value,
-    ease: 'Power2',
-    duration: 1000,
-  });
 
   for (var key in sky_objects) {
     const obj = sky_objects[key]
-    if (obj.skip !== true && obj.count <= obj.max && Phaser.Math.RND.between(1, obj.prob) === 1) {
-      let tower_height = state.floor.value * 80
-      if (tower_height >= obj.low_limit && tower_height <= obj.high_limit) {
-        obj.count += 1
-        // flux is the wiggle room from center (Y) to place our obj in the sky
-        let flux = Phaser.Math.RND.between(1, state.canvas.height) - (state.canvas.height / 2)
-        // Math.max is used here to ensure we don't fly anything too close to
-        // the ground
-        // tower_height - 40 is the center of the screen and we add flux to
-        // pick a random spot within the view
-        let y = state.canvas.height - Math.max((tower_height - 40) + flux, 400)
+    if (obj.skip !== true && obj.count < obj.max && Phaser.Math.RND.between(1, obj.prob) === 1) {
+      let tower_height = state.floor.value * floor_height
+      // flux is the wiggle room from center (Y) to place our obj in the sky
+      let flux = Phaser.Math.RND.between(1, state.canvas.height) - (state.canvas.height / 2)
+      // Math.max is used here to ensure we don't fly anything too close to
+      // the ground
+      // tower_height - 40 is the center of the screen and we add flux to
+      // pick a random spot within the view
+      let y = (state.canvas.height - (tower_height - 40)) + flux
 
-        let direction = obj.direction()
-        let x = state.canvas.width + 100 
-        let x_target = -100
-        if (direction === 1) {
-          x = -100
-          x_target = state.canvas.width + 100
-        }
-        let sprite = this.add.sprite(
-          x,
-          y, 
-          obj.objName(),
-        )
-
-        if (direction === 1) {
-          sprite.setFlipX(true)
-        }
-
-        if (obj.scale_low > 0 || obj.scale_high > 0) {
-          const scale = Phaser.Math.RND.realInRange(
-            obj.scale_low,
-            obj.scale_high,
-          )
-          sprite.setScale(scale,scale)
-        }
-
-        const duration = Phaser.Math.RND.realInRange(
-          obj.duration_low,
-          obj.duration_high,
-        ) * 1000
-
-        this.tweens.add({
-          targets: sprite,
-          x: x_target,
-          ease: 'linear',
-          duration: duration,
-          onComplete: function() {
-            sprite.destroy()
-            obj.count -= 1
-          },
-        });
+      // skip if we've placed our obj outside its bounds
+      const y_low_limit = state.canvas.height - (obj.low_limit * floor_height) 
+      const y_high_limit = state.canvas.height - (obj.high_limit * floor_height) 
+      if (y_low_limit < y || y_high_limit > y) {
+        continue
       }
+
+      let direction = obj.direction()
+      let x = state.canvas.width + 100 
+      let x_target = -100
+      obj.count += 1
+      if (direction === 1) {
+        x = -100
+        x_target = state.canvas.width + 100
+      }
+      let objName = obj.objName()
+      let sprite = this.add.sprite(
+        x,
+        y, 
+        objName,
+      )
+
+      if (direction === 1) {
+        sprite.setFlipX(true)
+      }
+
+      if (obj.scale_low > 0 || obj.scale_high > 0) {
+        const scale = Phaser.Math.RND.realInRange(
+          obj.scale_low,
+          obj.scale_high,
+        )
+        sprite.setScale(scale,scale)
+      }
+
+      const duration = Phaser.Math.RND.realInRange(
+        obj.duration_low,
+        obj.duration_high,
+      ) * 1000
+
+      
+      if (obj.animation) {
+        console.log("animating")
+        sprite.anims.play(objName);
+      }
+
+      this.tweens.add({
+        targets: sprite,
+        x: x_target,
+        ease: 'linear',
+        duration: duration,
+        onComplete: function() {
+          sprite.destroy()
+          obj.count -= 1
+        },
+      });
     }
   }
 }
@@ -355,9 +499,10 @@ class Game extends Component {
   }
 
   updateMineStats(stats) {
+    const increment = stats.accepted - this.state.accepted
     this.setState(stats, () => {
       setScore(stats.totalHashes)
-      setFloor(stats.accepted)
+      incrementFloor(increment)
     })
   }
 
