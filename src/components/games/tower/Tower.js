@@ -9,6 +9,7 @@ const gColor = 207
 const bColor = 255
 const maxTowerFloors = 10000
 const gameHeight = floor_height * maxTowerFloors
+
 let state = {
   canvas: { width: 0, height: 0, },
   score: {
@@ -29,7 +30,7 @@ let state = {
     text: null,
   },
   tower: null,
-  cameras: null
+  completion: 0,
 }
 window.state = state;
 
@@ -62,7 +63,7 @@ let sky_objects = {
     scale_high:0.3,
     duration_low: 5,
     duration_high: 10,
-    max: 4,
+    max: 3,
     prob: 300,
     objName: () => {
       return 'bird1'
@@ -81,8 +82,8 @@ let sky_objects = {
     scale_high:0.5,
     duration_low: 10,
     duration_high: 15,
-    max: 4,
-    prob: 300,
+    max: 3,
+    prob: 400,
     objName: () => {
       return 'bird2'
     },
@@ -148,13 +149,23 @@ let sky_objects = {
 
 function incrementFloor(floor) {
   if (floor > 0) {
-    state.floor.value += floor;
+    if (state.floor.value + floor > maxTowerFloors) {
+      state.floor.value = maxTowerFloors
+    } else {
+      state.floor.value += floor;
+    }
     if (state.floor.text !== null) {
       state.floor.text.setText("Floors: " + state.floor.value);
     }
   }
 }
 window.incrementFloor = incrementFloor
+function jumpFloor(floor) {
+  state.floor.drawn = floor - 20
+  state.floor.value = floor
+  state.floor.text.setText("Floors: " + state.floor.value);
+}
+window.jumpFloor = jumpFloor
 
 function floorImage(level) {
   if (level === 1) {
@@ -223,7 +234,7 @@ function preload() {
 
 function create() {
 
-    state.score.text = this.add.text(0, 0, "Score: 0", { fontSize: '16px', fill: '#000' })
+  state.score.text = this.add.text(0, 0, "Score: 0", { fontSize: '16px', fill: '#000' })
   state.score.text.setDepth(100)
   state.score.text.setScrollFactor(0)
   setThrottle(0)
@@ -237,7 +248,6 @@ function create() {
   state.throttle.text.setDepth(100)
   state.throttle.text.setScrollFactor(0)
   setThrottle(0)
-  window.throttle_text = state.throttle.text
 
   let throttle_label = this.add.text(60, 100, "Speed", { fontSize: '18px', fill: '#000' })
   throttle_label.setDepth(100)
@@ -346,6 +356,7 @@ function update() {
     state.floor.drawn += 1
     let tower_height = state.floor.drawn * floor_height
     var percent = 1 - Math.min(1, (tower_height / gameHeight))
+    state.completion = (Math.min(1, (tower_height / gameHeight))) * 100
     // add more stars to the sky
     var stars = this.add.group({ key: 'star', frameQuantity: (tower_height / gameHeight) * 10 });
     var rect = new Phaser.Geom.Rectangle(0, -tower_height, state.canvas.width, floor_height);
@@ -370,17 +381,17 @@ function update() {
       y: floorY(state.floor.drawn),
       ease: 'Power2',
       duration: 3000,
-      onComplete: (tweens, targets) => {
-        window.tweened = targets[0]
-        if (targets[0].scene !== undefined) {
-          targets[0].setDepth(100)
-        }
+      onStart: (tweens, targets) => {
         var r = percent*rColor;
         var g = percent*gColor;
         var b = percent*bColor;
         var hexColor = Phaser.Display.Color.GetColor(r,g,b);
         this.cameras.main.setBackgroundColor(hexColor);
-
+      },
+      onComplete: (tweens, targets) => {
+        if (targets[0].scene !== undefined) {
+          targets[0].setDepth(100)
+        }
         while (state.tower.getTotalUsed() > 8) {
           // destroy lower floor
           state.tower.getFirstAlive().destroy()
