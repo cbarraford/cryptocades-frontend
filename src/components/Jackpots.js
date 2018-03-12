@@ -134,7 +134,7 @@ class Jackpots extends Component {
                   <span style={{fontSize:"30px", fontWeight: 600}}>Your Odds</span>
                   <h3 className="no-margin">{my_entries > 0 ? o.format('fractional'): "You haven't entered this jackpot"}</h3>
                   <div className="text-size-small">
-                    (total entries: {total_entries})
+                    (total entries: {total_entries.toLocaleString()})
                   </div>
                 </div>
               </div>
