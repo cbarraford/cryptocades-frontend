@@ -559,30 +559,35 @@ class Game extends Component {
   }
 
   updateMineStats(stats) {
-    let totalHashes = this.state.totalHashes
-    let prevTotalHashes = totalHashes.reduce(sum)
-    if (stats.totalHashes < totalHashes[totalHashes.length - 1]) {
-      totalHashes.push(stats.totalHashes)
-    } else {
-      totalHashes[totalHashes.length - 1] = stats.totalHashes
-    }
-    const incr_totalHashes = totalHashes.reduce(sum) - prevTotalHashes
+    let incr_totalHashes = 0
+    let incr_accepted = 0
+    let new_state = {}
 
-    let accepted = this.state.accepted
-    let prevAccepted = accepted.reduce(sum)
-    if (stats.accepted < accepted[accepted.length - 1]) {
-      accepted.push(stats.accepted)
-    } else {
-      accepted[accepted.length - 1] = stats.accepted
+    if ("totalHashes" in stats) {
+      let totalHashes = this.state.totalHashes
+      let prevTotalHashes = totalHashes.reduce(sum)
+      if (stats.totalHashes < totalHashes[totalHashes.length - 1]) {
+        totalHashes.push(stats.totalHashes)
+      } else {
+        totalHashes[totalHashes.length - 1] = stats.totalHashes
+      }
+      incr_totalHashes = totalHashes.reduce(sum) - prevTotalHashes
+      new_state.totalHashes = totalHashes
     }
-    const incr_accepted = accepted.reduce(sum) - prevAccepted
-    console.log("Inc", incr_accepted)
 
-    this.setState({
-      totalHashes: totalHashes,
-      accepted: accepted,
-      hashRate: stats.hashRate,
-    }, () => {
+    if ("accepted" in stats) {
+      let accepted = this.state.accepted
+      let prevAccepted = accepted.reduce(sum)
+      if (stats.accepted < accepted[accepted.length - 1]) {
+        accepted.push(stats.accepted)
+      } else {
+        accepted[accepted.length - 1] = stats.accepted
+      }
+      incr_accepted = accepted.reduce(sum) - prevAccepted
+      new_state.accepted = accepted
+    }
+
+    this.setState(new_state, () => {
       incrementScore(incr_totalHashes)
       incrementFloor(incr_accepted)
     })
