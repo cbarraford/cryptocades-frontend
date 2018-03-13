@@ -371,20 +371,20 @@ function create() {
     dragY = Math.max(max, dragY)
     dragY = Math.min(min, dragY)
     gameObject.y = dragY
-  });
-
-  this.input.on('dragend', function (pointer, gameObject) {
-    gameObject.clearTint();
-    let max = throttle_panel.getTopLeft().y + 20
-    let min = throttle_panel.getBottomLeft().y - 20
+    
     setThrottle(Math.round((gameObject.y - min) / (max - min) * 100))
     let throttle = 100 - Math.round((gameObject.y - min) / (max - min) * 100)
+    setThrottle(Math.round((gameObject.y - min) / (max - min) * 100))
     miner.miner.setThrottle(throttle)
     if (throttle === 100) {
       miner.stop()
     } else {
       miner.start()
     }
+  });
+
+  this.input.on('dragend', function (pointer, gameObject) {
+    gameObject.clearTint();
   });
 }
 
