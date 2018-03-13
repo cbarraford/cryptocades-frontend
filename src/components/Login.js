@@ -23,6 +23,10 @@ class Login extends Component {
       referral_code: qs.parse(this.props.location.search).referral
     }
 
+    if (this.props.store.logged_in) {
+      this.props.history.push('/games')
+    }
+
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.fbResponse = this.fbResponse.bind(this);
