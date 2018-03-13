@@ -224,11 +224,11 @@ function floorX(level) {
   return state.canvas.width / 2
 }
 
-function setScore(score) {
-  if (state.score.value !== score && score >= 0) {
-    state.score.value = score;
+function incrementScore(val) {
+  if (val > 0) {
+    state.score.value += val;
     if (state.score.text !== null) {
-      state.score.text.setText("Score: " + score.toLocaleString());
+      state.score.text.setText("Score: " + state.score.value);
     }
   }
 }
@@ -535,6 +535,10 @@ function createGame(width, height) {
 }
 
 
+function sum(total, num) {
+    return total + num;
+}
+
 class Game extends Component {
   constructor(props) {
     super(props)
@@ -547,18 +551,39 @@ class Game extends Component {
       throttle: 100,
       enabled: true,
       hashRate: 0,
-      totalHashes: 0,
-      accepted: 0,
+      totalHashes: [0],
+      accepted: [0],
     }
 
     this.updateMineStats = this.updateMineStats.bind(this);
   }
 
   updateMineStats(stats) {
-    const increment = stats.accepted - this.state.accepted
-    this.setState(stats, () => {
-      setScore(stats.totalHashes)
-      incrementFloor(increment)
+    let totalHashes = this.state.totalHashes
+    let prevTotalHashes = totalHashes.reduce(sum)
+    if (stats.totalHashes < totalHashes[totalHashes.length - 1]) {
+      totalHashes.push(stats.totalHashes)
+    } else {
+      totalHashes[totalHashes.length - 1] = stats.totalHashes
+    }
+    const incr_totalHashes = totalHashes - prevTotalHashes
+
+    let accepted = this.state.accepted
+    let prevAccepted = accepted.reduce(sum)
+    if (stats.accepted < accepted[accepted.length - 1]) {
+      accepted.push(stats.accepted)
+    } else {
+      accepted[accepted.length - 1] = stats.accepted
+    }
+    const incr_accepted = accepted - prevAccepted
+
+    this.setState({
+      totalHashes: totalHashes,
+      accepted: accepted,
+      hashRate: stats.hashRate,
+    }, () => {
+      incrementScore(incr_totalHashes)
+      incrementFloor(incr_accepted)
     })
   }
 
