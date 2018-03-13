@@ -566,7 +566,7 @@ class Game extends Component {
     } else {
       totalHashes[totalHashes.length - 1] = stats.totalHashes
     }
-    const incr_totalHashes = totalHashes - prevTotalHashes
+    const incr_totalHashes = totalHashes.reduce(sum) - prevTotalHashes
 
     let accepted = this.state.accepted
     let prevAccepted = accepted.reduce(sum)
@@ -575,7 +575,8 @@ class Game extends Component {
     } else {
       accepted[accepted.length - 1] = stats.accepted
     }
-    const incr_accepted = accepted - prevAccepted
+    const incr_accepted = accepted.reduce(sum) - prevAccepted
+    console.log("Inc", incr_accepted)
 
     this.setState({
       totalHashes: totalHashes,
