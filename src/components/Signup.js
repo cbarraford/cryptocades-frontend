@@ -39,10 +39,6 @@ class Signup extends Component {
 
   // TODO: not dry, use login func
   fbResponse(req) {
-    if (this.state.captcha_code === null) {
-      toastr.error("Please check the Google ReCAPTCHA checkbox.")
-      return
-    }
     if (!this.state.tos) {
       toastr.error("Must agree to the terms of service.")
       return false
