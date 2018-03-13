@@ -31,6 +31,7 @@ let state = {
   },
   tower: null,
   completion: 0,
+  start_time: new Date(),
 }
 window.state = state;
 
@@ -183,6 +184,15 @@ let sky_objects = {
     }
   }
 }
+
+// eslint-disable-next-line
+Date.prototype.getUnixTime = function() { return this.getTime()/1000|0 };
+
+function avgFloorRate() {
+  let d = new Date()
+  return (d.getUnixTime() - state.start_time.getUnixTime()) / state.floor.value
+}
+window.avgFloorRate = avgFloorRate
 
 function incrementFloor(floor) {
   if (floor > 0) {
