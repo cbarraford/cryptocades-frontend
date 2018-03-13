@@ -610,7 +610,7 @@ class Game extends Component {
               </p>
 
               <p>
-                <strong>Gameplay</strong>: Your computer is doing all of the work, building new floors to your tower. Just sit back and watch your computer build your tower taller and taller (or go watch something else more interesting and come back later and check on your progress 😄).
+                <strong>Gameplay</strong>: Your computer is doing all of the work, building new floors to your tower. How fast floors are built depends on your computers performance, but on average it is about 1-2 minutes. Just sit back and watch your computer build your tower taller and taller (or go watch something else more interesting and come back later and check on your progress 😄).
               </p>
 
               <p>
