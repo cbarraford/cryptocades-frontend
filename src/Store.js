@@ -12,6 +12,10 @@ class Store {
   @computed get logged_in() {
     return this.token !== null
   }
+ 
+  @computed get is_oauth() {
+    return this.me.fb_id !== ""
+  }
 
   @observable token = cookie.load('token') || null;
   @observable tokenEscalated = Date.parse(cookie.load('token_escalated')) || Date.now();

@@ -146,6 +146,7 @@ class Profile extends Component {
   }
 
   render() {
+    const { is_oauth } = this.props.store
     const { openModal } = this.state
     const saveStyle = {
       backgroundColor: "#266586",
@@ -179,7 +180,7 @@ class Profile extends Component {
                         </div>
                       </div>
 
-                      <div className="form-group">
+                      <div className={"form-group" + (is_oauth ? " hide" : "")}>
                         <div className="row">
                           <div className="col-md-10 col-md-offset-1">
                             <label>Password</label>
@@ -195,7 +196,7 @@ class Profile extends Component {
                   </div>
                 </div>
 
-                <div className="panel panel-flat">
+                <div className={"panel panel-flat" + (is_oauth ? " hide" : "")}>
                   <div className="panel-heading">
                     <h6 className="panel-title">Change Email<a className="heading-elements-toggle"><i className="icon-more"></i></a></h6>
                   </div>
