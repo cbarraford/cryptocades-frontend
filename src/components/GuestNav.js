@@ -35,12 +35,12 @@ class GuestNav extends Component {
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/how_it_works">
+              <Link className="nav-link" to="https://cryptocades.com/#how-it-works">
                 HOW IT WORKS
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/support">
+              <Link className="nav-link" to="https://cryptocades.com/support">
                 SUPPORT
               </Link>
             </li>

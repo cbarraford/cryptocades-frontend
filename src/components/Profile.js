@@ -160,7 +160,7 @@ class Profile extends Component {
 
   render() {
     const { is_oauth } = this.props.store
-    const { openModal, saving } = this.state
+    const { openModal, saving, auth_password } = this.state
     const saveStyle = {
       backgroundColor: "#266586",
       color: "white",
@@ -251,7 +251,7 @@ class Profile extends Component {
                 </small>
               </p>
             </div>
-            <button type="submit" className="btn bg-blue btn-block" disabled={saving}>Save changes</button>
+            <button type="submit" className="btn bg-blue btn-block" disabled={auth_password === "" || saving}>Save changes</button>
           </form>
         </Modal.Body>
       </Modal>
