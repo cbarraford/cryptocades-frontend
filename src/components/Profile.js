@@ -128,6 +128,7 @@ class Profile extends Component {
 
   reAuthenticate(event) {
     event.preventDefault();
+    this.setState({saving: true})
     this.props.client.login(
       this.props.store.me.username,
       this.state.auth_password,
@@ -151,6 +152,9 @@ class Profile extends Component {
       })
       .catch((error) => {
         this.props.client.handleError(error, "Failed to reauthenticate")
+      })
+      .finally(() => {
+        this.setState({saving: false})
       })
   }
 
@@ -247,7 +251,7 @@ class Profile extends Component {
                 </small>
               </p>
             </div>
-            <button type="submit" className="btn bg-blue btn-block">Save changes</button>
+            <button type="submit" className="btn bg-blue btn-block" disabled={saving}>Save changes</button>
           </form>
         </Modal.Body>
       </Modal>

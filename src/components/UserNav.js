@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router-dom'
+import toastr from 'toastr'
 
 @inject('store')
 @inject('client')
@@ -58,6 +59,7 @@ class UserNav extends Component {
           this.setState({ pending_entries: 0 }, () => {
             this.refs.pending_entries.value = 0
           })
+          toastr.success('Entered jackpot!')
           this.props.client.balance()
             .then((response) => {
               this.props.store.balance = response.data.balance
@@ -78,6 +80,7 @@ class UserNav extends Component {
 
   render() {
     const { me, balance } = this.props.store;
+    const { pending_entries } = this.state
     const avatar = (me.avatar || "").replace("\u0026", "&")
     const showTicketCount = balance > 0 ? "" : " hide"
     return (
@@ -107,10 +110,10 @@ class UserNav extends Component {
                   <div className="panel-body">
                     <form onSubmit={this.handleSubmit}>
                       <div className="form-group has-feedback">
-                        <input type="number" autoComplete="off" className="form-control" placeholder="Amount" onChange={this.handleChange} ref="pending_entries" id="pending_entries" />
+                        <input type="number" min="0" autoComplete="off" className="form-control" placeholder="Amount" onChange={this.handleChange} ref="pending_entries" id="pending_entries" />
                       </div>
 
-                      <button type="submit" className="btn btn-block"style={{backgroundColor: "#266586", color: "#fdfbf0"}}>Enter Jackpot</button>
+                      <button type="submit" className="btn btn-block"style={{backgroundColor: "#266586", color: "#fdfbf0"}} disabled={pending_entries <= 0}>Enter Jackpot</button>
                     </form>
                   </div>
                 </div>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import Countdown from 'react-countdown-now';
 import odds from 'odds';
+import toastr from 'toastr'
 
 // Renderer callback with condition
 export function renderer({ days, hours, minutes, seconds, completed }) {
@@ -43,6 +44,7 @@ class Jackpots extends Component {
       jackpots: [],
       total_entries: 0,
       my_entries: 0,
+      pending_entries: 0,
     }
 
     this.props.client.listJackpots()
@@ -71,6 +73,7 @@ class Jackpots extends Component {
       const amount = parseInt(this.state.pending_entries, 10);
       this.props.client.jackpotEnter(id, amount)
         .then((response) => {
+          toastr.success('Entered jackpot!')
           this.setState({ pending_entries: 0 }, () => {
             this.refs.pending_entries.value = 0
           })
@@ -103,7 +106,7 @@ class Jackpots extends Component {
   }
 
   render() {
-    const { jackpots, total_entries, my_entries } = this.state;
+    const { jackpots, total_entries, my_entries, pending_entries } = this.state;
     const { btcPrice } = this.props.store;
     const o = odds(my_entries, total_entries)
     const attrPanel = {minHeight: "140px", backgroundColor: "#57e5c4", color: "#266586"}
@@ -161,10 +164,10 @@ class Jackpots extends Component {
               <div className="panel-body">
                 <form onSubmit={this.handleSubmit}>
                   <div className="form-group has-feedback">
-                    <input type="number" autoComplete="off" className="form-control" placeholder="Amount" onChange={this.handleChange} ref="pending_entries" id="pending_entries" />
+                    <input min="0" type="number" autoComplete="off" className="form-control" placeholder="Amount" onChange={this.handleChange} ref="pending_entries" id="pending_entries" />
                   </div>
 
-                  <button type="submit" className="btn btn-block" style={{backgroundColor: "#266586", color: "#fdfbf0"}}>Enter Jackpot</button>
+                  <button type="submit" className="btn btn-block" style={{backgroundColor: "#266586", color: "#fdfbf0"}} disabled={pending_entries <= 0}>Enter Jackpot</button>
                 </form>
               </div>
             </div>
