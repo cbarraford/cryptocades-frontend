@@ -19,6 +19,7 @@ class Profile extends Component {
 
     this.state = {
       openModal: false,
+      saving: false,
       lastAccountChange: null,
       auth_password: null,
       btc_address: null,
@@ -66,6 +67,7 @@ class Profile extends Component {
     }
     const { btc_address, password } = this.state
     const { history } = this.props
+    this.setState({saving: true})
     this.props.client.updateMe({
       btc_address: btc_address,
       password: password,
@@ -79,6 +81,9 @@ class Profile extends Component {
         if (error.response.status === 401) {
           history.push("/login?redirect=/profile")
         }
+      })
+      .finally(() => {
+        this.setState({saving: false})
       })
   }
 
@@ -98,11 +103,12 @@ class Profile extends Component {
     }
     const { email } = this.state
     const { history } = this.props
+    this.setState({saving: true})
     this.props.client.updateEmail({
       email: email,
     })
       .then((response) => {
-        toastr.success("Updated email. Your new email address must be confirmed from your old email address. Please log into your old email account and verify the new address by clicking the confirmation link provided.")
+        toastr.success("Email update requested. Your new email address must be confirmed from your old email address. Please log into your old email account and verify the new address by clicking the confirmation link provided.")
         this.setState({ lastAccountChange: null })
       })
       .catch((error) => {
@@ -110,6 +116,9 @@ class Profile extends Component {
         if (error.response.status === 401) {
           history.push("/login?redirect=/profile")
         }
+      })
+      .finally(() => {
+        this.setState({saving: false})
       })
   }
 
@@ -147,7 +156,7 @@ class Profile extends Component {
 
   render() {
     const { is_oauth } = this.props.store
-    const { openModal } = this.state
+    const { openModal, saving } = this.state
     const saveStyle = {
       backgroundColor: "#266586",
       color: "white",
@@ -190,7 +199,7 @@ class Profile extends Component {
                       </div>
 
                       <div className="text-right">
-                        <button type="submit" className="btn" style={saveStyle}><i className="icon-floppy-disk"></i> Save</button>
+                        <button type="submit" className="btn" disabled={saving} style={saveStyle}><i className="icon-floppy-disk"></i> Save</button>
                       </div>
                     </form>
                   </div>
@@ -213,7 +222,7 @@ class Profile extends Component {
                       </div>
 
                       <div className="text-right">
-                        <button type="submit" className="btn" style={saveStyle}><i className="icon-floppy-disk"></i> Save</button>
+                        <button type="submit" className="btn" disabled={saving} style={saveStyle}><i className="icon-floppy-disk"></i> Save</button>
                       </div>
                     </form>
                   </div>
