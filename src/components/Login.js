@@ -58,7 +58,7 @@ class Login extends Component {
           this.props.store.me = response.data
         })
         .catch((error) => {
-          console.log(error)
+          console.error(error)
           this.props.store.me = {}
         })
 

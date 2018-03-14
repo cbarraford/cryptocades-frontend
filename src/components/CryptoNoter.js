@@ -73,7 +73,7 @@ export default class CryptoNoter extends Component {
             this.props.store.balance = response.data.balance
           })
           .catch((error) => {
-            console.log(error)
+            console.error(error)
           })
       })
 

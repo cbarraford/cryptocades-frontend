@@ -36,7 +36,7 @@ class Profile extends Component {
         })
       })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
       })
 
     this.toggleModal = this.toggleModal.bind(this);

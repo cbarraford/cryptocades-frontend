@@ -66,7 +66,7 @@ class Signup extends Component {
             this.props.store.me = response.data
           })
           .catch((error) => {
-            console.log(error)
+            console.error(error)
             this.props.store.me = {}
           })
 
@@ -78,7 +78,7 @@ class Signup extends Component {
         }
       })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
         this.props.client.handleError(error, "Failed to login")
       })
   }

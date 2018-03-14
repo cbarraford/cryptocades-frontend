@@ -22,7 +22,7 @@ class UserNav extends Component {
         this.props.store.balance = response.data.balance
       })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
       })
 
     this.props.client.listJackpots()
@@ -32,7 +32,7 @@ class UserNav extends Component {
         })
       })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
       })
 
     window.onresize = (e) => {
@@ -63,7 +63,7 @@ class UserNav extends Component {
               this.props.store.balance = response.data.balance
             })
             .catch((error) => {
-              console.log(error)
+              console.error(error)
             })
         })
         .catch((error) => {

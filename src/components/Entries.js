@@ -25,7 +25,7 @@ class MyEntries extends Component {
         this.setState({ rank: response.data.rank })
       })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
       })
 
     this.props.client.balance()
@@ -33,7 +33,7 @@ class MyEntries extends Component {
         this.props.store.balance = response.data.balance
       })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
       })
 
     this.props.client.myincomes().then((response) => {

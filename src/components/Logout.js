@@ -45,7 +45,7 @@ export default class AuthCallback extends React.Component {
           history.push('/')
         })
         .catch((error) => {
-          console.log(error);
+          console.error(error);
           this.props.store.me = {};
           this.props.store.token = null;
           cookie.remove('token', { path: '/' })

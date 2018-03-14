@@ -80,7 +80,7 @@ class Jackpots extends Component {
               this.props.store.balance = response.data.balance
             })
             .catch((error) => {
-              console.log(error)
+              console.error(error)
             })
         })
         .catch((error) => {
@@ -98,7 +98,7 @@ class Jackpots extends Component {
         })
       })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
       })
   }
 
