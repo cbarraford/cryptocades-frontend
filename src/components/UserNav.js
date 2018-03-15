@@ -86,7 +86,7 @@ class UserNav extends Component {
     return (
       <div className="navbar navbar-default firstbar" style={{backgroundColor: "#266586"}}>
         <div className="navbar-header">
-          <a className="navbar-brand" to="https://cryptocades.com"><img src="/img/logo.png" alt="" /></a>
+          <a className="navbar-brand" href="https://cryptocades.com"><img src="/img/logo.png" alt="" /></a>
 
           <ul className="nav navbar-nav pull-right visible-xs-block">
             <li><a data-toggle="collapse" data-target="#navbar-mobile"><i className="icon-tree5"></i></a></li>

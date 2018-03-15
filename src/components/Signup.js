@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
 import { inject, observer } from 'mobx-react';
 import toastr from 'toastr'
 import PropTypes from 'prop-types'
@@ -181,7 +180,7 @@ class Signup extends Component {
                             <input type="checkbox" onChange={this.handleChange} checked={this.state.tos} name='tos' />
                           </span>
                         </div>
-                        Accept <Link to="https://cryptocades.com/terms/">terms of service</Link>
+                        Accept <a href="https://cryptocades.com/terms/">terms of service</a>
                       </label>
                     </div>
                   </div>

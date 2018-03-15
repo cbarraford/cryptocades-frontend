@@ -20,7 +20,7 @@ class GuestNav extends Component {
     return (
       <div className="navbar navbar-default firstbar" style={{backgroundColor: "#fdfbf0"}}>
         <div className="navbar-header">
-          <a className="navbar-brand" to="https://cryptocades.com"><img src="/img/logo.png" alt="" /></a>
+          <a className="navbar-brand" href="https://cryptocades.com"><img src="/img/logo.png" alt="" /></a>
 
           <ul className="nav navbar-nav pull-right visible-xs-block">
             <li><a data-toggle="collapse" data-target="#navbar-mobile"><i className="icon-tree5"></i></a></li>
@@ -35,14 +35,14 @@ class GuestNav extends Component {
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="https://cryptocades.com/#how-it-works">
+              <a className="nav-link" href="https://cryptocades.com/#how-it-works">
                 HOW IT WORKS
-              </Link>
+              </a>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="https://cryptocades.com/support">
+              <a className="nav-link" href="https://cryptocades.com/support">
                 SUPPORT
-              </Link>
+              </a>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/signup" style={{padding: "7px"}}>
