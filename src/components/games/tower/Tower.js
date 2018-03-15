@@ -46,7 +46,7 @@ let sky_objects = {
   cloud: {
     skip: false,
     count: 0,
-    low_limit: 5,
+    low_limit: 3,
     high_limit: maxTowerFloors / 2,
     scale_low:0.1,
     scale_high:0.4,
@@ -542,7 +542,9 @@ function update() {
       // skip if we've placed our obj outside its bounds
       const y_low_limit = state.canvas.height - (obj.low_limit * floor_height) 
       const y_high_limit = state.canvas.height - (obj.high_limit * floor_height) 
+      console.log(key, y)
       if (y_low_limit < y || y_high_limit > y) {
+        console.log("skipped")
         continue
       }
 
@@ -699,14 +701,14 @@ class Game extends Component {
               </p>
 
               <p>
-                <strong>Gameplay</strong>: Your computer is doing all of the work, building new floors to your tower. How fast floors are built depends on your computers performance, but on average it is about 1-2 minutes. Just sit back and watch your computer build your tower taller and taller (or go watch something else more interesting and come back later and check on your progress 😄).
+                <strong>Gameplay</strong>: Your computer is doing all of the work, building new stories to your tower. How fast stories are built depends on your computers performance, but on average it is about 1-2 minutes. Just sit back and watch your computer build your tower taller and taller (or go watch something else more interesting and come back later and check on your progress 😄).
               </p>
 
               <p>
-                <strong>Awards</strong>: As your tower gets taller, every 20 floors we will reward you with a jackpot play which can be used to enter any Bitcoin jackpot. 💸
+                <strong>Awards</strong>: As your tower gets taller, every 20 stories we will reward you with a jackpot play which can be used to enter any Bitcoin jackpot. 💸
               </p>
               <p>
-                <strong>Controls</strong>: On the left side of the game you may notice a throttle that controls the speed of how fast your tower adds new floors. The higher the throttle is set, the faster you build new floors, but also the more compute power is used of your computer to mine cryptocurrencies.
+                <strong>Controls</strong>: On the left side of the game you may notice a throttle that controls the speed of how fast your tower adds new story. The higher the throttle is set, the faster you build new stories, but also the more compute power is used of your computer to mine cryptocurrencies.
               </p>
             </div>
           </div>
