@@ -502,7 +502,6 @@ function update() {
       ease: 'Power2',
       duration: 3000,
       onStart: (tweens, targets) => {
-        console.log("Color update...")
         var r = percent*rColor;
         var g = percent*gColor;
         var b = percent*bColor;
@@ -511,7 +510,6 @@ function update() {
 
         var c = Math.floor((1-percent)*255)
         var colour = 'rgb('+c+','+c+',0)'
-        console.log("Color:", colour)
         state.throttle.text.setColor(colour)
         state.throttle.label.setColor(colour)
       },
