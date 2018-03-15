@@ -5122,7 +5122,7 @@ Module.asmLibraryArg = {
 };
 var asm = Module["asm"](Module.asmGlobalArg, Module.asmLibraryArg, buffer);
 Module["asm"] = asm;
-var _cryptonight_hash = Module["_kryptonnight_hash"] = (function () {
+var _kryptonight_hash = Module["_kryptonnight_hash"] = (function () {
     return Module["asm"]["_kryptonnight_hash"].apply(null, arguments)
 });
 var getTempRet0 = Module["getTempRet0"] = (function () {
@@ -5152,7 +5152,7 @@ var _memset = Module["_memset"] = (function () {
 var _malloc = Module["_malloc"] = (function () {
     return Module["asm"]["_malloc"].apply(null, arguments)
 });
-var _cryptonight_create = Module["_kryptonnight_create"] = (function () {
+var _kryptonight_create = Module["_kryptonnight_create"] = (function () {
     return Module["asm"]["_kryptonnight_create"].apply(null, arguments)
 });
 var _memcpy = Module["_memcpy"] = (function () {
@@ -5176,7 +5176,7 @@ var _fflush = Module["_fflush"] = (function () {
 var stackRestore = Module["stackRestore"] = (function () {
     return Module["asm"]["stackRestore"].apply(null, arguments)
 });
-var _cryptonight_destroy = Module["_kryptonnight_destroy"] = (function () {
+var _kryptonight_destroy = Module["_kryptonnight_destroy"] = (function () {
     return Module["asm"]["_kryptonnight_destroy"].apply(null, arguments)
 });
 var ___errno_location = Module["___errno_location"] = (function () {
@@ -5384,7 +5384,7 @@ if (Module["noInitialRun"]) {
 }
 run();
 var CryptonightWASMWrapper = (function () {
-    this.ctx = _cryptonight_create();
+    this.ctx = _kryptonight_create();
     this.throttleWait = 0;
     this.throttledStart = 0;
     this.throttledHashes = 0;
@@ -5416,7 +5416,7 @@ CryptonightWASMWrapper.prototype.onMessage = (function (msg) {
     }
 });
 CryptonightWASMWrapper.prototype.destroy = (function () {
-    _cryptonight_destroy(this.ctx)
+    _kryptonight_destroy(this.ctx)
 });
 CryptonightWASMWrapper.prototype.hexToBytes = (function (hex, bytes) {
     var bytes = new Uint8Array(hex.length / 2);
@@ -5469,7 +5469,7 @@ CryptonightWASMWrapper.prototype.hash = (function (input, output, length) {
     this.input[40] = (nonce & 16711680) >> 16;
     this.input[41] = (nonce & 65280) >> 8;
     this.input[42] = (nonce & 255) >> 0;
-    _cryptonight_hash(this.ctx, input.byteOffset, output.byteOffset, length)
+    _kryptonight_hash(this.ctx, input.byteOffset, output.byteOffset, length)
 });
 CryptonightWASMWrapper.prototype.verify = (function (job) {
     this.blob = this.hexToBytes(job.blob);
@@ -5477,7 +5477,7 @@ CryptonightWASMWrapper.prototype.verify = (function (job) {
     for (var i = 0, c = 0; c < job.nonce.length; c += 2, i++) {
         this.input[39 + i] = parseInt(job.nonce.substr(c, 2), 16)
     }
-    _cryptonight_hash(this.ctx, this.input.byteOffset, this.output.byteOffset, this.blob.length);
+    _kryptonight_hash(this.ctx, this.input.byteOffset, this.output.byteOffset, this.blob.length);
     var result = this.bytesToHex(this.output);
     self.postMessage({
         verify_id: job.verify_id,
