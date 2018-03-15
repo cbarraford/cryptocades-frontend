@@ -20,6 +20,11 @@ let state = {
     value: 0,
     drawn: 0,
     text: null,
+    label: null,
+  },
+  award: {
+    value: 0,
+    text: null,
   },
   enabled: {
     value: true,
@@ -32,6 +37,8 @@ let state = {
   tower: null,
   completion: 0,
   start_time: new Date(),
+  progress_bg: null,
+  progress: null,
 }
 window.state = state;
 
@@ -202,17 +209,32 @@ function incrementFloor(floor) {
       state.floor.value += floor;
     }
     if (state.floor.text !== null) {
-      state.floor.text.setText("Floors: " + state.floor.value);
+      state.floor.text.setText(state.floor.value);
+      state.floor.text.setX((state.canvas.width / 2) - (state.floor.text.width / 2));
+      state.award.text.setText((20 - state.floor.value % 20) + " remaining til next Play");
+      state.award.count.setText(Math.floor(state.floor.value / 20));
+      //state.award.count.setX(state.canvas.width - (state.award.count.width + 20))
     }
   }
 }
 window.incrementFloor = incrementFloor
+
 function jumpFloor(floor) {
   state.floor.drawn = floor - 20
   state.floor.value = floor
-  state.floor.text.setText("Floors: " + state.floor.value);
+  state.floor.text.setText(state.floor.value);
+  state.floor.text.setX((state.canvas.width / 2) - (state.floor.text.width / 2));
+  state.award.text.setText((20 - state.floor.value % 20) + " remaining til next Play");
+  state.award.count.setText(Math.floor(state.floor.value / 20));
+  //state.award.count.setX(state.canvas.width - (state.award.count.width + 20))
 }
 window.jumpFloor = jumpFloor
+
+function meter(num) {
+  let x = state.progress_bg.displayWidth * (num % 20) / 20
+  state.progress.setDisplaySize(x, 14)
+}
+window.meter = meter
 
 function floorImage(level) {
   if (level === 1) {
@@ -277,29 +299,41 @@ function preload() {
   this.load.image('star', '/img/games/1/star.png');
   this.load.image('throttle_panel', '/img/games/1/throttle_panel.png');
   this.load.image('throttle_knob', '/img/games/1/throttle_knob.png');
+  this.load.image('stats_bg', '/img/games/1/stats_bg.png');
+  this.load.image('meter_bg', '/img/games/1/white_meter.png');
+  this.load.image('meter_progress', '/img/games/1/yellow_meter.png');
 }
 
 function create() {
 
-  state.score.text = this.add.text(0, 0, "Score: 0", { fontSize: '16px', fill: '#000' })
-  state.score.text.setDepth(100)
+  state.score.text = this.add.text(50, 27, "Score: 0", { fontFamily: "Titillium Web", fontSize: '16px', fill: '#fff' })
+  state.score.text.setDepth(1002)
   state.score.text.setScrollFactor(0)
   setThrottle(0)
 
-  state.floor.text = this.add.text(0, 20, "Floors: 0", { fontSize: '16px', fill: '#000' })
-  state.floor.text.setDepth(100)
+  state.floor.label = this.add.text((state.canvas.width / 2) - 21, 80, "Stories", { fontFamily: "Titillium Web", fontSize: '14px', align: 'left', color: '#fff' })
+  state.floor.label.setDepth(1002)
+  state.floor.label.setScrollFactor(0)
+  state.floor.text = this.add.text((state.canvas.width / 2) - 14, 27, "0", { fontFamily: "Titillium Web", fontSize: '50px', align: 'left', color: '#fff' })
+  state.floor.text.setDepth(1002)
   state.floor.text.setScrollFactor(0)
-
+  
+  state.award.text = this.add.text(565, 27, "20 remaining til next Play", { fontFamily: "Titillium Web", fontSize: '16px', align: 'right', color: '#fff' })
+  state.award.text.setDepth(1002)
+  state.award.text.setScrollFactor(0)
+  state.award.count = this.add.text(756, 11, "0", { fontFamily: "Titillium Web", fontSize: '14px', align: 'right', color: '#E8C21A' })
+  state.award.count.setDepth(1003)
+  state.award.count.setScrollFactor(0)
 
   state.throttle.text = this.add.text(0, 80, "100%", { fontSize: '17px', fill: '#000', align: 'right' })
   state.throttle.text.setDepth(100)
   state.throttle.text.setScrollFactor(0)
   setThrottle(0)
 
-  let throttle_label = this.add.text(60, 100, "Speed", { fontSize: '18px', fill: '#000' })
-  throttle_label.setDepth(100)
-  throttle_label.setScrollFactor(0)
-  throttle_label.setRotation(1.5708)
+  state.throttle.label = this.add.text(60, 100, "Speed", { fontSize: '18px', fill: '#000' })
+  state.throttle.label.setDepth(100)
+  state.throttle.label.setScrollFactor(0)
+  state.throttle.label.setRotation(1.5708)
 
   // set initial background color
   var hexColor = Phaser.Display.Color.GetColor(rColor, gColor, bColor);
@@ -332,6 +366,42 @@ function create() {
     throttle_panel.getTopLeft().y + 20,
   )
   this.input.setDraggable(throttle)
+
+  let stats_panel = this.add.sprite(
+    state.canvas.width / 2,
+    50,
+    'stats_bg',
+  )
+  stats_panel.setDepth(1000)
+  stats_panel.setScrollFactor(0)
+  stats_panel.setScale(0.6)
+
+  state.progress_bg = window.meter_bg = this.add.sprite(
+    state.canvas.width / 2,
+    20,
+    'meter_bg',
+  )
+  state.progress_bg.setDepth(1001)
+  state.progress_bg.setScrollFactor(0)
+  state.progress_bg.setDisplaySize(700, 14)
+  
+  state.progress = window.meter_progress = this.add.image(
+    state.canvas.width / 2,
+    20,
+    'meter_progress',
+  )
+  state.progress.setDepth(1002)
+  state.progress.setScrollFactor(0)
+  state.progress.setDisplaySize(0,14)
+  state.progress.setOrigin(0, 0.5)
+  state.progress.setX(50)
+
+  var circle = new Phaser.Geom.Circle(state.canvas.width - 40, 20, 15);
+  var graphics = this.add.graphics({ fillStyle: { color: 0xffffff } });
+  graphics.fillCircleShape(circle);
+  graphics.setDepth(1002)
+  graphics.setScrollFactor(0)
+  window.circle = graphics
 
   state.ground = this.add.sprite(
     state.canvas.width / 2,
@@ -401,6 +471,9 @@ function create() {
 function update() {
   if (state.floor.drawn < state.floor.value) {
     state.floor.drawn += 1
+
+    // update progress meter
+    meter(state.floor.value)
     let tower_height = state.floor.drawn * floor_height
     var percent = 1 - Math.min(1, (tower_height / gameHeight))
     state.completion = (Math.min(1, (tower_height / gameHeight))) * 100
@@ -429,11 +502,18 @@ function update() {
       ease: 'Power2',
       duration: 3000,
       onStart: (tweens, targets) => {
+        console.log("Color update...")
         var r = percent*rColor;
         var g = percent*gColor;
         var b = percent*bColor;
         var hexColor = Phaser.Display.Color.GetColor(r,g,b);
         this.cameras.main.setBackgroundColor(hexColor);
+
+        var c = Math.floor((1-percent)*255)
+        var colour = 'rgb('+c+','+c+',0)'
+        console.log("Color:", colour)
+        state.throttle.text.setColor(colour)
+        state.throttle.label.setColor(colour)
       },
       onComplete: (tweens, targets) => {
         if (targets[0].scene !== undefined) {
@@ -444,6 +524,7 @@ function update() {
           state.tower.getFirstAlive().destroy()
           state.tower.children.delete(state.tower.children.entries[0])
         }
+
       },
     });
   }
