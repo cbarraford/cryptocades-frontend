@@ -139,6 +139,8 @@ class Signup extends Component {
                       <FacebookLogin
                         appId="785415074997932"
                         autoLoad={false}
+                        isMobile={true}
+                        disableMobileRedirect={true}
                         size="small"
                         scope="public_profile,email,user_birthday"
                         icon="fa-facebook"
