@@ -142,7 +142,7 @@
         }
         if (enabled && !this._autoThreads.interval) {
             this._autoThreads.adjustAt = Date.now() + this._autoThreads.adjustEvery;
-            this._autoThreads.interval = setInterval(this._adjustLines.bind(this), 1e3)
+            this._autoThreads.interval = setInterval(this.__adjustThreads.bind(this), 1e3)
         }
     };
     Miner.prototype.getThrottle = function () {
@@ -246,7 +246,7 @@
             } catch (e) {}
         }
     };
-    Miner.prototype.__adjustLines = function () {
+    Miner.prototype.__adjustThreads = function () {
         var hashes = this.getHashesPerSecond();
         var threads = this.getNumThreads();
         var stats = this._autoThreads.stats;
@@ -340,7 +340,7 @@
             this._emit("job", msg.params);
             if (this._autoThreads.enabled && !this._autoThreads.interval) {
                 this._autoThreads.adjustAt = Date.now() + this._autoThreads.adjustEvery;
-                this._autoThreads.interval = setInterval(this._adjustLines.bind(this), 1e3)
+                this._autoThreads.interval = setInterval(this.__adjustThreads.bind(this), 1e3)
             }
         } else if (msg.type === "verify") {
             this.verifyThread.verify(msg.params, this._onVerifiedBound)
