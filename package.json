@@ -54,6 +54,7 @@
         "react-facebook-login": "^4.0.0",
         "react-ga": "^2.4.1",
         "react-google-recaptcha": "^0.9.9",
+        "react-helmet": "^5.2.0",
         "react-router-dom": "^4.2.2",
         "react-share": "^2.0.0",
         "react-social": "^1.10.0",

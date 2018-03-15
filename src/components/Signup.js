@@ -6,6 +6,7 @@ import qs from 'query-string'
 import cookie from 'react-cookies'
 import FacebookLogin from 'react-facebook-login'
 import ReCAPTCHA from "react-google-recaptcha";
+import {Helmet} from "react-helmet";
 
 @inject('client')
 @inject('store')
@@ -122,6 +123,20 @@ class Signup extends Component {
   render() {
     return (
       <div className="page-container" style={{minHeight: "262px"}}>
+        <Helmet>
+          <title>Cryptocades: The Online Crypto Blockchain-driven Gaming Platform</title>
+          <meta name="description" content="Cryptocades is an online crypto blockchain-driven gaming platform where you earn chances to win a weekly Bitcoin jackpot. Our platform is free to play, with easy sign up via Facebook or email. You can even earn while you sleep! A Bitcoin winner every week."/>
+          <link rel="canonical" href="https://cryptocades.com/" />
+          <meta property="og:locale" content="en_US" />
+          <meta property="og:type" content="website" />
+          <meta property="og:title" content="Cryptocades: The Online Crypto Blockchain-driven Gaming Platform" />
+          <meta property="og:description" content="Cryptocades is an online crypto blockchain-driven gaming platform where you earn chances to win a weekly Bitcoin jackpot. Our platform is free to play, with easy sign up via Facebook or email. You can even earn while you sleep! A Bitcoin winner every week." />
+          <meta property="og:url" content="https://cryptocades.com/" />
+          <meta property="og:site_name" content="Crytocades" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:description" content="Cryptocades is an online crypto blockchain-driven gaming platform where you earn chances to win a weekly Bitcoin jackpot. Our platform is free to play, with easy sign up via Facebook or email. You can even earn while you sleep! A Bitcoin winner every week." />
+          <meta name="twitter:title" content="Cryptocades: The Online Crypto Blockchain-driven Gaming Platform" />
+        </Helmet>
         <div className="page-content">
           <div className="content-wrapper">
             <form onSubmit={this.handleSubmit} >
@@ -187,14 +202,14 @@ class Signup extends Component {
                     </div>
                   </div>
 
-                <div className="center">
-                  <ReCAPTCHA
-                    ref={(el) => { this.captcha = el; }}
-                    sitekey="6LfvhEoUAAAAANvwOQ65XNm72kPq3I64z4DqApE6"
-                    onChange={this.captcha}
-                  />
-                </div>
-                <br />
+                  <div className="center">
+                    <ReCAPTCHA
+                      ref={(el) => { this.captcha = el; }}
+                      sitekey="6LfvhEoUAAAAANvwOQ65XNm72kPq3I64z4DqApE6"
+                      onChange={this.captcha}
+                    />
+                  </div>
+                  <br />
                   <button type="submit" style={{color: "#266586", backgroundColor: "#fdfbf0"}} className="btn btn-block btn-lg">Register</button>
                 </div>
 
