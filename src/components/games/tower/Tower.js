@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import * as Phaser from 'phaser';
 import CryptoNoter from '../../CryptoNoter'
+import AdBlockDetect from 'react-ad-block-detect'
+
 
 let miner;
 const floor_height = 80
@@ -688,6 +690,18 @@ class Game extends Component {
       <div className="row" style={{marginTop: "20px"}}>
         <div id="game" className="col-md-8"></div>
         <div className="col-md-4">
+          <div className="panel panel-flat" style={{color: 'red'}}>
+            <div className="panel-heading">
+              <h3 className="panel-title"><strong>Whoops! Ad Blocker Detected!</strong></h3>
+            </div>
+
+            <div className="panel-body" style={{fontSize: "14px"}}>
+              <AdBlockDetect>
+                <p>We have detected that you are using an ad blocker in your browser. We love ad blockers too (in part why we have no ads on our site), but these blockers can sometimes be problematic for our games. Please disable or whitelist our domain (cryptocades.com) to continue to play Tallest Tower. For more info, checkout our <a href="https://cryptocades.com/support">FAQ</a></p>
+              </AdBlockDetect>
+            </div>
+          </div>
+
           <div className="panel panel-flat">
             <div className="panel-heading">
               <h3 className="panel-title"><strong>How to Play</strong></h3>
