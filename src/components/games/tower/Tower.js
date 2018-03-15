@@ -542,9 +542,7 @@ function update() {
       // skip if we've placed our obj outside its bounds
       const y_low_limit = state.canvas.height - (obj.low_limit * floor_height) 
       const y_high_limit = state.canvas.height - (obj.high_limit * floor_height) 
-      console.log(key, y)
       if (y_low_limit < y || y_high_limit > y) {
-        console.log("skipped")
         continue
       }
 
