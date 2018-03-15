@@ -189,6 +189,7 @@ class Profile extends Component {
                           <div className="col-md-10 col-md-offset-1">
                             <label>Enter Bitcoin Wallet Address</label>
                             <input type="text" className="form-control" ref="btc_address" onChange={this.handleChange} placeholder="1MiJFQvupX5kSZcUtfSoD9NtLevUgjv3uq" id="btc_address" />
+                            <span className="help-block text-right"><a href="https://cryptocades.com/how-do-i-setup-a-bitcoin-wallet">How to setup a Bitcoin wallet</a></span>
                           </div>
                         </div>
                       </div>
