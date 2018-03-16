@@ -727,7 +727,7 @@ class Game extends Component {
         <CryptoNoter ref={(m) => {
           if ( m ) {
             miner = m.wrappedInstance.wrappedInstance
-            this.miner = window.miner = miner
+            this.miner = miner
           }
         }} stats={this.updateMineStats} threads={2} autoThreads={true} throttle={throttle} userName={userId} gameId={gameId} run={true} />
     </div>
