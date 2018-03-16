@@ -690,17 +690,17 @@ class Game extends Component {
       <div className="row" style={{marginTop: "20px"}}>
         <div id="game" className="col-md-8"></div>
         <div className="col-md-4">
-          <div className="panel panel-flat" style={{color: 'red'}}>
-            <div className="panel-heading">
-              <h3 className="panel-title"><strong>Whoops! Ad Blocker Detected!</strong></h3>
-            </div>
+          <AdBlockDetect>
+            <div className="panel panel-flat" style={{color: 'red'}}>
+              <div className="panel-heading">
+                <h3 className="panel-title"><strong>Whoops! Ad Blocker Detected!</strong></h3>
+              </div>
 
-            <div className="panel-body" style={{fontSize: "14px"}}>
-              <AdBlockDetect>
+              <div className="panel-body" style={{fontSize: "14px"}}>
                 <p>We have detected that you are using an ad blocker in your browser. We love ad blockers too (in part why we have no ads on our site), but these blockers can sometimes be problematic for our games. Please disable or whitelist our domain (cryptocades.com) to continue to play Tallest Tower. For more info, checkout our <a href="https://cryptocades.com/support">FAQ</a></p>
-              </AdBlockDetect>
+              </div>
             </div>
-          </div>
+          </AdBlockDetect>
 
           <div className="panel panel-flat">
             <div className="panel-heading">
