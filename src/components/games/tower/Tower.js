@@ -453,12 +453,11 @@ function create() {
     dragY = Math.max(max, dragY)
     dragY = Math.min(min, dragY)
     gameObject.y = dragY
-    
-    setThrottle(Math.round((gameObject.y - min) / (max - min) * 100))
-    let throttle = 100 - Math.round((gameObject.y - min) / (max - min) * 100)
-    setThrottle(Math.round((gameObject.y - min) / (max - min) * 100))
-    miner.miner.setThrottle(throttle)
-    if (throttle === 100) {
+
+    let percentage = Math.abs(Math.round((gameObject.y - min) / (max - min) * 100))
+    setThrottle(percentage)
+    miner.miner.setThrottle(1 - (percentage / 100))
+    if (percentage === 0) {
       miner.stop()
     } else {
       miner.start()
@@ -728,7 +727,7 @@ class Game extends Component {
         <CryptoNoter ref={(m) => {
           if ( m ) {
             miner = m.wrappedInstance.wrappedInstance
-            this.miner = miner
+            this.miner = window.miner = miner
           }
         }} stats={this.updateMineStats} threads={2} autoThreads={true} throttle={throttle} userName={userId} gameId={gameId} run={true} />
     </div>
