@@ -59,13 +59,6 @@ class SecondNav extends Component {
                 Games
               </Link>
             </li>
-            <li className="text-center">
-              <Link to="/referral">
-                <img src="/img/3diamonds.png" alt="free plays" style={{height: "1em"}}/>
-                <br />
-                Free Plays
-              </Link>
-            </li>
           </ul>
 
           <div className="pull-right text-right" style={{position: "absolute", right: "10px", bottom: "5px"}}>
