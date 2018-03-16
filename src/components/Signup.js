@@ -22,7 +22,6 @@ class Signup extends Component {
     this.state = {
       username: null,
       tos: false,
-      referral_code: qs.parse(this.props.location.search).referral,
       captcha_code: null,
     }
 
@@ -43,7 +42,6 @@ class Signup extends Component {
       toastr.error("Must agree to the terms of service.")
       return false
     }
-    req.referral_code = this.state.referral_code
     req.captcha_code = this.state.captcha_code
     this.postLogin(this.props.client.facebookLogin(req))
   }
@@ -109,7 +107,6 @@ class Signup extends Component {
       email: this.state.email,
       password: this.state.password,
       btc_address: this.state.btc_address,
-      referral_code: this.state.referral_code,
       captcha_code: this.state.captcha_code,
     })
       .then((response) => {
