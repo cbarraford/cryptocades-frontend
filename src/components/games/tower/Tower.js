@@ -197,6 +197,24 @@ let sky_objects = {
 // eslint-disable-next-line
 Date.prototype.getUnixTime = function() { return this.getTime()/1000|0 };
 
+function enterFullScreen() {
+  var el = document.getElementsByTagName('canvas')[0];
+  var requestFullScreen = el.requestFullscreen || el.msRequestFullscreen || el.mozRequestFullScreen || el.webkitRequestFullscreen;
+
+  if(requestFullScreen) {
+    requestFullScreen.call(el);
+  }
+}
+
+function exitFullScreen() {
+  var el = document.getElementsByTagName('canvas')[0];
+  var cancelFullScreen = el.cancelFullscreen || el.msCancelFullscreen || el.mozCancelFullScreen || el.webkitCancelFullScreen;
+
+  if(cancelFullScreen) {
+    cancelFullScreen.call(el);
+  }
+}
+
 function avgFloorRate() {
   let d = new Date()
   return (d.getUnixTime() - state.start_time.getUnixTime()) / state.floor.value
@@ -215,7 +233,6 @@ function incrementFloor(floor) {
       state.floor.text.setX((state.canvas.width / 2) - (state.floor.text.width / 2));
       state.award.text.setText((20 - state.floor.value % 20) + " remaining til next Play");
       state.award.count.setText(Math.floor(state.floor.value / 20));
-      //state.award.count.setX(state.canvas.width - (state.award.count.width + 20))
     }
   }
 }
@@ -228,13 +245,13 @@ function jumpFloor(floor) {
   state.floor.text.setX((state.canvas.width / 2) - (state.floor.text.width / 2));
   state.award.text.setText((20 - state.floor.value % 20) + " remaining til next Play");
   state.award.count.setText(Math.floor(state.floor.value / 20));
-  //state.award.count.setX(state.canvas.width - (state.award.count.width + 20))
 }
 window.jumpFloor = jumpFloor
 
 function meter(num) {
-  let x = state.progress_bg.displayWidth * (num % 20) / 20
-  state.progress.setDisplaySize(x, 14)
+  const operatingWidth = state.canvas.width / 800
+  const percentage = (num % 20) / 20
+  state.progress.setScale(operatingWidth * percentage, 1)
 }
 window.meter = meter
 
@@ -307,6 +324,7 @@ function preload() {
 }
 
 function create() {
+  const x_starter = (state.canvas.width / 800) * 50
 
   state.score.text = this.add.text(50, 27, "Score: 0", { fontFamily: "Titillium Web", fontSize: '16px', fill: '#fff' })
   state.score.text.setDepth(1002)
@@ -320,10 +338,11 @@ function create() {
   state.floor.text.setDepth(1002)
   state.floor.text.setScrollFactor(0)
   
-  state.award.text = this.add.text(565, 27, "20 remaining til next Play", { fontFamily: "Titillium Web", fontSize: '16px', align: 'right', color: '#fff' })
+  state.award.text = this.add.text(state.canvas.width - x_starter, 40, "20 remaining til next Play", { fontFamily: "Titillium Web", fontSize: '16px', align: 'right', color: '#fff' })
   state.award.text.setDepth(1002)
+  state.award.text.setOrigin(1,0.5)
   state.award.text.setScrollFactor(0)
-  state.award.count = this.add.text(756, 11, "0", { fontFamily: "Titillium Web", fontSize: '14px', align: 'right', color: '#E8C21A' })
+  state.award.count = this.add.text(state.canvas.width - x_starter + 4, 11, "0", { fontFamily: "Titillium Web", fontSize: '14px', align: 'right', color: '#E8C21A' })
   state.award.count.setDepth(1003)
   state.award.count.setScrollFactor(0)
 
@@ -379,26 +398,26 @@ function create() {
   stats_panel.setScale(0.6)
 
   state.progress_bg = window.meter_bg = this.add.sprite(
-    state.canvas.width / 2,
+    x_starter,
     20,
     'meter_bg',
   )
   state.progress_bg.setDepth(1001)
   state.progress_bg.setScrollFactor(0)
-  state.progress_bg.setDisplaySize(700, 14)
-  
-  state.progress = window.meter_progress = this.add.image(
-    state.canvas.width / 2,
+  state.progress_bg.setOrigin(0, 0.5)
+  state.progress_bg.setScale(state.canvas.width / 800, 1)
+
+  state.progress = window.meter_progress = this.add.sprite(
+    x_starter,
     20,
     'meter_progress',
   )
   state.progress.setDepth(1002)
-  state.progress.setScrollFactor(0)
-  state.progress.setDisplaySize(0,14)
   state.progress.setOrigin(0, 0.5)
-  state.progress.setX(50)
+  state.progress.setScrollFactor(0)
+  state.progress.setScale(0, 1)
 
-  var circle = new Phaser.Geom.Circle(state.canvas.width - 40, 20, 15);
+  var circle = new Phaser.Geom.Circle(state.canvas.width - (x_starter - 10), 20, 15);
   var graphics = this.add.graphics({ fillStyle: { color: 0xffffff } });
   graphics.fillCircleShape(circle);
   graphics.setDepth(1002)
@@ -605,6 +624,7 @@ function update() {
 function createGame(width, height) {
   var config = {
     backgroundColor: '#000',
+    autoResize: true,
     width: width,
     height: height,
     type: Phaser.CANVAS,
@@ -739,7 +759,7 @@ class Game extends Component {
   }
 
   componentDidMount() {
-    this.game = createGame(this.state.width, this.state.height);
+    this.game = window.game = createGame(this.state.width, this.state.height);
   }
 }
 

@@ -22,11 +22,13 @@ class Tower extends Component {
   render() {
     const { id } = this.props.store.me
     const { gameId, userId } = this.state;
+    const width = Math.min(document.body.clientWidth, 800)
+    const height = Math.min(document.body.clientHeight, 600)
     return (
       <div className="page-container" style={{minHeight: "68px"}}>
         <div className="page-content">
           <div className="wrapper wrapper-content">
-            <Game height={600} width={800} userId={userId || id.toString()} gameId={gameId} />
+            <Game height={height} width={width} userId={userId || id.toString()} gameId={gameId} />
           </div>
         </div>
       </div>
