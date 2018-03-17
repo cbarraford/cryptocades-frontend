@@ -8,7 +8,7 @@ class GuestNav extends Component {
 
     window.onresize = (e) => {
       let nav = document.getElementsByClassName('firstbar')[0]
-      nav.style.height = document.body.clientWidth / 9.3 + "px"
+      nav.style.minHeight = document.body.clientWidth / 9.3 + "px"
     }
   }
 
@@ -22,8 +22,12 @@ class GuestNav extends Component {
         <div className="navbar-header">
           <a className="navbar-brand" href="https://cryptocades.com"><img src="/img/logo.png" alt="" /></a>
 
-          <ul className="nav navbar-nav pull-right visible-xs-block">
-            <li><a data-toggle="collapse" data-target="#navbar-mobile"><i className="icon-tree5"></i></a></li>
+          <ul className="nav navbar-nav visible-xs-block">
+            <li>
+              <a data-toggle="collapse" data-target="#navbar-mobile">
+                <i className="icon-menu7" style={{color: "white"}}></i>
+              </a>
+            </li>
           </ul>
         </div>
 
@@ -45,8 +49,8 @@ class GuestNav extends Component {
               </a>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/signup" style={{padding: "7px"}}>
-                <button style={{background:"none", fontSize: "10px", color: "white", borderColor:"white"}} type="button" className="btn">SIGN UP</button>
+              <Link className="nav-link" to="/signup">
+                SIGN UP
               </Link>
             </li>
           </ul>

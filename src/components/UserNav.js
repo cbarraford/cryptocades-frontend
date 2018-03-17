@@ -38,7 +38,7 @@ class UserNav extends Component {
 
     window.onresize = (e) => {
       let nav = document.getElementsByClassName('firstbar')[0]
-      nav.style.height = document.body.clientWidth / 9.3 + "px"
+      nav.style.minHeight = document.body.clientWidth / 9.3 + "px"
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -89,14 +89,26 @@ class UserNav extends Component {
           <a className="navbar-brand" href="https://cryptocades.com"><img src="/img/logo.png" alt="" /></a>
 
           <ul className="nav navbar-nav pull-right visible-xs-block">
-            <li><a data-toggle="collapse" data-target="#navbar-mobile"><i className="icon-tree5"></i></a></li>
+            <li>
+              <a data-toggle="collapse" data-target="#hide-desktop">
+                <img className="img-responsive img-circle" src={avatar} alt="" style={{height: "1.5em"}}/>
+              </a>
+            </li>
           </ul>
         </div>
 
-        <div className="navbar-collapse collapse" id="navbar-mobile">
+        <div className="navbar-collapse collapse hidden-sm hidden-md hidden-lg" id="hide-desktop" style={{borderWidth: 0}}>
+          <ul className="nav navbar-nav navbar-right">
+            <li className="text-center"><Link to="/profile"><i className="icon-user-plus"></i> Profile</Link></li>
+            <li className="text-center"><Link to="/wallet"><i className="icon-coins"></i> Wallet</Link></li>
+            <li className="text-center"><Link to="/logout"><i className="icon-switch2"></i> Logout</Link></li>
+          </ul>
+        </div>
+
+        <div className="navbar-collapse collapse" style={{borderWidth: 0}}>
 
           <ul className="nav navbar-nav navbar-right">
-            <li className="dropdown dropdown-user">
+            <li className="dropdown dropdown-user hide-mobile">
               <a className="btn btn-icon" data-toggle="dropdown">
                 <i className="icon-ticket"></i>
                 <span className={"badge bg-warning-400" + showTicketCount} style={{paddingTop:0, paddingBottom:0}}>{balance || 0}</span>

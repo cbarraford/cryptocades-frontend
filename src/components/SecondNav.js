@@ -40,7 +40,12 @@ class SecondNav extends Component {
     return (
       <div className="navbar navbar-default secondbar" id="navbar-second">
         <ul className="nav navbar-nav no-border visible-xs-block">
-          <li><a className="text-center collapsed" data-toggle="collapse" data-target="#navbar-second-toggle"><i className="icon-menu7"></i></a></li>
+          <li>
+            <a className="text-center collapsed" data-toggle="collapse" data-target="#navbar-second-toggle">
+              <i className="icon-menu7">
+              </i>
+            </a>
+          </li>
         </ul>
 
         <div className="navbar-collapse collapse" id="navbar-second-toggle">
@@ -61,7 +66,7 @@ class SecondNav extends Component {
             </li>
           </ul>
 
-          <div className="pull-right text-right" style={{position: "absolute", right: "10px", bottom: "5px"}}>
+          <div id="countdown" className="pull-right text-right" style={{position: "absolute", right: "10px", bottom: "5px"}}>
             <span style={{fontSize: "24px"}}>
               <Countdown date={endtime} renderer={renderer} />
             </span>

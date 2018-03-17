@@ -1,63 +1,76 @@
 @import url('https://fonts.googleapis.com/css?family=Titillium+Web');
 
 body {
-    font-family: 'Titillium Web', sans-serif;
-    background-color: #fdfbf0;
+  font-family: 'Titillium Web', sans-serif;
+  background-color: #fdfbf0;
 }
 
 .firstbar{
-    background: linear-gradient(to right, #57e5c4, #266586);
-    background-image: url("/assets/images/header_footer.png");
-    background-repeat: no-repeat;
-    height: 140px;
-    background-size: contain;
-    border-color: #fdfbf0;
-    border-width: 0px;
+  background: linear-gradient(to right, #57e5c4, #266586);
+  background-image: url("/assets/images/header_footer.png");
+  background-repeat: no-repeat;
+  height: auto;
+  background-size: contain;
+  border-color: #fdfbf0;
+  border-width: 0px;
 }
 
 .key-pattern {
-    background-image: url("/img/pattern.png");
-    background-repeat: repeat;
-    background-size: 20px;
-    border-radius: 125px;
-    color: #57e5c4;
+  background-image: url("/img/pattern.png");
+  background-repeat: repeat;
+  background-size: 20px;
+  border-radius: 125px;
+  color: #57e5c4;
 }
 
 .key-pattern button {
-    color: #266586;
-    background-color: #fdfbf0;
+  color: #266586;
+  background-color: #fdfbf0;
 }
 
 .key-pattern a:link, .key-pattern a:visited {
-    color: #57e5c4;
-    text-decoration: underline;
+  color: #57e5c4;
+  text-decoration: underline;
 }
 
 .facebook-button button {
-    background-color: white;
-    color: #266586;
-    border-color: #57e5c4;
-    border-width: 3px;
-    border-radius: 5px;
-    display: block;
-    width: 100%;
+  background-color: white;
+  color: #266586;
+  border-color: #57e5c4;
+  border-width: 3px;
+  border-radius: 5px;
+  display: block;
+  width: 100%;
 }
 
 .firstbar .navbar-nav > li > a:hover {
-    background-color: transparent;
-    color: white;
+  background-color: transparent;
+  color: white;
 }
 
 .firstbar .navbar-nav > li > a {
     color: white;
-    font-size: 10px;
-    margin-top: 30px;
 }
 
-.navbar-brand > img {
-    margin-top: 25px;
-    margin-left: 20px;
-    height: 30px;
+@media screen and (max-width: 768px) {
+    .firstbar .navbar-nav {
+        background-color: #266586;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .firstbar .navbar-nav > li > a {
+        font-size: 10px;
+        margin-top: 30px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .navbar-brand > img {
+        margin-top: 25px;
+        margin-left: 20px;
+        height: 30px;
+    }
 }
 
 .secondbar {
@@ -77,6 +90,11 @@ body {
     font-size: 20px;
 }
 
+@media screen and (max-width: 768px) {
+    .secondbar #countdown {
+        display: none;
+    }
+}
 
 .content-header {
     font-size: 40px;
@@ -85,5 +103,17 @@ body {
 }
 
 .disabled-link {
-  pointer-events: none;
+    pointer-events: none;
+}
+
+@media screen and (max-width: 768px) {
+    .hide-mobile {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    #hide-desktop {
+        display: none !important;
+    }
 }
