@@ -723,6 +723,18 @@ class Game extends Component {
 
           <div className="panel panel-flat">
             <div className="panel-heading">
+              <h3 className="panel-title"><strong>Share URL</strong></h3>
+            </div>
+            <div className="panel-body" style={{fontSize: "14px"}}>
+              <p>
+                Play Tallest Tower on multiple computers and earn even more plays for your account <strong>WITHOUT</strong> needing to log in.
+              </p>
+              <input type="text" class="form-control" readonly="readonly" value={window.location.href} />
+            </div>
+          </div>
+
+          <div className="panel panel-flat">
+            <div className="panel-heading">
               <h3 className="panel-title"><strong>How to Play</strong></h3>
             </div>
 
