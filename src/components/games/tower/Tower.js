@@ -723,7 +723,7 @@ class Game extends Component {
 
           <div className="panel panel-flat">
             <div className="panel-heading">
-              <h3 className="panel-title"><strong>Share URL</strong></h3>
+              <h3 className="panel-title"><strong>Quick URL</strong></h3>
             </div>
             <div className="panel-body" style={{fontSize: "14px"}}>
               <p>
