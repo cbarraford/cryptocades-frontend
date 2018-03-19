@@ -17,6 +17,7 @@ import Logout from './components/Logout';
 import Tower from './components/Tower';
 import Games from './components/Games';
 import Jackpots from './components/Jackpots';
+import Winners from './components/Winners';
 import Entries from './components/Entries';
 import Profile from './components/Profile';
 import registerServiceWorker from './registerServiceWorker';
@@ -56,6 +57,7 @@ ReactDOM.render((
       <MatchWithDefaultLayout exact path="/login" component={Login}/>
       <Route exect path="/logout" component={Logout}/>
       <MatchWithDefaultLayout exact path="/jackpots" component={Jackpots}/>
+      <MatchWithDefaultLayout exact path="/winners" component={Winners}/>
       <MatchWithDefaultLayout exact path="/games" component={Games}/>
       <MatchWithDefaultLayout exact path="/games/:game_id" component={Tower}/>
       <MatchWithDefaultLayout exact path="/games/:game_id/:user_id" component={Tower}/>
