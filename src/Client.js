@@ -63,6 +63,15 @@ class Client {
   myincomes() {
     return this.client.get('/me/incomes');
   }
+  
+  myboosts() {
+    return this.client.get('/me/boosts');
+  }
+  
+  asignboost(boost_id, income_id) {
+    const obj = {boost_id, income_id}
+    return this.client.PUT('/me/boosts', obj);
+  }
 
   myrank() {
     return this.client.get('/me/incomes/rank');

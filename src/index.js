@@ -18,7 +18,7 @@ import Tower from './components/Tower';
 import Games from './components/Games';
 import Jackpots from './components/Jackpots';
 import Winners from './components/Winners';
-import Entries from './components/Entries';
+import Wallet from './components/Wallet';
 import Profile from './components/Profile';
 import registerServiceWorker from './registerServiceWorker';
 
@@ -61,7 +61,7 @@ ReactDOM.render((
       <MatchWithDefaultLayout exact path="/games" component={Games}/>
       <MatchWithDefaultLayout exact path="/games/:game_id" component={Tower}/>
       <MatchWithDefaultLayout exact path="/games/:game_id/:user_id" component={Tower}/>
-      <MatchWithDefaultLayout exact path="/wallet" component={Entries}/>
+      <MatchWithDefaultLayout exact path="/wallet" component={Wallet}/>
       <MatchWithDefaultLayout exact path="/profile" component={Profile}/>
     </div>
   </Router>

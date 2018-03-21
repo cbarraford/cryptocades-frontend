@@ -6,7 +6,7 @@ import dateFormat from 'dateformat'
 @inject('store')
 @inject('client')
 @observer
-class MyEntries extends Component {
+class MyWallet extends Component {
 
   constructor(props) {
     super(props)
@@ -17,6 +17,7 @@ class MyEntries extends Component {
       games: [],
       entries: [],
       jackpots: [],
+      boosts: [],
       tab: 1,
     }
 
@@ -42,6 +43,14 @@ class MyEntries extends Component {
       .catch((error) => {
         this.props.client.handleError(error,"Failed to get incomes")
       })
+    
+    this.props.client.myboosts().then((response) => {
+      this.setState({boosts: response.data || []})
+    })
+      .catch((error) => {
+        this.props.client.handleError(error,"Failed to get boosts")
+      })
+
 
     this.props.client.listGames().then((response) => {
       this.setState({games: response.data })
@@ -73,7 +82,7 @@ class MyEntries extends Component {
 
   render() {
     const { balance } = this.props.store;
-    const { incomes, entries, jackpots, games, rank } = this.state;
+    const { incomes, boosts, entries, jackpots, games, rank } = this.state;
     const attrPanel = {minHeight: "140px", backgroundColor: "#57e5c4", color: "#266586"}
     var entryList = entries.map((entry) => {
       var jackpot = {jackpot: 0};
@@ -104,11 +113,22 @@ class MyEntries extends Component {
           break
         }
       }
+
+      var boost = {id: 0, multiplier: 1};
+      for (var b of boosts) {
+        if (b.income_id === income.id) {
+          boost = b
+          break
+        }
+      }
+      //boost.multiplier = 3
+      const hasMultiplier = boost.multiplier > 1
       return (
         <tr key={income['id']}>
           <td>{ game.id === 0 ? income.session_id : game.name }</td>
           <td>{dateFormat(Date.parse(income['updated_time']), "mmmm dS, yyyy")}</td>
-          <td>{income.amount}</td>
+          <td className={hasMultiplier ? "hide" : ""}>{income.amount}</td>
+          <td className={hasMultiplier ? "" : "hide"}><span style={{color: "#2ECC40"}}>{income.amount * boost.multiplier} ({boost.multiplier}x boost!)</span></td>
         </tr>
       )
     })
@@ -195,4 +215,4 @@ class MyEntries extends Component {
   }
 }
 
-export default MyEntries;
+export default MyWallet;
