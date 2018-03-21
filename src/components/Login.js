@@ -20,6 +20,7 @@ class Login extends Component {
 
     this.state = {
       username: null,
+      referrer: qs.parse(this.props.location.search).referral
     }
 
     if (this.props.store.logged_in) {
@@ -33,6 +34,7 @@ class Login extends Component {
   }
 
   fbResponse(req) {
+    req.referrer = this.state.referrer
     this.postLogin(this.props.client.facebookLogin(req))
   }
 

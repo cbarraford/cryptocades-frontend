@@ -23,6 +23,7 @@ class Signup extends Component {
       username: null,
       tos: false,
       captcha_code: null,
+      referrer: qs.parse(this.props.location.search).referral,
     }
 
     this.fbResponse = this.fbResponse.bind(this);
@@ -43,6 +44,7 @@ class Signup extends Component {
       return false
     }
     req.captcha_code = this.state.captcha_code
+    req.referrer = this.state.referrer
     this.postLogin(this.props.client.facebookLogin(req))
   }
 
@@ -108,6 +110,7 @@ class Signup extends Component {
       password: this.state.password,
       btc_address: this.state.btc_address,
       captcha_code: this.state.captcha_code,
+      referrer: this.state.referrer,
     })
       .then((response) => {
         this.props.history.push("/confirmation")
