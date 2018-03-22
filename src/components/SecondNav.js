@@ -59,9 +59,16 @@ class SecondNav extends Component {
             </li>
             <li className="text-center">
               <Link to="/games">
-                <i className="fa fa-trophy"></i>
+                <i className="fa fa-gamepad"></i>
                 <br />
                 Games
+              </Link>
+            </li>
+            <li className="text-center">
+              <Link to="/winners">
+                <i className="fa fa-trophy"></i>
+                <br />
+                Winners
               </Link>
             </li>
           </ul>
