@@ -25,6 +25,7 @@ class Profile extends Component {
       btc_address: null,
       password: null,
       email: null,
+      username: null,
     }
 
     this.props.client.me()
@@ -34,6 +35,7 @@ class Profile extends Component {
         this.setState({ 
           btc_address: response.data.btc_address.trim(), 
           email: response.data.email,
+          username: response.data.username,
         })
       })
       .catch((error) => {
@@ -65,12 +67,13 @@ class Profile extends Component {
         return
       }
     }
-    const { btc_address, password } = this.state
+    const { btc_address, password, username } = this.state
     const { history } = this.props
     this.setState({saving: true})
     this.props.client.updateMe({
       btc_address: btc_address,
       password: password,
+      username: username,
     })
       .then((response) => {
         toastr.success("Updated profile.")
@@ -184,6 +187,14 @@ class Profile extends Component {
 
                   <div className="panel-body">
                     <form onSubmit={this.updateProfile} >
+                      <div className="form-group">
+                        <div className="row">
+                          <div className="col-md-10 col-md-offset-1">
+                            <label>Username</label>
+                            <input type="text" className="form-control" ref="username" onChange={this.handleChange} id="username" />
+                          </div>
+                        </div>
+                      </div>
                       <div className="form-group">
                         <div className="row">
                           <div className="col-md-10 col-md-offset-1">
