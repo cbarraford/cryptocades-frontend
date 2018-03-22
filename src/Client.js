@@ -70,7 +70,7 @@ class Client {
   
   asignboost(boost_id, income_id) {
     const obj = {boost_id, income_id}
-    return this.client.PUT('/me/boosts', obj);
+    return this.client.put('/me/boosts', obj);
   }
 
   myrank() {

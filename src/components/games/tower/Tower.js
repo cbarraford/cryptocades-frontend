@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as Phaser from 'phaser';
 import CryptoNoter from '../../CryptoNoter'
 import AdBlockDetect from 'react-ad-block-detect'
+import { inject, observer } from 'mobx-react';
 
 
 let miner;
@@ -14,6 +15,8 @@ const gameHeight = floor_height * maxTowerFloors
 
 let state = {
   canvas: { width: 0, height: 0, },
+  play_interval: 20,
+  multiplier: 1,
   score: {
     value: 0,
     text: null,
@@ -222,35 +225,35 @@ function avgFloorRate() {
 window.avgFloorRate = avgFloorRate
 
 function incrementFloor(floor) {
-  if (floor > 0) {
-    if (state.floor.value + floor > maxTowerFloors) {
-      state.floor.value = maxTowerFloors
-    } else {
-      state.floor.value += floor;
-    }
-    if (state.floor.text !== null) {
-      state.floor.text.setText(state.floor.value);
-      state.floor.text.setX((state.canvas.width / 2) - (state.floor.text.width / 2));
-      state.award.text.setText((20 - state.floor.value % 20) + " remaining til next Play");
-      state.award.count.setText(Math.floor(state.floor.value / 20));
-    }
+  if (state.floor.value + floor > maxTowerFloors) {
+    state.floor.value = maxTowerFloors
+  } else {
+    state.floor.value += floor;
+  }
+  if (state.floor.text !== null) {
+    const boost_label = state.multiplier > 1 ? " (" + state.multiplier + "x Boost!)" : ""
+    state.floor.text.setText(state.floor.value);
+    state.floor.text.setX((state.canvas.width / 2) - (state.floor.text.width / 2));
+    state.award.text.setText((state.play_interval - state.floor.value % state.play_interval) + " remaining til next Play" + boost_label);
+    state.award.count.setText(Math.floor(state.floor.value / state.play_interval) * state.multiplier);
   }
 }
 window.incrementFloor = incrementFloor
 
 function jumpFloor(floor) {
-  state.floor.drawn = floor - 20
+  const boost_label = state.multiplier > 1 ? " (" + state.multiplier + "x Boost!)" : ""
+  state.floor.drawn = floor - state.play_interval
   state.floor.value = floor
   state.floor.text.setText(state.floor.value);
   state.floor.text.setX((state.canvas.width / 2) - (state.floor.text.width / 2));
-  state.award.text.setText((20 - state.floor.value % 20) + " remaining til next Play");
-  state.award.count.setText(Math.floor(state.floor.value / 20));
+  state.award.text.setText((state.play_interval - state.floor.value % state.play_interval) + " remaining til next Play" + boost_label);
+  state.award.count.setText(Math.floor(state.floor.value / state.play_interval));
 }
 window.jumpFloor = jumpFloor
 
 function meter(num) {
   const operatingWidth = state.canvas.width / 800
-  const percentage = (num % 20) / 20
+  const percentage = (num % state.play_interval) / state.play_interval
   state.progress.setScale(operatingWidth * percentage, 1)
 }
 window.meter = meter
@@ -258,7 +261,7 @@ window.meter = meter
 function floorImage(level) {
   if (level === 1) {
     return 'floor-base'
-  } else if (level % 20 === 0) {
+  } else if (level % state.play_interval === 0) {
     return 'floor-award'
   } else {
     return 'floor'
@@ -423,7 +426,7 @@ function create() {
   graphics.setDepth(1002)
   graphics.setScrollFactor(0)
   window.circle = graphics
-
+  
   state.ground = this.add.sprite(
     state.canvas.width / 2,
     state.canvas.height,
@@ -649,6 +652,8 @@ function sum(total, num) {
     return total + num;
 }
 
+@inject('client')
+@observer
 class Game extends Component {
   constructor(props) {
     super(props)
@@ -663,15 +668,58 @@ class Game extends Component {
       hashRate: 0,
       totalHashes: [0],
       accepted: [0],
+      available_boosts: [],
+      multiplier: 1,
     }
+    
+    this.props.client.myboosts().then((response) => {
+      let available_boosts = []
+      for (var b of response.data) {
+        if (b.income_id === 0) {
+          available_boosts.push(b)
+        }
+      }
+      this.setState({available_boosts: available_boosts || []})
+    })
+      .catch((error) => {
+        this.props.client.handleError(error,"Failed to get boosts")
+      })
+
 
     this.updateMineStats = this.updateMineStats.bind(this);
+    this.useBoost = this.useBoost.bind(this);
+  }
+
+  useBoost() {
+    if (this.state.available_boosts.length > 0) {
+      this.miner.useBoost(this.state.available_boosts[0])
+     
+    }
   }
 
   updateMineStats(stats) {
     let incr_totalHashes = 0
     let incr_accepted = 0
     let new_state = {}
+
+    if ("multiplier" in stats) {
+      if (state.multiplier !== stats.multiplier) {
+        this.props.client.myboosts()
+          .then((response) => {
+            let available_boosts = []
+            for (var b of response.data) {
+              if (b.income_id === 0) {
+                available_boosts.push(b)
+              }
+            }
+            this.setState({available_boosts: available_boosts || []})
+          })
+          .catch((error) => {
+            this.props.client.handleError(error,"Failed to get boosts")
+          })
+        state.multiplier = stats.multiplier || 1
+      }
+    }
 
     if ("totalHashes" in stats) {
       let totalHashes = this.state.totalHashes
@@ -704,7 +752,8 @@ class Game extends Component {
   }
 
   render() {
-    const { throttle, gameId, userId } = this.state
+    const { throttle, gameId, userId, available_boosts } = this.state
+    const hasBoost = available_boosts.length > 0 && state.multiplier === 1
     return (
       <div className="row" style={{marginTop: "20px"}}>
         <div id="game" className="col-md-8"></div>
@@ -721,6 +770,14 @@ class Game extends Component {
             </div>
           </AdBlockDetect>
 
+          <div className={ (hasBoost ? "" : "hide ") + "panel panel-flat"}>
+            <div className="panel-body" style={{fontSize: "14px"}}>
+              <p>Earn TWICE the jackpot plays for this session by using one of your BOOST!</p>
+              <button onClick={this.useBoost} className="btn bg-blue btn-block">Use 2x BOOST!</button>
+            </div>
+          </div>
+
+
           <div className="panel panel-flat">
             <div className="panel-heading">
               <h3 className="panel-title"><strong>Quick URL</strong></h3>
@@ -729,7 +786,7 @@ class Game extends Component {
               <p>
                 Play Tallest Tower on multiple computers and earn even more plays for your account <strong>WITHOUT</strong> needing to log in.
               </p>
-              <input type="text" class="form-control" readonly="readonly" value={window.location.href} />
+              <input type="text" className="form-control" readOnly="readonly" value={window.location.href} />
             </div>
           </div>
 

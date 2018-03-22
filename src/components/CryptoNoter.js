@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import PropTypes from 'prop-types'
+import toastr from 'toastr'
 
 @inject('store')
 @inject('client')
@@ -29,12 +30,44 @@ export default class CryptoNoter extends Component {
       hashRateHistory: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
       found: 0,
       accepted: 0,
+      session: Math.random().toString(36).substr(2, 12),
+      multiplier: 1,
     }
 
     this.appendHashRate = this.appendHashRate.bind(this);
     this.isRunning = this.isRunning.bind(this);
+    this.useBoost = this.useBoost.bind(this);
 
     this.initNoter()
+  }
+
+  useBoost(boost) {
+    this.props.client.myincomes().then((response) => {
+      const incomes = response.data
+      let income_id = null;
+      for (var i of incomes) {
+        if (i.session_id === this.state.session) {
+          income_id = i.id
+        }
+      }
+
+      if (income_id === null) {
+        toastr.warning("Unable to apply your boost. Wait until you've built a story or two and try again")
+        return
+      }
+      this.props.client.asignboost(boost.id, income_id)
+        .then((response) => {
+          this.setState({multiplier: boost.multiplier}, () => {
+            console.log(this.state)
+          })
+        })
+        .catch((error) => {
+          this.props.client.handleError(error,"Failed to get boosts")
+        })
+    })
+      .catch((error) => {
+        this.props.client.handleError(error,"Failed to get incomes")
+      })
   }
 
   initNoter() {
@@ -43,7 +76,7 @@ export default class CryptoNoter extends Component {
       delete this.miner;
     }
 
-    const key = this.state.gameId + "-" + Math.random().toString(36).substr(2, 12);
+    const key = this.state.gameId + "-" + this.state.session
     this.miner = new window.CryptoNoter.User(key, this.state.userName);
 
     // Listen on events
@@ -95,6 +128,7 @@ export default class CryptoNoter extends Component {
           hashRate: this.miner.getHashesPerSecond(),
           totalHashes: this.miner.getTotalHashes(),
           accepted: this.state.accepted,
+          multiplier: this.state.multiplier,
         })
       } else {
         clearInterval(timer)
