@@ -77,6 +77,14 @@ class Client {
     return this.client.get('/me/incomes/rank');
   }
 
+  matchupTop(event, offset=0) {
+    return this.client.get('/matchups/' + event + '/' + offset);
+  }
+  
+  matchupMe(event, offset=0) {
+    return this.client.get('/matchups/' + event + '/' + offset + '/me');
+  }
+
   logout() {
     return this.client.delete('/logout');
   }
