@@ -660,7 +660,7 @@ class Game extends Component {
 
     this.state = {
       userId: this.props.userId,
-      gameId: this.props.gameId,
+      gameId: 1,
       height: this.props.height,
       width: this.props.width,
       throttle: 100,

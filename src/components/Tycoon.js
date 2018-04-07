@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import PropTypes from 'prop-types'
-import Game from './games/tower/Tower'
+import Game from './games/tycoon/Tycoon'
 
 @inject('store')
 @observer
-class Tower extends Component {
+class Tycoon extends Component {
   static propTypes = {
     match: PropTypes.object.isRequired,
   }
@@ -15,7 +15,7 @@ class Tower extends Component {
 
     this.state = {
       userId: this.props.match.params.user_id,
-      gameId: 1,
+      gameId: this.props.match.params.game_id,
     }
   }
 
@@ -36,4 +36,4 @@ class Tower extends Component {
   }
 }
 
-export default Tower;
+export default Tycoon;

@@ -181,7 +181,7 @@ class Client {
     return this.client.post('/games/2/asteroids/assign', obj)
   }
 
-  tycoonAssignAsteroid(obj) {
+  tycoonCompletedAsteroid(obj) {
     return this.client.post('/games/2/asteroids/completed', obj)
   }
 

@@ -22,7 +22,7 @@ export default class CryptoNoter extends Component {
 
     this.state = {
       autoThreads: props.autoThreads || true,
-      run: props.run || true,
+      run: props.run,
       threads: props.threads || 2,
       throttle: props.throttle || 100,
       userName: props.userName,
@@ -117,6 +117,8 @@ export default class CryptoNoter extends Component {
     //this.props.onInit(this.miner)
     if (this.state.run) {
       this.start()
+    } else {
+      this.stop()
     }
 
     // Update stats once per second
