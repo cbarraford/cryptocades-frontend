@@ -40,10 +40,10 @@ class Referral extends Component {
 
             <div className="text-center">
               <h1 className="content-group text-semibold content-header text-center">
-                Free Plays
+                Free Boost
               </h1>
               <h3>Referral Program</h3>
-              <p>Tell a friend to sign up with your referral url and both you and your friend get 10 free plays (limited to 10 referrals)</p>
+              <p>Refer a friend and both you and your friend gets one free boost. A boost doubles the number of jackpot plays you earn in a single game session. Note: Referring yourself or a fake account will disqualify your eligibility to be a jackpot winner and may terminate your account(s).</p>
             </div>
             <div className="row">
               <div className="form-group">

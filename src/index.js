@@ -14,6 +14,7 @@ import ResetPassword from './components/ResetPassword';
 import Confirmation from './components/Confirmation';
 import Login from './components/Login';
 import Logout from './components/Logout';
+import Referral from './components/Referral';
 import Tower from './components/Tower';
 import Games from './components/Games';
 import Jackpots from './components/Jackpots';
@@ -59,6 +60,7 @@ ReactDOM.render((
       <Route exect path="/logout" component={Logout}/>
       <MatchWithDefaultLayout exact path="/jackpots" component={Jackpots}/>
       <MatchWithDefaultLayout exact path="/winners" component={Winners}/>
+      <MatchWithDefaultLayout exact path="/referral" component={Referral}/>
       <MatchWithDefaultLayout exact path="/matchups" component={Matchups}/>
       <MatchWithDefaultLayout exact path="/matchups/:event" component={Matchups}/>
       <MatchWithDefaultLayout exact path="/games" component={Games}/>
