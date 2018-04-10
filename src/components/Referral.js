@@ -40,10 +40,10 @@ class Referral extends Component {
 
             <div className="text-center">
               <h1 className="content-group text-semibold content-header text-center">
-                Free Boost
+                Win when your friends win, plus get a free boost!
               </h1>
               <h3>Referral Program</h3>
-              <p>Refer a friend and both you and your friend gets one free boost. A boost doubles the number of jackpot plays you earn in a single game session. Note: Referring yourself or a fake account will disqualify your eligibility to be a jackpot winner and may terminate your account(s).</p>
+              <p>Refer a friend and when they win a Bitcoin jackpot, you win an additional 10% of their winnings! Plus, both you and your friend gets one free boost. A boost doubles the number of jackpot plays you earn in a single game session. Note: Referring yourself or a fake account will disqualify your eligibility to be a jackpot winner and may terminate your account(s).</p>
             </div>
             <div className="row">
               <div className="form-group">
