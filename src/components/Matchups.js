@@ -130,6 +130,7 @@ class Matchups extends Component {
 
               <div className="row">
                 <div className="col-md-4 col-md-offset-4">
+                  <h3 className="text-center">The daily top performer wins a free BOOST.</h3>
                   <select className="bootstrap-select" style={{width:"-webkit-fill-available"}} onChange={this.onChange}>
                     <option value={vals[0].value}>{vals[0].label}</option>
                     <option value={vals[1].value}>{vals[1].label}</option>
