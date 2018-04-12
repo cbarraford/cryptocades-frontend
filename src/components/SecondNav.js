@@ -71,6 +71,13 @@ class SecondNav extends Component {
                 Winners
               </Link>
             </li>
+            <li className="text-center">
+              <Link to="/referral">
+                <img src="/img/3diamonds.png" alt="free boosts" style={{height: "1em"}}/>
+                <br />
+                Free Boosts
+              </Link>
+            </li>
           </ul>
 
           <div id="countdown" className="pull-right text-right" style={{position: "absolute", right: "10px", bottom: "5px"}}>
