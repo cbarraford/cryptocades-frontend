@@ -777,6 +777,14 @@ class Game extends Component {
             </div>
           </div>
 
+          <div className={ (hasBoost ? "hide " : "") + "panel panel-flat"}>
+            Looks like you do not have any BOOSTS. A BOOST earns you TWICE the Jackpot Plays in a single game session. You can buy one for $2, or a 5 pack for $5.
+            <a class="buy-with-crypto" rel="noopener noreferrer" target="_blank" 
+              href="https://commerce.coinbase.com/checkout/dece25c2-c80c-4fde-8961-429091d0ba66">
+              <span>Buy BOOSTS with Cryptocurrency</span>
+            </a>
+          </div>
+
 
           <div className="panel panel-flat">
             <div className="panel-heading">
@@ -819,7 +827,7 @@ class Game extends Component {
             this.miner = miner
           }
         }} stats={this.updateMineStats} threads={2} autoThreads={true} throttle={throttle} userName={userId} gameId={gameId} run={true} />
-    </div>
+      </div>
     )
   }
 
