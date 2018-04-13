@@ -30,7 +30,7 @@ class Referral extends Component {
   render() {
     const { referral_code } = this.props.store.me
     const referral_url = this.state.baseURL + "/signup?referral=" + referral_code
-    const message = "Get 10 free plays when you sign up for #Cryptocades with my referral code!"
+    const message = "Get a free BOOST when you sign up for #Cryptocades with my referral code!"
     const fbStyle = { color: "#3b5998", fontSize: "3em", margin: "3px" }
     const twitterStyle = { color: "#00aced", fontSize: "3em", margin: "3px" }
     return (
