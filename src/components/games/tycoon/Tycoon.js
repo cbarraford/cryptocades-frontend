@@ -13,42 +13,46 @@ let state = {
   pages: {
     start_page: {},
     main: {},
+    fader: null,
   }
 }
 window.state = state;
 
-function showPage(page) {
-  state.pages.start_page.title.setVisible(page === "start")
-  state.pages.start_page.start_btn.setVisible(page === "start")
-  //state.pages.main.setVisible(page === "main")
+function showPage(page, scene) {
+  scene.tweens.add({
+    targets: state.pages.fader,
+    alpha: 1,
+    duration: 500,
+    ease: 'Power2',
+    onComplete: (tweens, targets) => {
+      state.pages.start_page.splash.setVisible(page === "start")
+      scene.tweens.add({
+        targets: targets[0],
+        alpha: 0,
+        duration: 500,
+        ease: 'Power2',
+      })
+    }
+  })
 }
 
 function preload() {
-  this.load.image('start-btn', '/img/games/2/start.png');
-  this.load.image('space-bg', '/img/games/2/space-bg.jpeg');
+  this.load.image('fader', '/img/games/2/fader.png');
+  this.load.image('space-bg', '/img/games/2/space_background.png');
+  this.load.image('splash', '/img/games/2/splash.jpg');
 }
 
 function create() {
-  let space_bg = this.add.image(state.canvas.width / 2, state.canvas.height / 2, 'space-bg')
+  state.pages.fader = this.add.image(state.canvas.width / 2, state.canvas.height / 2, 'fader')
+  state.pages.fader.setDepth(10000)
 
-  state.pages.start_page.title = this.add.text( state.canvas.width / 2, state.canvas.height / 2, "Asteroid Tycoon", { fontFamily: "Titillium Web", fontSize: '20px', fill: '#fff', align: 'center' })
-  state.pages.start_page.title.setPosition(
-    (state.canvas.width / 2) - (state.pages.start_page.title.width / 2), 
-    state.canvas.height / 2
-  )
+  // standard background
+  this.add.image(state.canvas.width / 2, state.canvas.height / 2, 'space-bg')
 
-  state.pages.start_page.start_btn = this.add.sprite(
-    state.canvas.width / 2,
-    state.canvas.height / 2,
-    'start-btn',
-  ).setInteractive()
-  state.pages.start_page.start_btn.setPosition(
-    state.canvas.width / 2,
-    state.canvas.height / 2 + state.pages.start_page.start_btn.height,
-  )
+  state.pages.start_page.splash = this.add.image(state.canvas.width / 2, state.canvas.height / 2, 'splash')
 
   // show start page
-  showPage("start")
+  showPage("start", this)
 
   this.input.on('pointerup', function (pointer, gameObject) {
     console.log("Clicked!")
@@ -58,7 +62,7 @@ function create() {
         client.tycoonGetShips()
           .then((response) => {
             state.ships = response.data
-            showPage("main")
+            showPage("main", this.scene)
           })
           .catch((error) => {
             console.error(error)
@@ -66,14 +70,14 @@ function create() {
       })
       .catch((error) => {
         window.err = error
-        if (error.response.status === 404) {
+        if (error.response && error.response.status === 404) {
           client.tycoonCreateAccount()
             .then((response) => {
               state.account = response.data
               client.tycoonCreateShip() 
                 .then((response) => {
                   state.ships = [response.data]
-                  showPage("main")
+                  showPage("main", this.scene)
                 })
                 .catch((error) => {
                   console.error(error)
