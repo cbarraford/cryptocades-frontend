@@ -13,6 +13,8 @@ let state = {
   pages: {
     start_page: {},
     main: {},
+    mining: {},
+    global: {},
     fader: null,
   }
 }
@@ -25,7 +27,21 @@ function showPage(page, scene) {
     duration: 500,
     ease: 'Power2',
     onComplete: (tweens, targets) => {
+
+      // start page
       state.pages.start_page.splash.setVisible(page === "start")
+
+      // Global
+      state.pages.global.creditbar.setVisible(page !== "start")
+      state.pages.global.resourcebar.setVisible(page !== "start")
+
+      // Mining
+      state.pages.mining.land.setVisible(page === "main")
+      state.pages.mining.label.setVisible(page === "main")
+      state.pages.mining.bottombar.setVisible(page === "main")
+      state.pages.mining.sidebar.setVisible(page === "main")
+      state.pages.mining.returnbtn.setVisible(page === "main")
+
       scene.tweens.add({
         targets: targets[0],
         alpha: 0,
@@ -40,6 +56,12 @@ function preload() {
   this.load.image('fader', '/img/games/2/fader.png');
   this.load.image('space-bg', '/img/games/2/space_background.png');
   this.load.image('splash', '/img/games/2/splash.jpg');
+  this.load.image('land', '/img/games/2/land.png');
+  this.load.image('mining_label', '/img/games/2/mining_label.png');
+  this.load.image('return_button', '/img/games/2/return_button.png');
+  this.load.image('sidebar', '/img/games/2/sidebar.png');
+  this.load.image('upperbar', '/img/games/2/upperbars.png');
+  this.load.image('bottombar', '/img/games/2/bottombar.png');
 }
 
 function create() {
@@ -49,48 +71,112 @@ function create() {
   // standard background
   this.add.image(state.canvas.width / 2, state.canvas.height / 2, 'space-bg')
 
-  state.pages.start_page.splash = this.add.image(state.canvas.width / 2, state.canvas.height / 2, 'splash')
+  // Splash page
+  state.pages.start_page.splash = this.add.image(state.canvas.width / 2, state.canvas.height / 2, 'splash').setInteractive()
+  state.pages.start_page.splash.name = "splash"
+
+  ////// Mining Page /////////////////////////////////////////////
+  state.pages.mining.land = this.add.image(
+    state.canvas.width / 2, 
+    state.canvas.height / 2, 
+    'land'
+  )
+  state.pages.mining.label = this.add.image(
+    state.canvas.width / 2, 
+    50, 
+    'mining_label'
+  )
+  state.pages.mining.label.setY(state.pages.mining.label.height / 2)
+  state.pages.mining.bottombar = this.add.image(
+    state.canvas.width / 2, 
+    50, 
+    'bottombar'
+  )
+  state.pages.mining.bottombar.setY(
+    state.canvas.height - (state.pages.mining.bottombar.height / 4 + 15)
+  )
+  state.pages.mining.sidebar = this.add.image(
+    state.canvas.width / 2, 
+    state.canvas.height / 2, 
+    'sidebar'
+  )
+  state.pages.mining.sidebar.setX(
+    state.canvas.width - (state.pages.mining.sidebar.width / 2)
+  )
+  state.pages.mining.returnbtn = this.add.image(
+    state.canvas.width - (state.pages.mining.sidebar.width / 2),
+    (state.canvas.height / 2) + ((state.pages.mining.sidebar.height / 2) - 60), 
+    'return_button'
+  ).setInteractive()
+  state.pages.mining.returnbtn.name = "return_button"
+  state.pages.mining.returnbtn.setX(
+    state.canvas.width - 10 - state.pages.mining.returnbtn.width / 2
+  )
+  ///////////////////////////////////////////////////////////////
+
+  // Global
+  state.pages.global.creditbar = this.add.image(
+    100,
+    50,
+    'upperbar'
+  )
+  state.pages.global.resourcebar = this.add.image(
+    100,
+    125,
+    'upperbar'
+  )
 
   // show start page
   showPage("start", this)
 
   this.input.on('pointerup', function (pointer, gameObject) {
-    console.log("Clicked!")
-    client.tycoonGetAccount()
-      .then((response) => {
-        state.account = response.data
-        client.tycoonGetShips()
-          .then((response) => {
-            state.ships = response.data
-            showPage("main", this.scene)
-          })
-          .catch((error) => {
-            console.error(error)
-          })
-      })
-      .catch((error) => {
-        window.err = error
-        if (error.response && error.response.status === 404) {
-          client.tycoonCreateAccount()
+    const click = gameObject[0]
+    if (click === undefined) {
+      return
+    }
+    console.log("Clicked!", click.name)
+    window.clicked = click
+
+    if (click.name === "return_button") {
+      console.log("Return Clicked")
+      showPage("hanger", this.scene)
+    } else if (click.name === "splash") {
+      client.tycoonGetAccount()
+        .then((response) => {
+          state.account = response.data
+          client.tycoonGetShips()
             .then((response) => {
-              state.account = response.data
-              client.tycoonCreateShip() 
-                .then((response) => {
-                  state.ships = [response.data]
-                  showPage("main", this.scene)
-                })
-                .catch((error) => {
-                  console.error(error)
-                })
+              state.ships = response.data
+              showPage("main", this.scene)
             })
             .catch((error) => {
-              window.err = error
-              console.log(error.response)
+              console.error(error)
             })
-        } else {
-          console.error(error.response)
-        }
-      })
+        })
+        .catch((error) => {
+          window.err = error
+          if (error.response && error.response.status === 404) {
+            client.tycoonCreateAccount()
+              .then((response) => {
+                state.account = response.data
+                client.tycoonCreateShip() 
+                  .then((response) => {
+                    state.ships = [response.data]
+                    showPage("main", this.scene)
+                  })
+                  .catch((error) => {
+                    console.error(error)
+                  })
+              })
+              .catch((error) => {
+                window.err = error
+                console.log(error.response)
+              })
+          } else {
+            console.error(error.response)
+          }
+        })
+    }
   });
 
 }
