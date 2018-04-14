@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router-dom'
-import dateFormat from 'dateformat'
 
 @inject('store')
 @inject('client')
@@ -94,7 +93,7 @@ class Matchups extends Component {
                 {person.rank}
               </div>
               <div className="col-md-2" style={{margin: "10px"}}>
-                <img className="img-responsive img-circle" src={person.avatar} alt="Profile Picture" />
+                <img className="img-responsive img-circle" src={person.avatar} alt="Profile" />
               </div>
               <div className="col-md-8" style={{marginTop: "10px"}}>
                 <strong><span style={{fontSize: "20px"}}>{person.username}</span></strong>
