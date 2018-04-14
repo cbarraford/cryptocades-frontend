@@ -72,15 +72,14 @@ class Matchups extends Component {
       }
     }
 
-    var d = new Date();
     let vals = [
       {label: "Today", value: 0},
       {label: "Yesterday", value: 1},
-      {label: dateFormat(d.setDate(d.getDate() - 2), "UTC:dddd"), value: 2},
-      {label: dateFormat(d.setDate(d.getDate() - 3), "UTC:dddd"), value: 3},
-      {label: dateFormat(d.setDate(d.getDate() - 4), "UTC:dddd"), value: 4},
-      {label: dateFormat(d.setDate(d.getDate() - 5), "UTC:dddd"), value: 5},
-      {label: dateFormat(d.setDate(d.getDate() - 6), "UTC:dddd"), value: 6}
+      {label: "2 Days ago", value: 2},
+      {label: "3 Days ago", value: 3},
+      {label: "4 Days ago", value: 4},
+      {label: "5 Days ago", value: 5},
+      {label: "6 Days ago", value: 6}
     ]
 
     var leaderboard = persons.map((person) => {
