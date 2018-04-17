@@ -72,6 +72,13 @@ class SecondNav extends Component {
               </Link>
             </li>
             <li className="text-center">
+              <Link to="/matchups">
+                <i className="fa fa-chess-king"></i>
+                <br />
+                Matchups
+              </Link>
+            </li>
+            <li className="text-center">
               <Link to="/referral">
                 <img src="/img/3diamonds.png" alt="free boosts" style={{height: "1em"}}/>
                 <br />
