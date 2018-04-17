@@ -15,6 +15,7 @@ let state = {
     main: {},
     mining: {},
     global: {},
+    hanger: {},
     fader: null,
   }
 }
@@ -34,13 +35,31 @@ function showPage(page, scene) {
       // Global
       state.pages.global.creditbar.setVisible(page !== "start")
       state.pages.global.resourcebar.setVisible(page !== "start")
+      state.pages.global.creditsLabel.setVisible(page !== "start")
+      state.pages.global.resourceLabel.setVisible(page !== "start")
+      state.pages.global.resourceValue.setVisible(page !== "start")
+      state.pages.global.creditsValue.setVisible(page !== "start")
+
+      // Hanger 
+      state.pages.hanger.bottombar.setVisible(page === "hanger")
 
       // Mining
-      state.pages.mining.land.setVisible(page === "main")
-      state.pages.mining.label.setVisible(page === "main")
-      state.pages.mining.bottombar.setVisible(page === "main")
-      state.pages.mining.sidebar.setVisible(page === "main")
-      state.pages.mining.returnbtn.setVisible(page === "main")
+      state.pages.mining.land.setVisible(page === "mining")
+      state.pages.mining.label.setVisible(page === "mining")
+      state.pages.mining.bottombar.setVisible(page === "mining")
+      state.pages.mining.sidebar.setVisible(page === "mining")
+      state.pages.mining.returnbtn.setVisible(page === "mining")
+      state.pages.mining.healthIcon.setVisible(page === "mining")
+      state.pages.mining.healthLabel.setVisible(page === "mining")
+      state.pages.mining.healthValue.setVisible(page === "mining")
+      state.pages.mining.crystalsIcon.setVisible(page === "mining")
+      state.pages.mining.crystalsLabel.setVisible(page === "mining")
+      state.pages.mining.crystalsValue.setVisible(page === "mining")
+      state.pages.mining.totalAsteroidsLabel.setVisible(page === "mining")
+      state.pages.mining.totalAsteroidsValue.setVisible(page === "mining")
+      state.pages.mining.totalResourceLabel.setVisible(page === "mining")
+      state.pages.mining.totalResourceValue.setVisible(page === "mining")
+      state.pages.mining.shipLabel.setVisible(page === "mining")
 
       scene.tweens.add({
         targets: targets[0],
@@ -62,6 +81,8 @@ function preload() {
   this.load.image('sidebar', '/img/games/2/sidebar.png');
   this.load.image('upperbar', '/img/games/2/upperbars.png');
   this.load.image('bottombar', '/img/games/2/bottombar.png');
+  this.load.image('health', '/img/games/2/health.png');
+  this.load.image('crystals', '/img/games/2/crystals.png');
 }
 
 function create() {
@@ -78,7 +99,7 @@ function create() {
   ////// Mining Page /////////////////////////////////////////////
   state.pages.mining.land = this.add.image(
     state.canvas.width / 2, 
-    state.canvas.height / 2, 
+    state.canvas.height / 2 + 75, 
     'land'
   )
   state.pages.mining.label = this.add.image(
@@ -112,19 +133,131 @@ function create() {
   state.pages.mining.returnbtn.setX(
     state.canvas.width - 10 - state.pages.mining.returnbtn.width / 2
   )
+
+  state.pages.mining.shipLabel = this.add.text(
+    state.canvas.width / 2 - 260,
+    state.canvas.height - (state.pages.mining.bottombar.height / 2 + 10), 
+    "Ship", 
+    { fontFamily: "Roboto", fontSize: '40px', fill: '#e8c31a' }
+  )
+
+  state.pages.mining.healthIcon = this.add.image(
+    state.canvas.width / 2 - 150,
+    state.canvas.height - (state.pages.mining.bottombar.height / 2 + 5), 
+    'health'
+  )
+  state.pages.mining.healthLabel = this.add.text(
+    state.canvas.width / 2 - 130,
+    state.canvas.height - (state.pages.mining.bottombar.height / 2 + 15), 
+    "Health", 
+    { fontFamily: "Roboto", fontSize: '20px', fill: '#fff' }
+  )
+  state.pages.mining.healthValue = this.add.text(
+    state.canvas.width / 2 - 30,
+    state.canvas.height - (state.pages.mining.bottombar.height / 2 + 15), 
+    "100%", 
+    { fontFamily: "Roboto", fontSize: '20px', fill: '#e8c31a' }
+  )
+
+  state.pages.mining.totalAsteroidsLabel = this.add.text(
+    state.canvas.width / 2 + 40,
+    state.canvas.height - (state.pages.mining.bottombar.height / 2 + 15), 
+    "Total Asteroids", 
+    { fontFamily: "Roboto", fontSize: '20px', fill: '#fff' }
+  )
+  state.pages.mining.totalAsteroidsValue = this.add.text(
+    state.canvas.width / 2 + 190,
+    state.canvas.height - (state.pages.mining.bottombar.height / 2 + 15), 
+    "78", 
+    { fontFamily: "Roboto", fontSize: '20px', fill: '#e8c31a' }
+  )
+
+  state.pages.mining.crystalsIcon = this.add.image(
+    state.canvas.width / 2 - 150,
+    state.canvas.height - (state.pages.mining.bottombar.height / 2 - 25), 
+    'crystals'
+  )
+  state.pages.mining.crystalsLabel = this.add.text(
+    state.canvas.width / 2 - 130,
+    state.canvas.height - (state.pages.mining.bottombar.height / 2 - 15), 
+    "Resources", 
+    { fontFamily: "Roboto", fontSize: '20px', fill: '#fff' }
+  )
+  state.pages.mining.crystalsValue = this.add.text(
+    state.canvas.width / 2 - 30,
+    state.canvas.height - (state.pages.mining.bottombar.height / 2 - 15), 
+    "3,045", 
+    { fontFamily: "Roboto", fontSize: '20px', fill: '#e8c31a' }
+  )
+  
+  state.pages.mining.totalResourceLabel = this.add.text(
+    state.canvas.width / 2 + 40,
+    state.canvas.height - (state.pages.mining.bottombar.height / 2 - 15), 
+    "Total Resources", 
+    { fontFamily: "Roboto", fontSize: '20px', fill: '#fff' }
+  )
+  state.pages.mining.totalResourceValue = this.add.text(
+    state.canvas.width / 2 + 190,
+    state.canvas.height - (state.pages.mining.bottombar.height / 2 - 15), 
+    "7,495,571", 
+    { fontFamily: "Roboto", fontSize: '20px', fill: '#e8c31a' }
+  )
   ///////////////////////////////////////////////////////////////
 
+  // Hanger /////////////////////////////////////////////////////
+  state.pages.hanger.bottombar = this.add.image(
+    state.canvas.width / 2, 
+    50, 
+    'bottombar'
+  )
+  state.pages.hanger.bottombar.setY(
+    state.canvas.height - (state.pages.hanger.bottombar.height / 4 + 15)
+  )
+  ////////////////////////////////////////////////////////////////
+
   // Global
+  state.pages.global.creditsLabel = this.add.text(
+    0,
+    0, 
+    "Credits", 
+    { align: "center", fontFamily: "Roboto", fontSize: '20px', fill: '#fff' }
+  )
   state.pages.global.creditbar = this.add.image(
     100,
     50,
     'upperbar'
+  )
+  Phaser.Display.Align.In.Center(state.pages.global.creditsLabel, state.pages.global.creditbar);
+  state.pages.global.creditsLabel.setY(state.pages.global.creditsLabel.y - 35)
+  state.pages.global.creditsValue = this.add.text(
+    70,
+    50, 
+    "105", 
+    { align: "center", fontFamily: "Roboto", fontSize: '20px', fill: '#e8c31a' }
+  )
+  Phaser.Display.Align.In.Center(state.pages.global.creditsValue, state.pages.global.creditbar);
+
+  state.pages.global.resourceLabel = this.add.text(
+    60,
+    75, 
+    "Resources", 
+    { align: "center", fontFamily: "Roboto", fontSize: '20px', fill: '#fff' }
   )
   state.pages.global.resourcebar = this.add.image(
     100,
     125,
     'upperbar'
   )
+  Phaser.Display.Align.In.Center(state.pages.global.resourceLabel, state.pages.global.resourcebar);
+  state.pages.global.resourceLabel.setY(state.pages.global.resourceLabel.y - 35)
+  state.pages.global.resourceValue = this.add.text(
+    70,
+    50, 
+    "34,300,308", 
+    { align: "center", fontFamily: "Roboto", fontSize: '20px', fill: '#e8c31a' }
+  )
+  Phaser.Display.Align.In.Center(state.pages.global.resourceValue, state.pages.global.resourcebar);
+
 
   // show start page
   showPage("start", this)
@@ -147,7 +280,7 @@ function create() {
           client.tycoonGetShips()
             .then((response) => {
               state.ships = response.data
-              showPage("main", this.scene)
+              showPage("mining", this.scene)
             })
             .catch((error) => {
               console.error(error)
@@ -162,7 +295,7 @@ function create() {
                 client.tycoonCreateShip() 
                   .then((response) => {
                     state.ships = [response.data]
-                    showPage("main", this.scene)
+                    showPage("mining", this.scene)
                   })
                   .catch((error) => {
                     console.error(error)
