@@ -60,6 +60,10 @@ function showPage(page, scene) {
       state.pages.mining.totalResourceLabel.setVisible(page === "mining")
       state.pages.mining.totalResourceValue.setVisible(page === "mining")
       state.pages.mining.shipLabel.setVisible(page === "mining")
+      state.pages.mining.meter_bg.setVisible(page === "mining")
+      state.pages.mining.meter.setVisible(page === "mining")
+      state.pages.mining.rpm.setVisible(page === "mining")
+      state.pages.mining.resourceRemaining.setVisible(page === "mining")
 
       scene.tweens.add({
         targets: targets[0],
@@ -70,6 +74,12 @@ function showPage(page, scene) {
     }
   })
 }
+
+function meter(percentage) {
+  state.pages.mining.meter.setScale(percentage, 1)
+}
+window.meter = meter
+
 
 function preload() {
   this.load.image('fader', '/img/games/2/fader.png');
@@ -83,6 +93,8 @@ function preload() {
   this.load.image('bottombar', '/img/games/2/bottombar.png');
   this.load.image('health', '/img/games/2/health.png');
   this.load.image('crystals', '/img/games/2/crystals.png');
+  this.load.image('progress-bg', '/img/games/2/progress-meter-blue.png');
+  this.load.image('progress', '/img/games/2/progress-meter-green.png');
 }
 
 function create() {
@@ -202,20 +214,46 @@ function create() {
     "7,495,571", 
     { fontFamily: "Roboto", fontSize: '20px', fill: '#e8c31a' }
   )
+
+  state.pages.mining.meter_bg = this.add.image(
+    state.canvas.width / 2,
+    100,
+    "progress-bg"
+  )
+  state.pages.mining.meter = this.add.image(
+    state.canvas.width / 2 - (364 / 2),
+    92,
+    "progress"
+  )
+  state.pages.mining.meter.setOrigin(0, 0.5)
+
+  state.pages.mining.rpm = this.add.text(
+    state.canvas.width / 2 - (state.pages.mining.meter_bg.width / 2 - 20),
+    115,
+    "0 RPM", 
+    { fontFamily: "Roboto", fontSize: '12px', fill: '#fff' }
+  )
+  state.pages.mining.resourceRemaining = this.add.text(
+    state.canvas.width / 2 + (state.pages.mining.meter_bg.width / 2 - 20),
+    115,
+    "0 Remaining", 
+    { fontFamily: "Roboto", fontSize: '12px', fill: '#fff' }
+  )
+  state.pages.mining.resourceRemaining.setOrigin(1, 0)
   ///////////////////////////////////////////////////////////////
 
   // Hanger /////////////////////////////////////////////////////
   state.pages.hanger.bottombar = this.add.image(
     state.canvas.width / 2, 
     50, 
-    'bottombar'
+    'bottombar',
   )
   state.pages.hanger.bottombar.setY(
     state.canvas.height - (state.pages.hanger.bottombar.height / 4 + 15)
   )
   ////////////////////////////////////////////////////////////////
 
-  // Global
+  // Global //////////////////////////////////////////////////////
   state.pages.global.creditsLabel = this.add.text(
     0,
     0, 
@@ -267,11 +305,8 @@ function create() {
     if (click === undefined) {
       return
     }
-    console.log("Clicked!", click.name)
-    window.clicked = click
 
     if (click.name === "return_button") {
-      console.log("Return Clicked")
       showPage("hanger", this.scene)
     } else if (click.name === "splash") {
       client.tycoonGetAccount()
