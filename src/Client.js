@@ -150,23 +150,23 @@ class Client {
   }
 
   tycoonUpdateShip(id, obj) {
-    return this.client.put('/games/2/ship/' + id, obj)
+    return this.client.put('/games/2/ships/' + id, obj)
   }
-  
+
   tycoonGetShipLogs(id) {
-    return this.client.get('/games/2/ship/' + id + '/logs')
+    return this.client.get('/games/2/ships/' + id + '/logs')
   }
 
   tycoonGetShipUpgrades(id) {
-    return this.client.get('/games/2/ship/' + id + '/upgrades')
+    return this.client.get('/games/2/ships/' + id + '/upgrades')
   }
 
   tycoonUpgradeShip(id, obj) {
-    return this.client.put('/games/2/ship/' + id + '/upgrade', obj)
+    return this.client.put('/games/2/ships/' + id + '/upgrade', obj)
   }
 
   tycoonGetShipStatus(id) {
-    return this.client.get('/games/2/ship/' + id + '/status')
+    return this.client.get('/games/2/ships/' + id + '/status')
   }
 
   tycoonListUpgrades() {
