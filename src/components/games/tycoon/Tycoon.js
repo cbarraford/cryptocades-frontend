@@ -15,6 +15,7 @@ let state = {
     main: {},
     mining: {},
     upgrade: {},
+    radar: {},
     global: {},
     to_hanger: {},
     to_asteroid: {},
@@ -36,7 +37,6 @@ function showPage(page, scene) {
   if (page === state.frame) {
     return
   }
-  state.frame = page
   console.log("Going to Page:", state.frame)
 
   scene.tweens.add({
@@ -45,6 +45,9 @@ function showPage(page, scene) {
     duration: 500,
     ease: 'Power2',
     onComplete: (tweens, targets) => {
+      
+      state.frame = page
+
       // start page
       state.pages.start_page.splash.setVisible(page === "start")
 
@@ -61,16 +64,23 @@ function showPage(page, scene) {
       state.pages.hanger.title.setVisible(page === "hanger")
       state.pages.hanger.tradebtn.setVisible(page === "hanger")
       state.pages.hanger.upgradebtn.setVisible(page === "hanger")
-      
+      state.pages.hanger.radar.setVisible(page === "hanger" || page === "radar")
+
       // To Hanger
       state.pages.to_hanger.title.setVisible(page === "toHanger")
       state.pages.to_hanger.eta.setVisible(page === "toHanger" || page === "toAsteroid")
       state.pages.to_hanger.etaLabel.setVisible(page === "toHanger" || page === "toAsteroid")
 
+      // Radar
+      state.pages.radar.screen.setVisible(page === "radar")
+      for (let i in state.pages.radar.blips) {
+        state.pages.radar.blips[i].setVisible(page === "radar")
+      }
+
       // Upgrade
       state.pages.upgrade.title.setVisible(page === "upgrade")
-      state.pages.upgrade.bg.setVisible(page === "upgrade" || page === "trade")
-      state.pages.upgrade.back.setVisible(page === "upgrade" || page === "trade")
+      state.pages.upgrade.bg.setVisible(page === "upgrade" || page === "trade" || page === "radar")
+      state.pages.upgrade.back.setVisible(page === "upgrade" || page === "trade" || page === "radar")
 
       // Mining
       state.pages.mining.land.setVisible(page === "mining")
@@ -89,14 +99,14 @@ function showPage(page, scene) {
       state.pages.mining.spaceship.setVisible(page === "mining" || page === "hanger" || page === "toHanger" || page === "toAsteroid")
       state.pages.mining.spaceship.setFlipX(page === "toAsteroid")
       state.pages.mining.resourceRemaining.setVisible(page === "mining")
-      state.pages.mining.sidebar.setVisible(page === "mining" || page === "hanger")
+      state.pages.mining.sidebar.setVisible(page === "mining" || page === "hanger" || page === "radar")
       state.pages.mining.autopilot.setVisible(page === "mining" || page === "hanger")
       state.pages.mining.healthIcon.setVisible(page === "mining" || page === "hanger")
       state.pages.mining.healthLabel.setVisible(page === "mining" || page === "hanger")
       state.pages.mining.healthValue.setVisible(page === "mining" || page === "hanger")
       state.pages.mining.shipLabel.setVisible(page === "mining" || page === "hanger")
 
-      state.pages.mining.bottombar.setVisible(page !== "start" && page !== "upgrade" && page !== "trade")
+      state.pages.mining.bottombar.setVisible(page !== "start" && page !== "upgrade" && page !== "trade" && page !== "radar")
 
       scene.tweens.add({
         targets: targets[0],
@@ -115,6 +125,56 @@ window.meter = meter
 
 function setNotice(msg) {
   state.pages.global.notice.setText(msg)
+}
+
+function drawRadar(scene) {
+  client.tycoonListAvailableAsteroids()
+    .then((response) => {
+      const asteroids = shuffle(response.data)
+      let maxDistance = 0
+      let minDistance = 500000000
+      let maxSize = 0
+      let minSize = 50000000000
+      for (let i in asteroids) {
+        if (asteroids[i].total <= state.ships[0].cargo) {
+          maxDistance = Math.max(maxDistance, asteroids[i].distance)
+          minDistance = Math.min(minDistance, asteroids[i].distance)
+          maxSize = Math.max(maxSize, asteroids[i].total)
+          minSize = Math.min(minSize, asteroids[i].total)
+        }
+      }
+      for (let i in state.pages.radar.blips) {
+        state.pages.radar.blips[i].destroy()
+      }
+      state.pages.radar.blips = []
+      for (let i in asteroids) {
+        if (asteroids[i].total <= state.ships[0].cargo) {
+          let blip = scene.add.image(
+            state.canvas.width * 2,
+            state.canvas.height * 2,
+            'blip-dot',
+          )
+          window.blip = blip
+          blip.setVisible(state.frame === "radar")
+          let size = (asteroids[i].total - minSize) / (maxSize - minSize)
+          const s = 5 + ((blip.width / 4) * size)
+          blip.setDisplaySize(s, s)
+          let loc = (asteroids[i].distance - minDistance) / (maxDistance - minDistance)
+          const d = ((412 - blip.width)/2 * loc)
+          const x = Math.floor(Math.random() * (d-1)) + 1
+          const y = Math.sqrt(d**2 - x**2)
+          const mults = [1,-1]
+          const y_mult = mults[Math.floor(Math.random()*mults.length)]
+          const x_mult = mults[Math.floor(Math.random()*mults.length)]
+          blip.setX((x * x_mult) + (state.canvas.width / 2))
+          blip.setY((y * y_mult) + (state.canvas.height / 2))
+          state.pages.radar.blips.push(blip)
+        }
+      }
+    })
+    .catch((error) => {
+      console.error(error)
+    })
 }
 
 function setHealth(i) {
@@ -148,6 +208,18 @@ function setResourceRemaining(i) {
   if (state.pages.mining.resourceRemaining) {
     state.pages.mining.resourceRemaining.setText(i + " Remaining")
   }
+}
+
+/**
+ * Shuffles array in place. ES6 version
+ * @param {Array} a items An array containing the items.
+ */
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
 }
 
 const autopilot = setInterval(() => {
@@ -212,7 +284,7 @@ const autopilot = setInterval(() => {
             })
           return
         } else {
-          if (state.frame !== "upgrade" && state.frame !== "trade") {
+          if (state.frame !== "upgrade" && state.frame !== "radar" && state.frame !== "trade") {
             showPage("hanger", state.scene)
           }
           if (state.ship.ship.health === 0) {
@@ -256,7 +328,7 @@ const autopilot = setInterval(() => {
           console.log("Looking for asteroid to assign...")
           client.tycoonListAvailableAsteroids()
             .then((response) => {
-              const asteroids = response.data
+              const asteroids = shuffle(response.data)
               for (let i in asteroids) {
                 if (asteroids[i].total <= state.ships[0].cargo) {
                   client.tycoonAssignAsteroid({
@@ -294,7 +366,7 @@ function preload() {
   this.load.image('splash', '/img/games/2/splash.jpg');
   this.load.image('land', '/img/games/2/land.png');
   this.load.image('mining_label', '/img/games/2/mining_label.png');
-  this.load.image('return_button', '/img/games/2/return_button.png');
+  this.load.image('return-btn', '/img/games/2/return_button.png');
   this.load.image('sidebar', '/img/games/2/sidebar.png');
   this.load.image('upperbar', '/img/games/2/upperbars.png');
   this.load.image('bottombar', '/img/games/2/bottombar.png');
@@ -312,6 +384,10 @@ function preload() {
   this.load.image('background-brown', '/img/games/2/background-brown.png');
   this.load.image('back-btn', '/img/games/2/back.png');
   this.load.image('upgrade-title', '/img/games/2/upgrade_logo.png');
+  this.load.image('radar-screen', '/img/games/2/radar-screen.png');
+  this.load.image('radar-btn', '/img/games/2/radar-btn.png');
+  this.load.image('blip-dot', '/img/games/2/blip-dot.png');
+  this.load.image('blip-tri', '/img/games/2/blip-tri.png');
 }
 
 function create() {
@@ -342,6 +418,14 @@ function create() {
     'back-btn',
   ).setInteractive()
   state.pages.upgrade.back.setName("back-btn")
+  ////////////////////////////////////////////////////////////////
+
+  ////// Radar Screen ////////////////////////////////////////////
+  state.pages.radar.screen = this.add.image(
+    state.canvas.width / 2,
+    state.canvas.height / 2,
+    'radar-screen',
+  )
   ////////////////////////////////////////////////////////////////
 
   ////// Approaching Hanger //////////////////////////////////////
@@ -406,12 +490,21 @@ function create() {
   state.pages.mining.sidebar.setX(
     state.canvas.width - (state.pages.mining.sidebar.width / 2)
   )
+  state.pages.hanger.radar = this.add.image(
+    state.canvas.width - (state.pages.mining.sidebar.width / 2),
+    (state.canvas.height / 2) + ((state.pages.mining.sidebar.height / 2) - 60), 
+    'radar-btn'
+  ).setInteractive()
+  state.pages.hanger.radar.name = "radar-btn"
+  state.pages.hanger.radar.setX(
+    state.canvas.width - 15 - state.pages.hanger.radar.width
+  )
   state.pages.mining.returnbtn = this.add.image(
     state.canvas.width - (state.pages.mining.sidebar.width / 2),
     (state.canvas.height / 2) + ((state.pages.mining.sidebar.height / 2) - 60), 
-    'return_button'
+    'return-btn'
   ).setInteractive()
-  state.pages.mining.returnbtn.name = "return_button"
+  state.pages.mining.returnbtn.name = "return-btn"
   state.pages.mining.returnbtn.setX(
     state.canvas.width - 10 - state.pages.mining.returnbtn.width / 2
   )
@@ -607,7 +700,7 @@ function create() {
       return
     }
 
-    if (click.name === "return_button") {
+    if (click.name === "return-btn") {
       showPage("toAsteroid", this.scene)
       state.pages.mining.autopilot.setTexture("auto-pilot-off")
       state.autopilot = false
@@ -625,6 +718,11 @@ function create() {
       }
     } else if (click.name === "upgrade-btn") {
       showPage("upgrade", this.scene)
+      state.pages.mining.autopilot.setTexture("auto-pilot-off")
+      state.autopilot = false
+    } else if (click.name === "radar-btn") {
+      drawRadar(this.scene)
+      showPage("radar", this.scene)
       state.pages.mining.autopilot.setTexture("auto-pilot-off")
       state.autopilot = false
     } else if (click.name === "trade-btn") {
