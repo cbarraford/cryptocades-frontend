@@ -170,7 +170,7 @@ class Client {
   }
 
   tycoonListUpgrades() {
-    return this.client.get('/games/2/ship/upgrades')
+    return this.client.get('/games/2/upgrades')
   }
 
   tycoonListAvailableAsteroids() {
@@ -183,6 +183,10 @@ class Client {
 
   tycoonCompletedAsteroid(obj) {
     return this.client.post('/games/2/asteroids/completed', obj)
+  }
+
+  tycoonExchange() {
+    return this.client.get('/games/2/exchange')
   }
 
   tycoonTradeForCredits(amount) {

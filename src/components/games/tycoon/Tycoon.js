@@ -7,19 +7,23 @@ import { inject, observer } from 'mobx-react';
 
 let miner;
 let client;
+let store;
 
 let state = {
   canvas: {},
+  exchange: {},
+  upgrades: {},
   pages: {
     start_page: {},
     main: {},
     mining: {},
+    trade: {},
     upgrade: {},
     radar: {},
     global: {},
-    to_hanger: {},
+    to_hangar: {},
     to_asteroid: {},
-    hanger: {},
+    hangar: {},
     fader: null,
   },
   autopilot: false,
@@ -58,29 +62,52 @@ function showPage(page, scene) {
       state.pages.global.resourceLabel.setVisible(page !== "start")
       state.pages.global.resourceValue.setVisible(page !== "start")
       state.pages.global.creditsValue.setVisible(page !== "start")
-      state.pages.global.notice.setVisible(page !== "start" && page !== "upgrade" && page !== "trade")
+      state.pages.global.notice.setVisible(page !== "start" && page !== "upgrade" && page !== "trade" && page !== "radar")
 
-      // Hanger 
-      state.pages.hanger.title.setVisible(page === "hanger")
-      state.pages.hanger.tradebtn.setVisible(page === "hanger")
-      state.pages.hanger.upgradebtn.setVisible(page === "hanger")
-      state.pages.hanger.radar.setVisible(page === "hanger" || page === "radar")
+      // Hangar 
+      state.pages.hangar.title.setVisible(page === "hangar")
+      state.pages.hangar.tradebtn.setVisible(page === "hangar")
+      state.pages.hangar.upgradebtn.setVisible(page === "hangar")
+      state.pages.hangar.radar.setVisible(page === "hangar" || page === "radar")
 
-      // To Hanger
-      state.pages.to_hanger.title.setVisible(page === "toHanger")
-      state.pages.to_hanger.eta.setVisible(page === "toHanger" || page === "toAsteroid")
-      state.pages.to_hanger.etaLabel.setVisible(page === "toHanger" || page === "toAsteroid")
+      // To Hangar
+      state.pages.to_hangar.title.setVisible(page === "toHangar")
+      state.pages.to_hangar.eta.setVisible(page === "toHangar" || page === "toAsteroid")
+      state.pages.to_hangar.etaLabel.setVisible(page === "toHangar" || page === "toAsteroid")
 
       // Radar
       state.pages.radar.screen.setVisible(page === "radar")
+      state.pages.radar.size.setVisible(page === "radar")
+      state.pages.radar.distance.setVisible(page === "radar")
       for (let i in state.pages.radar.blips) {
         state.pages.radar.blips[i].setVisible(page === "radar")
       }
+
+      // Trade
+      state.pages.trade.credits_title.setVisible(page === "trade")
+      state.pages.trade.max_credits_btn.setVisible(page === "trade")
+      state.pages.trade.max_plays_btn.setVisible(page === "trade")
+      state.pages.trade.plays_title.setVisible(page === "trade")
 
       // Upgrade
       state.pages.upgrade.title.setVisible(page === "upgrade")
       state.pages.upgrade.bg.setVisible(page === "upgrade" || page === "trade" || page === "radar")
       state.pages.upgrade.back.setVisible(page === "upgrade" || page === "trade" || page === "radar")
+      state.pages.upgrade.cargo_text.setVisible(page === "upgrade")
+      state.pages.upgrade.engine_text.setVisible(page === "upgrade")
+      state.pages.upgrade.hull_text.setVisible(page === "upgrade")
+
+      state.pages.upgrade.cargo_lvl.setVisible(page === "upgrade")
+      state.pages.upgrade.engine_lvl.setVisible(page === "upgrade")
+      state.pages.upgrade.hull_lvl.setVisible(page === "upgrade")
+
+      state.pages.upgrade.cargo_value.setVisible(page === "upgrade")
+      state.pages.upgrade.engine_value.setVisible(page === "upgrade")
+      state.pages.upgrade.hull_value.setVisible(page === "upgrade")
+
+      state.pages.upgrade.cargo_upgrade.setVisible(false)
+      state.pages.upgrade.engine_upgrade.setVisible(false)
+      state.pages.upgrade.hull_upgrade.setVisible(false)
 
       // Mining
       state.pages.mining.land.setVisible(page === "mining")
@@ -89,24 +116,39 @@ function showPage(page, scene) {
       state.pages.mining.crystalsIcon.setVisible(page === "mining")
       state.pages.mining.crystalsLabel.setVisible(page === "mining")
       state.pages.mining.crystalsValue.setVisible(page === "mining")
-      state.pages.mining.totalAsteroidsLabel.setVisible(page === "mining" || page === "hanger")
-      state.pages.mining.totalAsteroidsValue.setVisible(page === "mining" || page === "hanger")
-      state.pages.mining.totalResourceLabel.setVisible(page === "mining" || page === "hanger")
-      state.pages.mining.totalResourceValue.setVisible(page === "mining" || page === "hanger")
+      state.pages.mining.totalAsteroidsLabel.setVisible(page === "mining" || page === "hangar")
+      state.pages.mining.totalAsteroidsValue.setVisible(page === "mining" || page === "hangar")
+      state.pages.mining.totalResourceLabel.setVisible(page === "mining" || page === "hangar")
+      state.pages.mining.totalResourceValue.setVisible(page === "mining" || page === "hangar")
       state.pages.mining.meter_bg.setVisible(page === "mining")
       state.pages.mining.meter.setVisible(page === "mining")
       state.pages.mining.rpm.setVisible(page === "mining")
-      state.pages.mining.spaceship.setVisible(page === "mining" || page === "hanger" || page === "toHanger" || page === "toAsteroid")
+      state.pages.mining.spaceship.setVisible(page === "mining" || page === "hangar" || page === "toHangar" || page === "toAsteroid")
       state.pages.mining.spaceship.setFlipX(page === "toAsteroid")
       state.pages.mining.resourceRemaining.setVisible(page === "mining")
-      state.pages.mining.sidebar.setVisible(page === "mining" || page === "hanger" || page === "radar")
-      state.pages.mining.autopilot.setVisible(page === "mining" || page === "hanger")
-      state.pages.mining.healthIcon.setVisible(page === "mining" || page === "hanger")
-      state.pages.mining.healthLabel.setVisible(page === "mining" || page === "hanger")
-      state.pages.mining.healthValue.setVisible(page === "mining" || page === "hanger")
-      state.pages.mining.shipLabel.setVisible(page === "mining" || page === "hanger")
+      state.pages.mining.sidebar.setVisible(page === "mining" || page === "hangar" || page === "radar")
+      state.pages.mining.autopilot.setVisible(page === "mining" || page === "hangar" || page === "radar")
+      state.pages.mining.healthIcon.setVisible(page === "mining" || page === "hangar")
+      state.pages.mining.healthLabel.setVisible(page === "mining" || page === "hangar")
+      state.pages.mining.healthValue.setVisible(page === "mining" || page === "hangar")
+      state.pages.mining.shipLabel.setVisible(page === "mining" || page === "hangar")
 
       state.pages.mining.bottombar.setVisible(page !== "start" && page !== "upgrade" && page !== "trade" && page !== "radar")
+
+      // if we're going to the trade page, update exchange rates
+      if (page === "trade") {
+        client.tycoonExchange()
+          .then((response) => {
+            state.exchange = response.data
+          })
+          .catch((error) => {
+            console.error(error)
+          })
+      } else if (page === "upgrade") {
+        refreshUpgrade()
+      }
+
+
 
       scene.tweens.add({
         targets: targets[0],
@@ -116,6 +158,109 @@ function showPage(page, scene) {
       })
     }
   })
+}
+
+function refreshAccount() {
+  client.tycoonGetAccount()
+    .then((response) => {
+      state.account = response.data
+      state.pages.global.creditsValue.setText(
+        state.account.credits.toLocaleString()
+      )
+      Phaser.Display.Align.In.Center(
+        state.pages.global.creditsValue, 
+        state.pages.global.creditbar,
+      );
+      state.pages.global.resourceValue.setText(state.account.resources.toLocaleString())
+      Phaser.Display.Align.In.Center(
+        state.pages.global.resourceValue,
+        state.pages.global.resourcebar,
+      );
+    })
+}
+
+function refreshUpgrade() {
+  client.tycoonListUpgrades()
+    .then((response) => {
+      state.upgrades = response.data
+      client.tycoonGetShipUpgrades(state.ships[0].id)
+        .then((response) => {
+          state.ship_upgrades = {}
+          for (let i in response.data) {
+            if (response.data[i].category_id === 1) {
+              state.ship_upgrades.engine = response.data[i]
+            } else if (response.data[i].category_id === 2) {
+              state.ship_upgrades.cargo = response.data[i]
+            } else if (response.data[i].category_id === 3) {
+              state.ship_upgrades.repair = response.data[i]
+            } else if (response.data[i].category_id === 4) {
+              state.ship_upgrades.hull = response.data[i]
+            }
+          }
+          const engine = getUpgrade(state.ship_upgrades.engine.category_id, state.ship_upgrades.engine.asset_id)
+          const engine_next = getUpgrade(state.ship_upgrades.engine.category_id, state.ship_upgrades.engine.asset_id + 1)
+          const cargo = getUpgrade(state.ship_upgrades.cargo.category_id, state.ship_upgrades.cargo.asset_id)
+          const cargo_next = getUpgrade(state.ship_upgrades.cargo.category_id, state.ship_upgrades.cargo.asset_id + 1)
+          //const repair = getUpgrade(state.ship_upgrades.repair.category_id, state.ship_upgrades.repair.asset_id)
+          const hull = getUpgrade(state.ship_upgrades.hull.category_id, state.ship_upgrades.hull.asset_id)
+          const hull_next = getUpgrade(state.ship_upgrades.hull.category_id, state.ship_upgrades.hull.asset_id + 1)
+
+          state.pages.upgrade.engine_lvl.setText("lvl " + engine.asset_id)
+          state.pages.upgrade.engine_value.setText(engine.value + " Mph")
+          if (engine_next === null) {
+            state.pages.upgrade.engine_upgrade.setVisible(false)
+            state.pages.upgrade.engine_lvl_next.setVisible(false)
+            state.pages.upgrade.engine_value_next.setVisible(false)
+            state.pages.upgrade.engine_cost.setVisible(false)
+          } else {
+            state.pages.upgrade.engine_upgrade.setVisible(true)
+            state.pages.upgrade.engine_lvl_next.setText("lvl " + engine_next.asset_id)
+            state.pages.upgrade.engine_value_next.setText(engine_next.value + " Mph")
+            state.pages.upgrade.engine_cost.setText(engine_next.cost + " credits")
+          }
+
+          state.pages.upgrade.cargo_lvl.setText("lvl " + cargo.asset_id)
+          state.pages.upgrade.cargo_value.setText(cargo.value + " m3")
+          if (cargo_next === null) {
+            state.pages.upgrade.cargo_upgrade.setVisible(false)
+            state.pages.upgrade.cargo_lvl_next.setVisible(false)
+            state.pages.upgrade.cargo_value_next.setVisible(false)
+            state.pages.upgrade.cargo_cost.setVisible(false)
+          } else {
+            state.pages.upgrade.cargo_upgrade.setVisible(true)
+            state.pages.upgrade.cargo_lvl_next.setText("lvl " + cargo_next.asset_id)
+            state.pages.upgrade.cargo_value_next.setText(cargo_next.value + " m3")
+            state.pages.upgrade.cargo_cost.setText(cargo_next.cost + " credits")
+          }
+
+          state.pages.upgrade.hull_lvl.setText("lvl " + hull.asset_id)
+          state.pages.upgrade.hull_value.setText(hull.value + " H/V")
+          if (hull_next === null) {
+            state.pages.upgrade.hull_upgrade.setVisible(false)
+            state.pages.upgrade.hull_lvl_next.setVisible(false)
+            state.pages.upgrade.hull_value_next.setVisible(false)
+            state.pages.upgrade.hull_cost.setVisible(false)
+          } else {
+            state.pages.upgrade.hull_upgrade.setVisible(true)
+            state.pages.upgrade.hull_lvl_next.setText("lvl " + hull_next.asset_id)
+            state.pages.upgrade.hull_value_next.setText(hull_next.value + " H/V")
+            state.pages.upgrade.hull_cost.setText(hull_next.cost + " credits")
+          }
+
+          // state.pages.upgrade.repair_lvl.setText("lvl " + repair.asset_id)
+          // state.pages.upgrade.repair_value.setText(repair.value + " Mechanics")
+        })
+    })
+}
+
+function getUpgrade(cat, id) {
+  for (let i in state.upgrades) {
+    const up = state.upgrades[i]
+    if (up.category_id === cat && up.asset_id === id) {
+      return up
+    }
+  }
+  return null
 }
 
 function meter(percentage) {
@@ -152,9 +297,11 @@ function drawRadar(scene) {
           let blip = scene.add.image(
             state.canvas.width * 2,
             state.canvas.height * 2,
-            'blip-dot',
-          )
+            asteroids[i].ship_id === 0 ? 'blip-dot' : 'blip-tri',
+          ).setInteractive()
           window.blip = blip
+          blip.setName("asteroid")
+          blip.asteroid = asteroids[i]
           blip.setVisible(state.frame === "radar")
           let size = (asteroids[i].total - minSize) / (maxSize - minSize)
           const s = 5 + ((blip.width / 4) * size)
@@ -179,10 +326,12 @@ function drawRadar(scene) {
 
 function setHealth(i) {
   if (state.pages.mining.healthValue) {
-    if (i === 0 && state.pages.mining.healthValue.text !== "0%") {
+    if (i === 0 && state.pages.mining.healthValue.text !== "0") {
       setNotice("Ship destroyed")
+    } else if (i === state.ship.ship.hull && state.pages.mining.healthValue.text !== state.ship.ship.hull.toString() && state.pages.mining.healthValue.text !== "~") {
+      setNotice("Ship Repaired. Ready for next our asteroid!")
     }
-    state.pages.mining.healthValue.setText(i + "%")
+    state.pages.mining.healthValue.setText(i)
   }
 }
 
@@ -205,8 +354,25 @@ function setCollected(i) {
 }
 
 function setResourceRemaining(i) {
+  i = Math.max(0, i)
   if (state.pages.mining.resourceRemaining) {
     state.pages.mining.resourceRemaining.setText(i + " Remaining")
+  }
+}
+
+function setSize(i) {
+  if (i === 0) {
+    state.pages.radar.size.setText("Size: ~")
+  } else {
+    state.pages.radar.size.setText("Size: " + i + " m3")
+  }
+}
+
+function setDistance(i) {
+  if (i === 0) {
+    state.pages.radar.distance.setText("Distance: ~")
+  } else {
+    state.pages.radar.distance.setText("Distance: " + i + " km")
   }
 }
 
@@ -224,6 +390,7 @@ function shuffle(a) {
 
 const autopilot = setInterval(() => {
   if (state.ship === null && state.ships.length > 0) {
+    refreshAccount()
     client.tycoonGetShipStatus(state.ships[0].id)
       .then((response) => {
         state.ship = response.data
@@ -249,7 +416,7 @@ const autopilot = setInterval(() => {
     client.tycoonGetShipStatus(state.ships[0].id)
       .then((response) => {
         state.ship = response.data
-        state.pages.to_hanger.eta.setText(Math.max(0, state.ship.remaining_time) + " seconds")
+        state.pages.to_hangar.eta.setText(Math.max(0, state.ship.remaining_time) + " seconds")
 
         setHealth(state.ship.ship.health)
         setTotalAsteroids(state.ship.ship.total_asteroids)
@@ -257,17 +424,17 @@ const autopilot = setInterval(() => {
         if (state.ship.status === "Approaching Asteroid") {
           showPage("toAsteroid", state.scene)
           miner.stop()
-          setNotice("Traveling to our asteroid...")
+          setNotice("Approaching the asteroid...")
           return
         } else if (state.ship.status === "Approaching Space Station") {
-          showPage("toHanger", state.scene)
+          showPage("toHangar", state.scene)
           miner.stop()
-          setNotice("Asteroid has been mined, heading back to the hanger...")
+          setNotice("Asteroid has been mined, heading back to the hangar...")
           return
         } else if (state.ship.status === "Mining") {
           showPage("mining", state.scene)
           miner.start()
-          setNotice("Mining our asteroid... please wait.")
+          setNotice("Mining... please wait.")
           client.tycoonGetShipStatus(state.ships[0].id)
             .then((response) => {
               state.ship = response.data
@@ -285,18 +452,18 @@ const autopilot = setInterval(() => {
           return
         } else {
           if (state.frame !== "upgrade" && state.frame !== "radar" && state.frame !== "trade") {
-            showPage("hanger", state.scene)
+            showPage("hangar", state.scene)
           }
           if (state.ship.ship.health === 0) {
             miner.start()
             setNotice("Ship destroyed! You lost your cargo! Repairing your ship...")
-          } else if (state.ship.ship.health < 100) {
+          } else if (state.ship.ship.health < state.ship.ship.hull) {
             miner.start()
             setNotice("Repairing ship... please wait.")
-          } else {
+          } else if (state.ship.ship.health === state.ship.ship.hull) {
             miner.stop()
           }
-          if (state.autopilot && state.ship.asteroid.remaining < state.ship.asteroid.total) {
+          if (state.ship.asteroid.remaining < state.ship.asteroid.total) {
             client.tycoonCompletedAsteroid({
               ship_id: state.ships[0].id,
             })
@@ -304,27 +471,14 @@ const autopilot = setInterval(() => {
                 if (state.ship.ship.health > 0) {
                   setNotice("Successfully mined an asteroid")
                 }
-                client.tycoonGetAccount()
-                  .then((response) => {
-                    state.account = response.data
-                    state.pages.global.creditsValue.setText(state.account.credits)
-                    Phaser.Display.Align.In.Center(
-                      state.pages.global.creditsValue, 
-                      state.pages.global.creditbar,
-                    );
-                    state.pages.global.resourceValue.setText(state.account.resources.toLocaleString())
-                    Phaser.Display.Align.In.Center(
-                      state.pages.global.resourceValue,
-                      state.pages.global.resourcebar,
-                    );
-                  })
+                refreshAccount()
               })
               .catch((error) => {
                 console.error(error)
               })
           }
         }
-        if (state.autopilot && state.ship.asteroid.id === 0 && state.ship.ship.health === 100) {
+        if (state.autopilot && state.ship.asteroid.id === 0 && state.ship.ship.health === state.ship.ship.hull) {
           console.log("Looking for asteroid to assign...")
           client.tycoonListAvailableAsteroids()
             .then((response) => {
@@ -377,8 +531,8 @@ function preload() {
   this.load.image('auto-pilot-off', '/img/games/2/auto-pilot.png');
   this.load.image('auto-pilot-on', '/img/games/2/auto-pilot-on.png');
   this.load.image('spaceship', '/img/games/2/spaceship.png');
-  this.load.image('hanger-text', '/img/games/2/hanger-text.png');
-  this.load.image('approaching-hanger', '/img/games/2/approaching-hanger.png');
+  this.load.image('hangar-text', '/img/games/2/hangar-text.png');
+  this.load.image('approaching-hangar', '/img/games/2/approaching-hangar.png');
   this.load.image('trade-btn', '/img/games/2/trade.png');
   this.load.image('upgrade-btn', '/img/games/2/upgrade.png');
   this.load.image('background-brown', '/img/games/2/background-brown.png');
@@ -388,6 +542,13 @@ function preload() {
   this.load.image('radar-btn', '/img/games/2/radar-btn.png');
   this.load.image('blip-dot', '/img/games/2/blip-dot.png');
   this.load.image('blip-tri', '/img/games/2/blip-tri.png');
+  this.load.image('cargo-text', '/img/games/2/cargo-text.png');
+  this.load.image('engine-text', '/img/games/2/engine-text.png');
+  this.load.image('max-btn', '/img/games/2/max-btn.png');
+  this.load.image('engine-text', '/img/games/2/engine-text.png');
+  this.load.image('hull-text', '/img/games/2/hull-text.png');
+  this.load.image('cargo-text', '/img/games/2/cargo-text.png');
+  this.load.image('upgrade-comp-btn', '/img/games/2/upgrade-btn.png');
 }
 
 function create() {
@@ -418,6 +579,168 @@ function create() {
     'back-btn',
   ).setInteractive()
   state.pages.upgrade.back.setName("back-btn")
+
+  state.pages.upgrade.cargo_text = this.add.image(
+    350,
+    150,
+    'cargo-text'
+  )
+  state.pages.upgrade.cargo_lvl = this.add.text(
+    200,
+    150,
+    "~", 
+    { fontFamily: "Roboto", fontSize: '25px', fill: '#fff' }
+  )
+  state.pages.upgrade.cargo_lvl_next = this.add.text(
+    200,
+    150,
+    "", 
+    { fontFamily: "Roboto", fontSize: '25px', fill: '#01FF70' }
+  ).setVisible(false)
+  state.pages.upgrade.cargo_value = this.add.text(
+    450,
+    150,
+    "~", 
+    { fontFamily: "Roboto", fontSize: '25px', fill: '#fff' }
+  )
+  state.pages.upgrade.cargo_value_next = this.add.text(
+    450,
+    150,
+    "", 
+    { fontFamily: "Roboto", fontSize: '25px', fill: '#01FF70' }
+  ).setVisible(false)
+  state.pages.upgrade.cargo_upgrade = this.add.image(
+    620,
+    150,
+    'upgrade-comp-btn'
+  ).setInteractive()
+  state.pages.upgrade.cargo_upgrade.setName("upgrade-cargo")
+  state.pages.upgrade.cargo_cost = this.add.text(
+    675,
+    150,
+    "", 
+    { fontFamily: "Roboto", fontSize: '18px', fill: '#01FF70' }
+  ).setInteractive()
+  state.pages.upgrade.cargo_cost.setVisible(false)
+  state.pages.upgrade.cargo_cost.setName("cargo-cost")
+
+  state.pages.upgrade.engine_text = this.add.image(
+    350,
+    225,
+    'engine-text'
+  )
+  state.pages.upgrade.engine_lvl = this.add.text(
+    200,
+    225,
+    "~", 
+    { fontFamily: "Roboto", fontSize: '25px', fill: '#fff' }
+  )
+  state.pages.upgrade.engine_lvl_next = this.add.text(
+    200,
+    225,
+    "", 
+    { fontFamily: "Roboto", fontSize: '25px', fill: '#01FF70' }
+  ).setVisible(false)
+  state.pages.upgrade.engine_value = this.add.text(
+    450,
+    225,
+    "~", 
+    { fontFamily: "Roboto", fontSize: '25px', fill: '#fff' }
+  )
+  state.pages.upgrade.engine_value_next = this.add.text(
+    450,
+    225,
+    "", 
+    { fontFamily: "Roboto", fontSize: '25px', fill: '#01FF70' }
+  ).setVisible(false)
+  state.pages.upgrade.engine_upgrade = this.add.image(
+    620,
+    225,
+    'upgrade-comp-btn'
+  ).setInteractive()
+  state.pages.upgrade.engine_upgrade.setName("upgrade-engine")
+  state.pages.upgrade.engine_cost = this.add.text(
+    675,
+    225,
+    "", 
+    { fontFamily: "Roboto", fontSize: '18px', fill: '#01FF70' }
+  ).setInteractive()
+  state.pages.upgrade.engine_cost.setVisible(false)
+  state.pages.upgrade.engine_cost.setName("engine-cost")
+
+  state.pages.upgrade.hull_text = this.add.image(
+    350,
+    300,
+    'hull-text'
+  )
+  state.pages.upgrade.hull_lvl = this.add.text(
+    200,
+    300,
+    "~", 
+    { fontFamily: "Roboto", fontSize: '25px', fill: '#fff' }
+  )
+  state.pages.upgrade.hull_lvl_next = this.add.text(
+    200,
+    300,
+    "", 
+    { fontFamily: "Roboto", fontSize: '25px', fill: '#01FF70' }
+  ).setVisible(false)
+  state.pages.upgrade.hull_value = this.add.text(
+    450,
+    300,
+    "~", 
+    { fontFamily: "Roboto", fontSize: '25px', fill: '#fff' }
+  )
+  state.pages.upgrade.hull_value_next = this.add.text(
+    450,
+    300,
+    "", 
+    { fontFamily: "Roboto", fontSize: '25px', fill: '#01FF70' }
+  ).setVisible(false)
+  state.pages.upgrade.hull_upgrade = this.add.image(
+    620,
+    300,
+    'upgrade-comp-btn'
+  ).setInteractive()
+  state.pages.upgrade.hull_upgrade.setName("upgrade-hull")
+  state.pages.upgrade.hull_cost = this.add.text(
+    675,
+    300,
+    "", 
+    { fontFamily: "Roboto", fontSize: '18px', fill: '#01FF70' }
+  ).setInteractive()
+  state.pages.upgrade.hull_cost.setVisible(false)
+  state.pages.upgrade.hull_cost.setName("hull-cost")
+
+
+  ////////////////////////////////////////////////////////////////
+
+  ////// Trade ///////////////////////////////////////////////////
+  state.pages.trade.credits_title = this.add.text(
+    state.canvas.width / 2,
+    50,
+    "Iron Ore for Credits", 
+    { fontFamily: "Roboto", fontSize: '30px', align: "center", fill: '#fff' }
+  )
+  state.pages.trade.max_credits_btn = this.add.image(
+    state.canvas.width / 2,
+    100,
+    'max-btn',
+  ).setInteractive()
+  state.pages.trade.max_credits_btn.setName("max-credits")
+
+  state.pages.trade.plays_title = this.add.text(
+    state.canvas.width / 2,
+    150,
+    "Credits for Jackpot Plays", 
+    { fontFamily: "Roboto", fontSize: '30px', align: "center", fill: '#fff' }
+  )
+  state.pages.trade.max_plays_btn = this.add.image(
+    state.canvas.width / 2,
+    200,
+    'max-btn',
+  ).setInteractive()
+  state.pages.trade.max_plays_btn.setName("max-plays")
   ////////////////////////////////////////////////////////////////
 
   ////// Radar Screen ////////////////////////////////////////////
@@ -426,34 +749,46 @@ function create() {
     state.canvas.height / 2,
     'radar-screen',
   )
+  state.pages.radar.size = this.add.text(
+    25,
+    state.canvas.height - 50,
+    "", 
+    { fontFamily: "Roboto", fontSize: '20px', fill: '#fff' }
+  )
+  state.pages.radar.distance = this.add.text(
+    25,
+    state.canvas.height - 25,
+    "", 
+    { fontFamily: "Roboto", fontSize: '20px', fill: '#fff' }
+  )
   ////////////////////////////////////////////////////////////////
 
-  ////// Approaching Hanger //////////////////////////////////////
-  state.pages.to_hanger.title = this.add.image(
+  ////// Approaching Hangar //////////////////////////////////////
+  state.pages.to_hangar.title = this.add.image(
     state.canvas.width / 2, 
     50, 
-    'approaching-hanger'
+    'approaching-hangar'
   )
   ////////////////////////////////////////////////////////////////
 
-  ////// Hanger //////////////////////////////////////////////////
-  state.pages.hanger.title = this.add.image(
+  ////// Hangar //////////////////////////////////////////////////
+  state.pages.hangar.title = this.add.image(
     state.canvas.width / 2,
     50,
-    'hanger-text'
+    'hangar-text'
   )
-  state.pages.hanger.tradebtn = this.add.image(
+  state.pages.hangar.tradebtn = this.add.image(
     50,
     state.canvas.height / 2,
     'trade-btn'
   ).setInteractive()
-  state.pages.hanger.tradebtn.setName("trade-btn")
-  state.pages.hanger.upgradebtn = this.add.image(
+  state.pages.hangar.tradebtn.setName("trade-btn")
+  state.pages.hangar.upgradebtn = this.add.image(
     50,
     state.canvas.height / 2 + 75,
     'upgrade-btn'
   ).setInteractive()
-  state.pages.hanger.upgradebtn.setName("upgrade-btn")
+  state.pages.hangar.upgradebtn.setName("upgrade-btn")
   ////////////////////////////////////////////////////////////////
 
 
@@ -490,14 +825,14 @@ function create() {
   state.pages.mining.sidebar.setX(
     state.canvas.width - (state.pages.mining.sidebar.width / 2)
   )
-  state.pages.hanger.radar = this.add.image(
+  state.pages.hangar.radar = this.add.image(
     state.canvas.width - (state.pages.mining.sidebar.width / 2),
     (state.canvas.height / 2) + ((state.pages.mining.sidebar.height / 2) - 60), 
     'radar-btn'
   ).setInteractive()
-  state.pages.hanger.radar.name = "radar-btn"
-  state.pages.hanger.radar.setX(
-    state.canvas.width - 15 - state.pages.hanger.radar.width
+  state.pages.hangar.radar.name = "radar-btn"
+  state.pages.hangar.radar.setX(
+    state.canvas.width - 15 - state.pages.hangar.radar.width
   )
   state.pages.mining.returnbtn = this.add.image(
     state.canvas.width - (state.pages.mining.sidebar.width / 2),
@@ -568,7 +903,7 @@ function create() {
   state.pages.mining.totalResourceLabel = this.add.text(
     state.canvas.width / 2 + 40,
     state.canvas.height - (state.pages.mining.bottombar.height / 2 - 15), 
-    "Total Resources", 
+    "Total Iron Ore", 
     { fontFamily: "Roboto", fontSize: '20px', fill: '#fff' }
   )
   state.pages.mining.totalResourceValue = this.add.text(
@@ -615,28 +950,28 @@ function create() {
   )
   ///////////////////////////////////////////////////////////////
 
-  // Hanger /////////////////////////////////////////////////////
-  /*state.pages.hanger.bottombar = this.add.image(
+  // Hangar /////////////////////////////////////////////////////
+  /*state.pages.hangar.bottombar = this.add.image(
     state.canvas.width / 2, 
     50, 
     'bottombar',
   )
-  state.pages.hanger.bottombar.setY(
-    state.canvas.height - (state.pages.hanger.bottombar.height / 4 + 15)
+  state.pages.hangar.bottombar.setY(
+    state.canvas.height - (state.pages.hangar.bottombar.height / 4 + 15)
   )*/
-  state.pages.to_hanger.etaLabel = this.add.text(
+  state.pages.to_hangar.etaLabel = this.add.text(
     state.canvas.width / 2 - 260,
     state.canvas.height - (state.pages.mining.bottombar.height / 2 + 10), 
     "ETA", 
     { fontFamily: "Roboto", fontSize: '40px', fill: '#e8c31a' }
   )
-  state.pages.to_hanger.eta = this.add.text(
+  state.pages.to_hangar.eta = this.add.text(
     state.canvas.width / 2,
     state.canvas.height - (state.pages.mining.bottombar.height / 2 - 5), 
     "~ seconds", 
     { fontFamily: "Roboto", fontSize: '20px', fill: '#fff' }
   )
-  Phaser.Display.Align.In.Center(state.pages.to_hanger.eta, state.pages.mining.bottombar);
+  Phaser.Display.Align.In.Center(state.pages.to_hangar.eta, state.pages.mining.bottombar);
   ////////////////////////////////////////////////////////////////
 
   // Global //////////////////////////////////////////////////////
@@ -656,7 +991,7 @@ function create() {
   state.pages.global.creditsValue = this.add.text(
     70,
     50, 
-    "105", 
+    "~", 
     { align: "center", fontFamily: "Roboto", fontSize: '20px', fill: '#e8c31a' }
   )
   Phaser.Display.Align.In.Center(state.pages.global.creditsValue, state.pages.global.creditbar);
@@ -664,7 +999,7 @@ function create() {
   state.pages.global.resourceLabel = this.add.text(
     60,
     75, 
-    "Resources", 
+    "Iron Ore", 
     { align: "center", fontFamily: "Roboto", fontSize: '20px', fill: '#fff' }
   )
   state.pages.global.resourcebar = this.add.image(
@@ -677,7 +1012,7 @@ function create() {
   state.pages.global.resourceValue = this.add.text(
     70,
     50, 
-    "34,300,308", 
+    "~", 
     { align: "center", fontFamily: "Roboto", fontSize: '20px', fill: '#e8c31a' }
   )
   Phaser.Display.Align.In.Center(state.pages.global.resourceValue, state.pages.global.resourcebar);
@@ -689,10 +1024,73 @@ function create() {
     { align: "left", fontFamily: "Roboto", fontSize: '15px', fill: '#fff' }
   )
 
-
   // show start page
   showPage("start", this)
   state.scene = this
+
+  this.input.on('pointerover', function (pointer, gameObject) {
+    const click = gameObject[0]
+    if (click === undefined) {
+      return
+    }
+    if (click.name === "asteroid") {
+      setSize(click.asteroid.total)
+      setDistance(click.asteroid.distance)
+    }
+    if (click.name === "upgrade-cargo") {
+      state.pages.upgrade.cargo_cost.setVisible(true)
+      state.pages.upgrade.cargo_lvl_next.setVisible(true)
+      state.pages.upgrade.cargo_value_next.setVisible(true)
+      state.pages.upgrade.cargo_lvl.setVisible(false)
+      state.pages.upgrade.cargo_value.setVisible(false)
+    }
+
+    if (click.name === "upgrade-engine") {
+      state.pages.upgrade.engine_cost.setVisible(true)
+      state.pages.upgrade.engine_lvl_next.setVisible(true)
+      state.pages.upgrade.engine_value_next.setVisible(true)
+      state.pages.upgrade.engine_lvl.setVisible(false)
+      state.pages.upgrade.engine_value.setVisible(false)
+    }
+
+    if (click.name === "upgrade-hull") {
+      state.pages.upgrade.hull_cost.setVisible(true)
+      state.pages.upgrade.hull_lvl_next.setVisible(true)
+      state.pages.upgrade.hull_value_next.setVisible(true)
+      state.pages.upgrade.hull_lvl.setVisible(false)
+      state.pages.upgrade.hull_value.setVisible(false)
+    }
+  })
+
+  this.input.on('pointerout', function (pointer, gameObject) {
+    const click = gameObject[0]
+    if (click === undefined) {
+      return
+    }
+    if (click.name === "asteroid") {
+      setSize(0)
+      setDistance(0)
+    }
+    if (click.name === "upgrade-cargo") {
+      state.pages.upgrade.cargo_lvl.setVisible(true)
+      state.pages.upgrade.cargo_value.setVisible(true)
+      state.pages.upgrade.cargo_lvl_next.setVisible(false)
+      state.pages.upgrade.cargo_value_next.setVisible(false)
+      state.pages.upgrade.cargo_cost.setVisible(false)
+    } else if (click.name === "upgrade-engine") {
+      state.pages.upgrade.engine_lvl.setVisible(true)
+      state.pages.upgrade.engine_value.setVisible(true)
+      state.pages.upgrade.engine_lvl_next.setVisible(false)
+      state.pages.upgrade.engine_value_next.setVisible(false)
+      state.pages.upgrade.engine_cost.setVisible(false)
+    } else if (click.name === "upgrade-hull") {
+      state.pages.upgrade.hull_lvl.setVisible(true)
+      state.pages.upgrade.hull_value.setVisible(true)
+      state.pages.upgrade.hull_lvl_next.setVisible(false)
+      state.pages.upgrade.hull_value_next.setVisible(false)
+      state.pages.upgrade.hull_cost.setVisible(false)
+    }
+  })
 
   this.input.on('pointerup', function (pointer, gameObject) {
     const click = gameObject[0]
@@ -700,12 +1098,13 @@ function create() {
       return
     }
 
+
     if (click.name === "return-btn") {
       showPage("toAsteroid", this.scene)
       state.pages.mining.autopilot.setTexture("auto-pilot-off")
       state.autopilot = false
       miner.stop()
-      setNotice("Returning to the Hanger")
+      setNotice("Returning to the Hangar")
     } else if (click.name === "autopilot") {
       if (click.texture.key === "auto-pilot-on") {
         state.pages.mining.autopilot.setTexture("auto-pilot-off")
@@ -730,17 +1129,111 @@ function create() {
       state.pages.mining.autopilot.setTexture("auto-pilot-off")
       state.autopilot = false
     } else if (click.name === "back-btn") {
-      showPage("hanger", this.scene)
+      showPage("hangar", this.scene)
+    } else if (click.name === "max-credits") {
+      client.tycoonTradeForCredits(Math.floor(state.account.resources / state.exchange.credits))
+        .then((response) => {
+          refreshAccount()
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    } else if (click.name === "max-plays") {
+      client.tycoonTradeForPlays(Math.floor(state.account.credits / state.exchange.plays))
+        .then((response) => {
+          refreshAccount()
+          client.balance()
+            .then((response) => {
+              store.balance = response.data.balance
+            })
+            .catch((error) => {
+              console.error(error)
+            })
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    } else if (click.name === "upgrade-engine") {
+      client.tycoonUpgradeShip(state.ships[0].id, {
+        category_id: 1,
+        asset_id: state.ship_upgrades.engine.asset_id + 1,
+      })
+        .then((response) => {
+          console.log("Upgraded Engine")
+          refreshUpgrade()
+          refreshAccount()
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    } else if (click.name === "upgrade-cargo") {
+      client.tycoonUpgradeShip(state.ships[0].id, {
+        category_id: 2,
+        asset_id: state.ship_upgrades.cargo.asset_id + 1,
+      })
+        .then((response) => {
+          console.log("Upgraded Cargo")
+          refreshUpgrade()
+          refreshAccount()
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    } else if (click.name === "upgrade-repair") {
+      client.tycoonUpgradeShip(state.ships[0].id, {
+        category_id: 3,
+        asset_id: state.ship_upgrades.repair.asset_id + 1,
+      })
+        .then((response) => {
+          console.log("Upgraded Repair")
+          refreshUpgrade()
+          refreshAccount()
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    } else if (click.name === "upgrade-hull") {
+      client.tycoonUpgradeShip(state.ships[0].id, {
+        category_id: 4,
+        asset_id: state.ship_upgrades.hull.asset_id + 1,
+      })
+        .then((response) => {
+          console.log("Upgraded Hull")
+          refreshUpgrade()
+          refreshAccount()
+        })
+        .catch((error) => {
+          window.err = error
+          console.error(error)
+        })
+    } else if (click.name === "asteroid") {
+      console.log("Asteroid:", click.asteroid)
+      client.tycoonAssignAsteroid({
+        ship_id: state.ships[0].id, 
+        asteroid_id: click.asteroid.id,
+        session_id: state.session,
+      })
+        .then((response) => {
+          console.log("Assigned Asteroid")
+          state.pages.mining.resourceRemaining.setText(click.asteroid.remaining + " Remaining")
+        })
+        .catch((error) => {
+          console.error(error)
+        })
     } else if (click.name === "splash") {
       client.tycoonGetAccount()
         .then((response) => {
           state.account = response.data
-          state.pages.global.creditsValue.setText(state.account.credits)
+          state.pages.global.creditsValue.setText(
+            state.account.credits.toLocaleString()
+          )
           Phaser.Display.Align.In.Center(
             state.pages.global.creditsValue, 
             state.pages.global.creditbar,
           );
-          state.pages.global.resourceValue.setText(state.account.resources.toLocaleString())
+          state.pages.global.resourceValue.setText(
+            state.account.resources.toLocaleString()
+          )
           Phaser.Display.Align.In.Center(
             state.pages.global.resourceValue,
             state.pages.global.resourcebar,
@@ -748,7 +1241,7 @@ function create() {
           client.tycoonGetShips()
             .then((response) => {
               state.ships = response.data
-              showPage("hanger", this.scene)
+              showPage("hangar", this.scene)
             })
             .catch((error) => {
               console.error(error)
@@ -763,7 +1256,7 @@ function create() {
                 client.tycoonCreateShip() 
                   .then((response) => {
                     state.ships = [response.data]
-                    showPage("hanger", this.scene)
+                    showPage("hangar", this.scene)
                     setNotice("Created a new ship")
                   })
                   .catch((error) => {
@@ -812,6 +1305,7 @@ function createGame(width, height) {
 }
 
 @inject('client')
+@inject('store')
 @observer
 class Game extends Component {
   constructor(props) {
@@ -832,6 +1326,7 @@ class Game extends Component {
     this.updateMineStats = this.updateMineStats.bind(this);
 
     client = this.props.client
+    store = this.props.store
   }
 
   updateMineStats(stats) {
