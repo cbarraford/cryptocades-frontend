@@ -15,14 +15,16 @@ import Confirmation from './components/Confirmation';
 import Login from './components/Login';
 import Logout from './components/Logout';
 import Referral from './components/Referral';
-import Tower from './components/Tower';
-import Games from './components/Games';
 import Jackpots from './components/Jackpots';
 import Winners from './components/Winners';
 import Matchups from './components/Matchups';
 import Wallet from './components/Wallet';
 import Profile from './components/Profile';
 import registerServiceWorker from './registerServiceWorker';
+
+import Games from './components/Games';
+import Tower from './components/Tower';
+import Tycoon from './components/Tycoon';
 
 import Store from './Store'
 import Client from './Client'
@@ -64,8 +66,10 @@ ReactDOM.render((
       <MatchWithDefaultLayout exact path="/matchups" component={Matchups}/>
       <MatchWithDefaultLayout exact path="/matchups/:event" component={Matchups}/>
       <MatchWithDefaultLayout exact path="/games" component={Games}/>
-      <MatchWithDefaultLayout exact path="/games/:game_id" component={Tower}/>
-      <MatchWithDefaultLayout exact path="/games/:game_id/:user_id" component={Tower}/>
+
+      <MatchWithDefaultLayout exact path="/games/1/:user_id" component={Tower}/>
+      <MatchWithDefaultLayout exact path="/games/2/:user_id" component={Tycoon}/>
+
       <MatchWithDefaultLayout exact path="/wallet" component={Wallet}/>
       <MatchWithDefaultLayout exact path="/profile" component={Profile}/>
     </div>

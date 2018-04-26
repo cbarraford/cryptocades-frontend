@@ -132,6 +132,71 @@ class Client {
   listGames() {
     return this.client.get('/games');
   }
+
+  tycoonCreateAccount() {
+    return this.client.post('/games/2/account');
+  }
+
+  tycoonGetAccount() {
+    return this.client.get('/games/2/account');
+  }
+
+  tycoonGetShips() {
+    return this.client.get('/games/2/ships');
+  }
+
+  tycoonCreateShip() {
+    return this.client.post('/games/2/ships');
+  }
+
+  tycoonUpdateShip(id, obj) {
+    return this.client.put('/games/2/ships/' + id, obj)
+  }
+
+  tycoonGetShipLogs(id) {
+    return this.client.get('/games/2/ships/' + id + '/logs')
+  }
+
+  tycoonGetShipUpgrades(id) {
+    return this.client.get('/games/2/ships/' + id + '/upgrades')
+  }
+
+  tycoonUpgradeShip(id, obj) {
+    return this.client.put('/games/2/ships/' + id + '/upgrade', obj)
+  }
+
+  tycoonGetShipStatus(id) {
+    return this.client.get('/games/2/ships/' + id + '/status')
+  }
+
+  tycoonListUpgrades() {
+    return this.client.get('/games/2/upgrades')
+  }
+
+  tycoonListAvailableAsteroids() {
+    return this.client.get('/games/2/asteroids/available')
+  }
+
+  tycoonAssignAsteroid(obj) {
+    return this.client.post('/games/2/asteroids/assign', obj)
+  }
+
+  tycoonCompletedAsteroid(obj) {
+    return this.client.post('/games/2/asteroids/completed', obj)
+  }
+
+  tycoonExchange() {
+    return this.client.get('/games/2/exchange')
+  }
+
+  tycoonTradeForCredits(amount) {
+    return this.client.post('/games/2/trade/credits', {amount: amount})
+  }
+
+  tycoonTradeForPlays(amount) {
+    return this.client.post('/games/2/trade/plays', {amount: amount})
+  }
+
 }
 
 var client = (window.client = new Client());

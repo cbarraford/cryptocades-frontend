@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import PropTypes from 'prop-types'
-import Game from './games/tower/Tower'
+import Game from './games/tycoon/Tycoon'
 
 @inject('store')
 @observer
-class Tower extends Component {
+class Tycoon extends Component {
   static propTypes = {
     match: PropTypes.object.isRequired,
   }
@@ -15,7 +15,7 @@ class Tower extends Component {
 
     this.state = {
       userId: this.props.match.params.user_id,
-      gameId: 1,
+      gameId: this.props.match.params.game_id,
     }
   }
 
@@ -23,7 +23,7 @@ class Tower extends Component {
     const { id } = this.props.store.me
     const { gameId, userId } = this.state;
     const width = Math.min(document.body.clientWidth, 800)
-    const height = Math.min(document.body.clientHeight, 600)
+    const height = Math.min(document.body.clientHeight, 412)
     return (
       <div className="page-container" style={{minHeight: "68px"}}>
         <div className="page-content">
@@ -36,4 +36,4 @@ class Tower extends Component {
   }
 }
 
-export default Tower;
+export default Tycoon;
