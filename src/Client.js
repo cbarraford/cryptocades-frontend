@@ -40,7 +40,11 @@ class Client {
 
   // gets the user info the for currently signed in user
   me() {
-    return this.client.get('/me');
+    return this.client.get('/me')
+  }
+
+  deleteMe() {
+    return this.client.delete('/me')
   }
 
   updateMe(obj) {

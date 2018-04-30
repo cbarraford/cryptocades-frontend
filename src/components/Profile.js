@@ -47,10 +47,39 @@ class Profile extends Component {
     this.updateEmail = this.updateEmail.bind(this);
     this.updateProfile = this.updateProfile.bind(this);
     this.reAuthenticate = this.reAuthenticate.bind(this);
+    this.deleteProfile = this.deleteProfile.bind(this);
+    this.promptDelete = this.promptDelete.bind(this);
   }
 
   handleChange(event) {
     this.setState({[event.target.id]: event.target.value});
+  }
+
+  promptDelete(event) {
+    event.preventDefault();
+    const self = this
+    toastr.warning("Clicking this will delete your user. This cannot be undone.", "Are you sure?", {
+      "positionClass": "toast-top-center",
+      "onclick": function() { 
+        self.deleteProfile()
+      },
+    })
+
+  }
+
+  deleteProfile() {
+    this.setState({ saving: true })
+    this.props.client.deleteMe()
+      .then((response) => {
+        console.log("Deleted user")
+        this.props.history.push('/logout')
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+      .finally(() => {
+        this.setState({saving: false})
+      })
   }
 
   updateProfile(event) {
@@ -241,6 +270,22 @@ class Profile extends Component {
                         <button type="submit" className="btn" disabled={saving} style={saveStyle}><i className="icon-floppy-disk"></i> Save</button>
                       </div>
                     </form>
+                  </div>
+                </div>
+
+                <div className="">
+                  <div className="panel panel-flat">
+                    <div className="panel-heading">
+                      <h6 className="panel-title">Delete User<a className="heading-elements-toggle"><i className="icon-more"></i></a></h6>
+                    </div>
+
+                    <div className="panel-body">
+                      <form onSubmit={this.promptDelete} >
+                        <div className="text-right">
+                          <button type="submit" className="btn btn-danger" disabled={saving} ><i className="icon-trash-alt"></i> Delete</button>
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
