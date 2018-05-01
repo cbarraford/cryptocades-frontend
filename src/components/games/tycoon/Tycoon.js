@@ -91,6 +91,7 @@ function showPage(page, scene) {
       state.pages.trade.plays_title.setVisible(page === "trade")
 
       // Upgrade
+      state.pages.upgrade.notice.setVisible(page === "upgrade")
       state.pages.upgrade.title.setVisible(page === "upgrade")
       state.pages.upgrade.bg.setVisible(page === "upgrade" || page === "trade" || page === "radar")
       state.pages.upgrade.back.setVisible(page === "upgrade" || page === "trade" || page === "radar")
@@ -271,6 +272,11 @@ window.meter = meter
 
 function setNotice(msg) {
   state.pages.global.notice.setText(msg)
+}
+
+function setUpgradeNotice(msg) {
+  state.pages.upgrade.notice.setText(msg)
+  setTimeout(function(){ state.pages.upgrade.notice.setText("") }, 5000);
 }
 
 function drawRadar(scene) {
@@ -718,6 +724,12 @@ function create() {
   state.pages.upgrade.hull_cost.setVisible(false)
   state.pages.upgrade.hull_cost.setName("hull-cost")
 
+  state.pages.upgrade.notice = this.add.text(
+    state.canvas.width / 2,
+    100,
+    "",
+    { fontFamily: "Roboto", align: "center", fontSize: '18px', fill: '#01FF70' }
+  ).setOrigin(0.5, 0)
 
   ////////////////////////////////////////////////////////////////
 
@@ -727,7 +739,7 @@ function create() {
     50,
     "Iron Ore for Credits", 
     { fontFamily: "Roboto", fontSize: '30px', align: "center", fill: '#fff' }
-  )
+  ).setOrigin(0.5, 0)
   state.pages.trade.max_credits_btn = this.add.image(
     state.canvas.width / 2,
     100,
@@ -740,7 +752,7 @@ function create() {
     150,
     "Credits for Jackpot Plays", 
     { fontFamily: "Roboto", fontSize: '30px', align: "center", fill: '#fff' }
-  )
+  ).setOrigin(0.5, 0)
   state.pages.trade.max_plays_btn = this.add.image(
     state.canvas.width / 2,
     200,
@@ -1165,6 +1177,7 @@ function create() {
       })
         .then((response) => {
           console.log("Upgraded Engine")
+          setUpgradeNotice("Upgraded engines to level " + state.ship_upgrades.engine.asset_id + 1)
           refreshUpgrade()
           refreshAccount()
         })
@@ -1178,6 +1191,7 @@ function create() {
       })
         .then((response) => {
           console.log("Upgraded Cargo")
+          setUpgradeNotice("Upgraded cargo to level " + state.ship_upgrades.cargo.asset_id + 1)
           refreshUpgrade()
           refreshAccount()
         })
@@ -1191,6 +1205,7 @@ function create() {
       })
         .then((response) => {
           console.log("Upgraded Repair")
+          setUpgradeNotice("Upgraded repairs to level " + state.ship_upgrades.repair.asset_id + 1)
           refreshUpgrade()
           refreshAccount()
         })
@@ -1204,6 +1219,7 @@ function create() {
       })
         .then((response) => {
           console.log("Upgraded Hull")
+          setUpgradeNotice("Upgraded hull to level " + state.ship_upgrades.hull.asset_id + 1)
           refreshUpgrade()
           refreshAccount()
         })
