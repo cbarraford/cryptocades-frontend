@@ -32,6 +32,7 @@ let state = {
   session: null,
   frame: null,
   scene: null,
+  manual_return: false,
 }
 window.state = state;
 
@@ -426,10 +427,14 @@ const autopilot = setInterval(() => {
           miner.stop()
           setNotice("Approaching the asteroid...")
           return
-        } else if (state.ship.status === "Approaching Space Station") {
+        } else if (state.ship.status === "Approaching Space Station" || (state.manual_return && state.ship.status !== "Docked")) {
           showPage("toHangar", state.scene)
           miner.stop()
-          setNotice("Asteroid has been mined, heading back to the hangar...")
+          if (state.manual_return) {
+            setNotice("Asteroid partially mined, heading back to the hangar...")
+          } else {
+            setNotice("Asteroid has been mined, heading back to the hangar...")
+          }
           return
         } else if (state.ship.status === "Mining") {
           showPage("mining", state.scene)
@@ -453,6 +458,7 @@ const autopilot = setInterval(() => {
         } else {
           if (state.frame !== "upgrade" && state.frame !== "radar" && state.frame !== "trade") {
             showPage("hangar", state.scene)
+            state.manual_return = false
           }
           if (state.ship.ship.health === 0) {
             miner.start()
@@ -1101,10 +1107,9 @@ function create() {
 
     if (click.name === "return-btn") {
       showPage("toAsteroid", this.scene)
-      state.pages.mining.autopilot.setTexture("auto-pilot-off")
-      state.autopilot = false
       miner.stop()
       setNotice("Returning to the Hangar")
+      state.manual_return = true
     } else if (click.name === "autopilot") {
       if (click.texture.key === "auto-pilot-on") {
         state.pages.mining.autopilot.setTexture("auto-pilot-off")
