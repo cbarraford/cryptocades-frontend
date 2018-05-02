@@ -219,6 +219,11 @@ function refreshUpgrade() {
             state.pages.upgrade.engine_lvl_next.setText("lvl " + engine_next.asset_id)
             state.pages.upgrade.engine_value_next.setText(engine_next.value + " Mph")
             state.pages.upgrade.engine_cost.setText(engine_next.cost + " credits")
+            if (engine_next.cost > state.account.credits) {
+              state.pages.upgrade.engine_cost.setColor("#FF4136")
+            } else {
+              state.pages.upgrade.engine_cost.setColor("#01FF70")
+            }
           }
 
           state.pages.upgrade.cargo_lvl.setText("lvl " + cargo.asset_id)
@@ -233,6 +238,12 @@ function refreshUpgrade() {
             state.pages.upgrade.cargo_lvl_next.setText("lvl " + cargo_next.asset_id)
             state.pages.upgrade.cargo_value_next.setText(cargo_next.value + " m3")
             state.pages.upgrade.cargo_cost.setText(cargo_next.cost + " credits")
+            
+            if (cargo_next.cost > state.account.credits) {
+              state.pages.upgrade.cargo_cost.setColor("#FF4136")
+            } else {
+              state.pages.upgrade.cargo_cost.setColor("#01FF70")
+            }
           }
 
           state.pages.upgrade.hull_lvl.setText("lvl " + hull.asset_id)
@@ -247,6 +258,12 @@ function refreshUpgrade() {
             state.pages.upgrade.hull_lvl_next.setText("lvl " + hull_next.asset_id)
             state.pages.upgrade.hull_value_next.setText(hull_next.value + " H/V")
             state.pages.upgrade.hull_cost.setText(hull_next.cost + " credits")
+            
+            if (hull_next.cost > state.account.credits) {
+              state.pages.upgrade.hull_cost.setColor("#FF4136")
+            } else {
+              state.pages.upgrade.hull_cost.setColor("#01FF70")
+            }
           }
 
           // state.pages.upgrade.repair_lvl.setText("lvl " + repair.asset_id)
