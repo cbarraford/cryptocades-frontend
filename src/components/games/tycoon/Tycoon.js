@@ -142,6 +142,8 @@ function showPage(page, scene) {
         client.tycoonExchange()
           .then((response) => {
             state.exchange = response.data
+            state.pages.trade.credits_title.setText("Iron Ore For Credits (1:" + state.exchange.credits + " ratio)")
+            state.pages.trade.plays_title.setText("Credits For Plays (1:" + state.exchange.plays + " ratio)")
           })
           .catch((error) => {
             console.error(error)
@@ -755,7 +757,7 @@ function create() {
     state.canvas.width / 2,
     50,
     "Iron Ore for Credits", 
-    { fontFamily: "Roboto", fontSize: '30px', align: "center", fill: '#fff' }
+    { fontFamily: "Roboto", fontSize: '20px', align: "center", fill: '#fff' }
   ).setOrigin(0.5, 0)
   state.pages.trade.max_credits_btn = this.add.image(
     state.canvas.width / 2,
@@ -768,7 +770,7 @@ function create() {
     state.canvas.width / 2,
     150,
     "Credits for Jackpot Plays", 
-    { fontFamily: "Roboto", fontSize: '30px', align: "center", fill: '#fff' }
+    { fontFamily: "Roboto", fontSize: '20px', align: "center", fill: '#fff' }
   ).setOrigin(0.5, 0)
   state.pages.trade.max_plays_btn = this.add.image(
     state.canvas.width / 2,
