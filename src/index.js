@@ -52,7 +52,6 @@ ReactDOM.render((
   <Provider {...stores}>
   <Router history={history}>
     <div>
-      <Route path='/' component={() => window.location = 'https://cryptocades.com/maintenance'}/>
       <MatchWithDefaultLayout exact path="/" component={Login}/>
       <MatchWithDefaultLayout exact path="/signup" component={Signup}/>
       <MatchWithDefaultLayout exact path="/password/forget" component={ForgetPassword}/>
