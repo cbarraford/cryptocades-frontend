@@ -1196,7 +1196,7 @@ function create() {
       })
         .then((response) => {
           console.log("Upgraded Engine")
-          setUpgradeNotice("Upgraded engines to level " + state.ship_upgrades.engine.asset_id + 1)
+          setUpgradeNotice("Upgraded engines to level " + (state.ship_upgrades.engine.asset_id + 1))
           refreshUpgrade()
           refreshAccount()
         })
@@ -1210,7 +1210,7 @@ function create() {
       })
         .then((response) => {
           console.log("Upgraded Cargo")
-          setUpgradeNotice("Upgraded cargo to level " + state.ship_upgrades.cargo.asset_id + 1)
+          setUpgradeNotice("Upgraded cargo to level " + (state.ship_upgrades.cargo.asset_id + 1))
           refreshUpgrade()
           refreshAccount()
         })
@@ -1224,7 +1224,7 @@ function create() {
       })
         .then((response) => {
           console.log("Upgraded Repair")
-          setUpgradeNotice("Upgraded repairs to level " + state.ship_upgrades.repair.asset_id + 1)
+          setUpgradeNotice("Upgraded repairs to level " + (state.ship_upgrades.repair.asset_id + 1))
           refreshUpgrade()
           refreshAccount()
         })
@@ -1238,7 +1238,7 @@ function create() {
       })
         .then((response) => {
           console.log("Upgraded Hull")
-          setUpgradeNotice("Upgraded hull to level " + state.ship_upgrades.hull.asset_id + 1)
+          setUpgradeNotice("Upgraded hull to level " + (state.ship_upgrades.hull.asset_id + 1))
           refreshUpgrade()
           refreshAccount()
         })
